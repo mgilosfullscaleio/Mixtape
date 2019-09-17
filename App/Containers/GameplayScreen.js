@@ -1,28 +1,33 @@
 import React, { Component } from 'react'
 import { ScrollView, Text, KeyboardAvoidingView } from 'react-native'
 import { connect } from 'react-redux'
-// Add Actions - replace 'Your' with whatever your reducer is called :)
-// import YourActions from '../Redux/YourRedux'
+
+import { GameplaySelectors } from '../Redux/GameplayRedux'
 
 // Styles
 import styles from './Styles/GameplayScreenStyle'
 
 class GameplayScreen extends Component {
+
+
+
+  renderRound = () => <Text>Round { this.props.round }</Text>
+
   render () {
     return (
       <ScrollView style={styles.container}>
         <KeyboardAvoidingView behavior='position'>
           <Text>GameplayScreen</Text>
+          { this.renderRound() }
         </KeyboardAvoidingView>
       </ScrollView>
     )
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-  }
-}
+const mapStateToProps = (state) => ({
+  round: GameplaySelectors.getRound(state),
+})
 
 const mapDispatchToProps = (dispatch) => {
   return {

@@ -15,6 +15,7 @@ export default Creators
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
+  round: 2,
   data: null,
   fetching: null,
   payload: null,
@@ -24,7 +25,7 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Selectors ------------- */
 
 export const GameplaySelectors = {
-  getData: state => state.data
+  getRound: state => state.gameplay.round
 }
 
 /* ------------- Reducers ------------- */
