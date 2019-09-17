@@ -1,0 +1,115 @@
+{
+  "project_info": {
+    "project_number": "297572482255",
+    "firebase_url": "https://mixtape-205a1.firebaseio.com",
+    "project_id": "mixtape-205a1",
+    "storage_bucket": "mixtape-205a1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:297572482255:android:58cd61ca60400c3f",
+        "android_client_info": {
+          "package_name": "com.mixtape"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "297572482255-o9scegvfbogv55b07o6d570q8sjrfht9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mixtape",
+            "certificate_hash": "89166fc5c203dbd31a1b1972c7187c657ad91f7d"
+          }
+        },
+        {
+          "client_id": "297572482255-8c4kbuku4tebk32ivelvla65ln4tb1kh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9zoubKUgvXx9chb7prOXg_HB92GznPN8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "297572482255-8c4kbuku4tebk32ivelvla65ln4tb1kh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "297572482255-0lf55tb92efpku4fqkd6vb0k4qrbm5oe.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.lexlab.test"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:297572482255:android:cd5ed5cccc093ece",
+        "android_client_info": {
+          "package_name": "com.mixtape.mobileapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "297572482255-uli52ted8vvqdo282rv979shia0o9r5a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mixtape.mobileapp",
+            "certificate_hash": "e76263ab06d3cd40c5d23f1e559e50d58da6f9c8"
+          }
+        },
+        {
+          "client_id": "297572482255-fgfc3qf38i2l27hvr400ik6rm7ctthe0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mixtape.mobileapp",
+            "certificate_hash": "b5d3faadf55a8eccd908a96e655d843399e3ed63"
+          }
+        },
+        {
+          "client_id": "297572482255-b1ei28c15tmvbudd1v5ila6tmvfn054l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mixtape.mobileapp",
+            "certificate_hash": "89166fc5c203dbd31a1b1972c7187c657ad91f7d"
+          }
+        },
+        {
+          "client_id": "297572482255-8c4kbuku4tebk32ivelvla65ln4tb1kh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9zoubKUgvXx9chb7prOXg_HB92GznPN8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "297572482255-8c4kbuku4tebk32ivelvla65ln4tb1kh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "297572482255-0lf55tb92efpku4fqkd6vb0k4qrbm5oe.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.lexlab.test"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
