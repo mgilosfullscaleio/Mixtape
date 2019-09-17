@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "apisauce": "^1.0.2",
+    "folktale": "2.3.2",
     "format-json": "^1.0.3",
     "identity-obj-proxy": "^3.0.0",
     "lodash": "^4.17.11",
