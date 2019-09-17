@@ -7,6 +7,7 @@ import DebugConfig from '../Config/DebugConfig'
 
 import { StartupTypes } from '../Redux/StartupRedux'
 import { GithubTypes } from '../Redux/GithubRedux'
+import { GameplayTypes } from '../Redux/GameplayRedux'
 
 /* ------------- Sagas ------------- */
 
