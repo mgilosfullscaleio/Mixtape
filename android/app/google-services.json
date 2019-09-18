@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "297572482255-si42p1enlcrtlr82hjg78ipl7kh0fujt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mixtape",
+            "certificate_hash": "e76263ab06d3cd40c5d23f1e559e50d58da6f9c8"
+          }
+        },
+        {
+          "client_id": "297572482255-12ltmag5qbl529ahgskf47dgrsuqdenp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mixtape",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
           "client_id": "297572482255-o9scegvfbogv55b07o6d570q8sjrfht9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -58,6 +74,30 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "297572482255-a6ig1fmtjqfd3d4oahe7q928vb7rbip0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mixtape.mobileapp",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "297572482255-kqv55rvblb5dedk0k47v6bs0gvbnhc5p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mixtape.mobileapp",
+            "certificate_hash": "78dd9e990970286190e9ce2fc3ecfdd29d0d2ec4"
+          }
+        },
+        {
+          "client_id": "297572482255-vhg6v0md2fmfjahoi009hrn81fcu3r5n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mixtape.mobileapp",
+            "certificate_hash": "179cde95f26a15ce7d405ad7618f96952c45e1b5"
+          }
+        },
         {
           "client_id": "297572482255-uli52ted8vvqdo282rv979shia0o9r5a.apps.googleusercontent.com",
           "client_type": 1,
