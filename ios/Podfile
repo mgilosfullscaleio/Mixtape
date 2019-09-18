@@ -32,6 +32,8 @@ target 'Mixtape' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'react-native-config', :path => '../node_modules/react-native-config'
+
   target 'MixtapeTests' do
     inherit! :search_paths
     # Pods for testing
