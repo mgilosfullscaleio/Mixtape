@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* MixtapeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* MixtapeTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
@@ -27,6 +28,21 @@
 		A9350A60232B753C00762BCB /* libreact-native-config.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A9350A5F232B753C00762BCB /* libreact-native-config.a */; };
 		A9350A62232B756A00762BCB /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A9350A61232B756A00762BCB /* libRNDeviceInfo.a */; };
 		A9350A64232B757200762BCB /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A9350A63232B757200762BCB /* libRNVectorIcons.a */; };
+		A997EE792331F9E80032D602 /* libGoogleUtilities.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A997EE782331F9E80032D602 /* libGoogleUtilities.a */; };
+		A997EE7F23320D540032D602 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A997EE7E23320D540032D602 /* GoogleService-Info.plist */; };
+		A997EE81233216AA0032D602 /* libFirebaseABTesting.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A997EE80233216AA0032D602 /* libFirebaseABTesting.a */; };
+		A997EE83233216AA0032D602 /* libFirebaseAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A997EE82233216AA0032D602 /* libFirebaseAuth.a */; };
+		A997EE85233216AA0032D602 /* libFirebaseCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A997EE84233216AA0032D602 /* libFirebaseCore.a */; };
+		A997EE87233216AA0032D602 /* libFirebaseCoreDiagnostics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A997EE86233216AA0032D602 /* libFirebaseCoreDiagnostics.a */; };
+		A997EE89233216AA0032D602 /* libFirebaseDatabase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A997EE88233216AA0032D602 /* libFirebaseDatabase.a */; };
+		A997EE8B233216AA0032D602 /* libFirebaseDynamicLinks.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A997EE8A233216AA0032D602 /* libFirebaseDynamicLinks.a */; };
+		A997EE8D233216AA0032D602 /* libFirebaseFirestore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A997EE8C233216AA0032D602 /* libFirebaseFirestore.a */; };
+		A997EE8F233216AA0032D602 /* libFirebaseFunctions.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A997EE8E233216AA0032D602 /* libFirebaseFunctions.a */; };
+		A997EE91233216AA0032D602 /* libFirebaseInstanceID.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A997EE90233216AA0032D602 /* libFirebaseInstanceID.a */; };
+		A997EE93233216AA0032D602 /* libFirebaseMessaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A997EE92233216AA0032D602 /* libFirebaseMessaging.a */; };
+		A997EE95233216AA0032D602 /* libFirebaseRemoteConfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A997EE94233216AA0032D602 /* libFirebaseRemoteConfig.a */; };
+		A997EE97233216AA0032D602 /* libFirebaseStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A997EE96233216AA0032D602 /* libFirebaseStorage.a */; };
+		A997EE99233216AA0032D602 /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A997EE98233216AA0032D602 /* libRNFirebase.a */; };
 		B2D956028E474994A6B5F66C /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4AA158F257654F058237BD16 /* MaterialCommunityIcons.ttf */; };
 		B4B52D243F7C49F58044DFF4 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D5BACFA9D8CB44FFA78D3F23 /* Foundation.ttf */; };
 		C2541BC546C749038595B610 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DF714F86056C47E28DC62262 /* Zocial.ttf */; };
@@ -93,6 +109,25 @@
 		A9350A61232B756A00762BCB /* libRNDeviceInfo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNDeviceInfo.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9350A63232B757200762BCB /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A96FA8D2454F47BFAE15E968 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
+		A997EE722331F9C00032D602 /* libFirebaseCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A997EE742331F9C00032D602 /* libFirebaseInstanceID.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseInstanceID.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A997EE762331F9C00032D602 /* libRNFirebase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNFirebase.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A997EE782331F9E80032D602 /* libGoogleUtilities.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libGoogleUtilities.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A997EE7C233207490032D602 /* libFirebaseCoreDiagnostics.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseCoreDiagnostics.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A997EE7E23320D540032D602 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		A997EE80233216AA0032D602 /* libFirebaseABTesting.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseABTesting.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A997EE82233216AA0032D602 /* libFirebaseAuth.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseAuth.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A997EE84233216AA0032D602 /* libFirebaseCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A997EE86233216AA0032D602 /* libFirebaseCoreDiagnostics.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseCoreDiagnostics.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A997EE88233216AA0032D602 /* libFirebaseDatabase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseDatabase.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A997EE8A233216AA0032D602 /* libFirebaseDynamicLinks.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseDynamicLinks.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A997EE8C233216AA0032D602 /* libFirebaseFirestore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseFirestore.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A997EE8E233216AA0032D602 /* libFirebaseFunctions.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseFunctions.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A997EE90233216AA0032D602 /* libFirebaseInstanceID.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseInstanceID.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A997EE92233216AA0032D602 /* libFirebaseMessaging.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseMessaging.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A997EE94233216AA0032D602 /* libFirebaseRemoteConfig.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseRemoteConfig.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A997EE96233216AA0032D602 /* libFirebaseStorage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseStorage.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A997EE98233216AA0032D602 /* libRNFirebase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNFirebase.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2180E49BE5F41379F437CC9 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		CFE838B06644D46C9EBEB065 /* libPods-Mixtape-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Mixtape-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5BACFA9D8CB44FFA78D3F23 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
@@ -119,6 +154,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A997EE81233216AA0032D602 /* libFirebaseABTesting.a in Frameworks */,
+				A997EE83233216AA0032D602 /* libFirebaseAuth.a in Frameworks */,
+				A997EE85233216AA0032D602 /* libFirebaseCore.a in Frameworks */,
+				A997EE87233216AA0032D602 /* libFirebaseCoreDiagnostics.a in Frameworks */,
+				A997EE89233216AA0032D602 /* libFirebaseDatabase.a in Frameworks */,
+				A997EE8B233216AA0032D602 /* libFirebaseDynamicLinks.a in Frameworks */,
+				A997EE8D233216AA0032D602 /* libFirebaseFirestore.a in Frameworks */,
+				A997EE8F233216AA0032D602 /* libFirebaseFunctions.a in Frameworks */,
+				A997EE91233216AA0032D602 /* libFirebaseInstanceID.a in Frameworks */,
+				A997EE93233216AA0032D602 /* libFirebaseMessaging.a in Frameworks */,
+				A997EE95233216AA0032D602 /* libFirebaseRemoteConfig.a in Frameworks */,
+				A997EE97233216AA0032D602 /* libFirebaseStorage.a in Frameworks */,
+				A997EE99233216AA0032D602 /* libRNFirebase.a in Frameworks */,
+				A997EE792331F9E80032D602 /* libGoogleUtilities.a in Frameworks */,
 				A9350A64232B757200762BCB /* libRNVectorIcons.a in Frameworks */,
 				A9350A62232B756A00762BCB /* libRNDeviceInfo.a in Frameworks */,
 				A9350A60232B753C00762BCB /* libreact-native-config.a in Frameworks */,
@@ -166,6 +215,7 @@
 		13B07FAE1A68108700A75B9A /* Mixtape */ = {
 			isa = PBXGroup;
 			children = (
+				A997EE7E23320D540032D602 /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -180,6 +230,24 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A997EE80233216AA0032D602 /* libFirebaseABTesting.a */,
+				A997EE82233216AA0032D602 /* libFirebaseAuth.a */,
+				A997EE84233216AA0032D602 /* libFirebaseCore.a */,
+				A997EE86233216AA0032D602 /* libFirebaseCoreDiagnostics.a */,
+				A997EE88233216AA0032D602 /* libFirebaseDatabase.a */,
+				A997EE8A233216AA0032D602 /* libFirebaseDynamicLinks.a */,
+				A997EE8C233216AA0032D602 /* libFirebaseFirestore.a */,
+				A997EE8E233216AA0032D602 /* libFirebaseFunctions.a */,
+				A997EE90233216AA0032D602 /* libFirebaseInstanceID.a */,
+				A997EE92233216AA0032D602 /* libFirebaseMessaging.a */,
+				A997EE94233216AA0032D602 /* libFirebaseRemoteConfig.a */,
+				A997EE96233216AA0032D602 /* libFirebaseStorage.a */,
+				A997EE98233216AA0032D602 /* libRNFirebase.a */,
+				A997EE7C233207490032D602 /* libFirebaseCoreDiagnostics.a */,
+				A997EE782331F9E80032D602 /* libGoogleUtilities.a */,
+				A997EE722331F9C00032D602 /* libFirebaseCore.a */,
+				A997EE742331F9C00032D602 /* libFirebaseInstanceID.a */,
+				A997EE762331F9C00032D602 /* libRNFirebase.a */,
 				A9350A63232B757200762BCB /* libRNVectorIcons.a */,
 				A9350A61232B756A00762BCB /* libRNDeviceInfo.a */,
 				A9350A5F232B753C00762BCB /* libreact-native-config.a */,
@@ -416,6 +484,7 @@
 				62321DCBD0EE4C828D168426 /* FontAwesome5_Regular.ttf in Resources */,
 				67A4DD99FB5040B79E5F731E /* FontAwesome5_Solid.ttf in Resources */,
 				B4B52D243F7C49F58044DFF4 /* Foundation.ttf in Resources */,
+				A997EE7F23320D540032D602 /* GoogleService-Info.plist in Resources */,
 				CF1CCFBDBB8D4AE7AA9A43BC /* Ionicons.ttf in Resources */,
 				B2D956028E474994A6B5F66C /* MaterialCommunityIcons.ttf in Resources */,
 				DB86655709FD46EFA3228129 /* MaterialIcons.ttf in Resources */,
@@ -479,6 +548,7 @@
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
+				"${PODS_CONFIGURATION_BUILD_DIR}/gRPC-C++/gRPCCertificates-Cpp.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -497,6 +567,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/gRPCCertificates-Cpp.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -765,7 +836,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mixtape.mobileapp;
 				PRODUCT_NAME = Mixtape;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -784,7 +855,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mixtape.mobileapp;
 				PRODUCT_NAME = Mixtape;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
