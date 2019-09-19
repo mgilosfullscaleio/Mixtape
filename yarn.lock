@@ -5747,6 +5747,11 @@ eventemitter3@^3.0.0, eventemitter3@^3.1.0:
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-3.1.2.tgz#2d3d48f9c346698fce83a85d7d664e98535df6e7"
   integrity sha512-tvtQIeLVHjDkJYnzf2dgVMxfuSGJeM/7UCG17TT4EumTfNtF+0nebF/4zWOIkCreAbtNqhGEboB6BWrwqNaw4Q==
 
+events@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/events/-/events-1.1.1.tgz#9ebdb7635ad099c70dcc4c2a1f5004288e8bd924"
+  integrity sha1-nr23Y1rQmccNzEwqH1AEKI6L2SQ=
+
 events@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/events/-/events-3.0.0.tgz#9a0a0dfaf62893d92b875b8f2698ca4114973e88"
@@ -10656,6 +10661,13 @@ react-native-device-info@1.6.1:
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-1.6.1.tgz#717171d9ad1ce38358e8f92ade21d41a7047fc02"
   integrity sha512-txl6xVbRyGe3QTIRtMgUXZqwxcTT5w48urbFWVlGmbR0fi49GsoVY1q6DiA2fa/HMksD8osAZh8eHuNLSiRMhg==
 
+react-native-events@^1.0.15:
+  version "1.0.15"
+  resolved "https://registry.yarnpkg.com/react-native-events/-/react-native-events-1.0.15.tgz#d14b75087664ab5b1a8e14e85adda66a4cf328c3"
+  integrity sha512-YRRmiipOKzYUsMa5YPXQ6zp5UyUcvmhcWLBKWFL44BkB8Qap2IPJlv2L87+muE5VxezqGfDLAdCgef9pPVxzdQ==
+  dependencies:
+    events "^1.1.1"
+
 react-native-firebase@5.5.5:
   version "5.5.5"
   resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-5.5.5.tgz#d5c7e02eb6ea5650f9ebbb23c2cd796f83e7ca45"
@@ -11467,6 +11479,13 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
   dependencies:
     hash-base "^3.0.0"
     inherits "^2.0.1"
+
+rn-spotify-sdk@^1.2.10:
+  version "1.2.10"
+  resolved "https://registry.yarnpkg.com/rn-spotify-sdk/-/rn-spotify-sdk-1.2.10.tgz#adc0ceb39634135170e65a2f6737dac5cb507810"
+  integrity sha512-OAhPNlODsv4P+Zf405+NPjRHDkJpjyCyajc5C6DeWS0YO3UcCseP3PfozDqrVbRk/BvJGzT+qHLknzpO/amilw==
+  dependencies:
+    react-native-events "^1.0.15"
 
 rst-selector-parser@^2.2.3:
   version "2.2.3"

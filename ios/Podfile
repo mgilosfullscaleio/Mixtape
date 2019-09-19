@@ -51,6 +51,10 @@ target 'Mixtape' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'RNEventEmitter', :path => '../node_modules/react-native-events'
+  
+  pod 'RNSpotify', :path => '../node_modules/rn-spotify-sdk'
+
   pod 'react-native-config', :path => '../node_modules/react-native-config'
 
   target 'MixtapeTests' do

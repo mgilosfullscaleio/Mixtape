@@ -24,6 +24,8 @@
 		6DC1AED8BBA1D8E594EC2860 /* libPods-Mixtape.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A5F425124213571215B93AB /* libPods-Mixtape.a */; };
 		70293A56F4B94F93A5D7EF45 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 673F06E12C264086B869D9E2 /* SimpleLineIcons.ttf */; };
 		7EF684146CC222BE00CEB6E5 /* libPods-MixtapeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79ABC2BA8903B703308D07D4 /* libPods-MixtapeTests.a */; };
+		A92EC0ED233317020067FC0E /* libRNEventEmitter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A92EC0EC233317020067FC0E /* libRNEventEmitter.a */; };
+		A92EC0EF233317080067FC0E /* libRNSpotify.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A92EC0EE233317080067FC0E /* libRNSpotify.a */; };
 		A9350A5E232B740A00762BCB /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A9350A5D232B740A00762BCB /* libRNGestureHandler.a */; };
 		A9350A60232B753C00762BCB /* libreact-native-config.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A9350A5F232B753C00762BCB /* libreact-native-config.a */; };
 		A9350A62232B756A00762BCB /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A9350A61232B756A00762BCB /* libRNDeviceInfo.a */; };
@@ -104,6 +106,8 @@
 		915ED77F6807439D989F15E9 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		94A7B64B63847FF826E5E43B /* Pods-Mixtape-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mixtape-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Mixtape-tvOSTests/Pods-Mixtape-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		A0E0D65247A9900EC56D5890 /* Pods-Mixtape-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mixtape-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Mixtape-tvOS/Pods-Mixtape-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		A92EC0EC233317020067FC0E /* libRNEventEmitter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNEventEmitter.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A92EC0EE233317080067FC0E /* libRNSpotify.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNSpotify.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9350A5D232B740A00762BCB /* libRNGestureHandler.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNGestureHandler.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9350A5F232B753C00762BCB /* libreact-native-config.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-config.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9350A61232B756A00762BCB /* libRNDeviceInfo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNDeviceInfo.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -154,6 +158,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A92EC0EF233317080067FC0E /* libRNSpotify.a in Frameworks */,
+				A92EC0ED233317020067FC0E /* libRNEventEmitter.a in Frameworks */,
 				A997EE81233216AA0032D602 /* libFirebaseABTesting.a in Frameworks */,
 				A997EE83233216AA0032D602 /* libFirebaseAuth.a in Frameworks */,
 				A997EE85233216AA0032D602 /* libFirebaseCore.a in Frameworks */,
@@ -230,6 +236,8 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A92EC0EE233317080067FC0E /* libRNSpotify.a */,
+				A92EC0EC233317020067FC0E /* libRNEventEmitter.a */,
 				A997EE80233216AA0032D602 /* libFirebaseABTesting.a */,
 				A997EE82233216AA0032D602 /* libFirebaseAuth.a */,
 				A997EE84233216AA0032D602 /* libFirebaseCore.a */,
@@ -426,7 +434,11 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = YEB467VDEB;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
+					};
+					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = YEB467VDEB;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -524,7 +536,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		2CF88D5F883A27E39573697C /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -784,6 +796,7 @@
 			baseConfigurationReference = 03E80B4454740096564336B4 /* Pods-MixtapeTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = YEB467VDEB;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -808,6 +821,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = YEB467VDEB;
 				INFOPLIST_FILE = MixtapeTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -829,6 +843,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = YEB467VDEB;
 				INFOPLIST_FILE = Mixtape/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -848,6 +863,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YEB467VDEB;
 				INFOPLIST_FILE = Mixtape/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
