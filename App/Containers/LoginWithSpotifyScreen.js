@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, KeyboardAvoidingView, TouchableOpacity } from 'react-native'
+import { ScrollView, Text, KeyboardAvoidingView, TouchableOpacity, Alert } from 'react-native'
 import { connect } from 'react-redux'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
+
+import firebase from 'react-native-firebase'
 
 import Spotify from 'rn-spotify-sdk'
 
@@ -59,6 +61,108 @@ const initializeSpotifyIfNeeded = async () => {
 import styles from './Styles/LoginWithSpotifyScreenStyle'
 
 class LoginWithSpotifyScreen extends Component {
+
+  constructor(props) {
+    super(props);
+
+    console.log("CROWN radar:",this.props);
+    // notifications
+    this.onNotificationDisplayedListener = this.onNotificationDisplayedListener.bind(this);
+    this.onNotificationListener = this.onNotificationListener.bind(this);
+    this.onNotificationOpenedListener = this.onNotificationOpenedListener.bind(this);
+
+  }
+
+  async componentDidMount() {
+    this.checkNotificationPermission();
+
+    if (!!!this.notificationDisplayedListener) {
+      this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed(this.onNotificationDisplayedListener);
+    }
+    if (!!!this.notificationListener) {
+      this.notificationListener = firebase.notifications().onNotification(this.onNotificationListener);
+    }
+    if (!!!this.notificationOpenedListener) {
+      this.notificationOpenedListener = firebase.notifications().onNotificationOpened(this.onNotificationOpenedListener);
+    }
+
+    try {
+      const notificationOpen = await firebase.notifications().getInitialNotification();
+
+      if (notificationOpen) {
+          const action = notificationOpen.action;
+          const notification = notificationOpen.notification;
+          console.log('getFirebaseInitialNotification ' , notificationOpen, notification);
+      }
+    }
+    catch (e) {
+      console.log('getFirebaseInitialNotification ERROR ---> ', e);
+    }
+
+    if (!!!this.onTokenRefreshListener) {
+      this.onTokenRefreshListener = firebase.messaging().onTokenRefresh(fcmToken => {
+        console.log('onFirebaseTokenRefresh', fcmToken);
+        this.getPushToken()
+      });
+    }
+
+    if (!!!this.messageListener) {
+      this.messageListener = firebase.messaging().onMessage((message) => {
+        // Process your message as required
+        console.log('onFirebaseMessage', message);
+        Alert.alert('REMOTE PUSH NOTIFICATION', message.data)
+      });
+    }
+  }
+
+  async checkNotificationPermission() {
+    const enabled = await firebase.messaging().hasPermission();
+    if (enabled) {
+      this.getPushToken()
+    }
+    else {
+      await this.requestNotificationPermission()
+    }
+  }
+
+  async requestNotificationPermission() {
+    try {
+      await firebase.messaging().requestPermission();
+      this.getPushToken();
+    } catch (error) {
+        // User has rejected permissions
+        console.log('requestPermission ---> ', error);
+    }
+  }
+  
+  getPushToken() {
+    setTimeout(async () => {
+      try {
+        const token = await firebase.messaging().getToken();
+
+        console.log('token', token);
+      }
+      catch (e) {
+        console.log('getPushToken() ERROR ---> ', e);
+      }
+    }, 500)
+  }
+
+  onNotificationListener(notification) { 
+    if (!!notification) {
+      console.log('receivedPushNotif: ', notification)
+    }
+  }
+
+  onNotificationOpenedListener(notificationOpen) {
+    const action = notificationOpen.action;
+    const notification = notificationOpen.notification;
+    this.onNotificationListener(notification)
+  }
+
+  onNotificationDisplayedListener(notification) {
+    this.onNotificationListener(notification)
+  }
   
   render () {
     const Debug = message => arg => {
