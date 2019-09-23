@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* MixtapeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* MixtapeTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
@@ -56,6 +55,7 @@
 		E2459888387E46DFA788497F /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 02092BE72DF34F1296EBBE67 /* Feather.ttf */; };
 		F780FA02679440EF8AEA5128 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4AFFDDFE2C5448DAA0ABAF22 /* EvilIcons.ttf */; };
 		FDA75933B15F00799205CAC0 /* libPods-Mixtape-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D921D5FB77C619B82315F58D /* libPods-Mixtape-tvOS.a */; };
+		E03F092CB93E421796BD6996 /* AkzidenzGroteskBE-Cn.otf in Resources */ = {isa = PBXBuildFile; fileRef = A6A2B410DD1B4BFAB93F39B7 /* AkzidenzGroteskBE-Cn.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -144,6 +144,7 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		EF032304D8459B11DB7995A3 /* Pods-Mixtape-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mixtape-tvOS.release.xcconfig"; path = "Target Support Files/Pods-Mixtape-tvOS/Pods-Mixtape-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		A6A2B410DD1B4BFAB93F39B7 /* AkzidenzGroteskBE-Cn.otf */ = {isa = PBXFileReference; name = "AkzidenzGroteskBE-Cn.otf"; path = "../App/Lib/assets/fonts/AkzidenzGroteskBE-Cn.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -339,6 +340,7 @@
 				B2180E49BE5F41379F437CC9 /* Octicons.ttf */,
 				673F06E12C264086B869D9E2 /* SimpleLineIcons.ttf */,
 				DF714F86056C47E28DC62262 /* Zocial.ttf */,
+				A6A2B410DD1B4BFAB93F39B7 /* AkzidenzGroteskBE-Cn.otf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -513,6 +515,7 @@
 				DB70A1B8B44241C3A479D839 /* Octicons.ttf in Resources */,
 				70293A56F4B94F93A5D7EF45 /* SimpleLineIcons.ttf in Resources */,
 				C2541BC546C749038595B610 /* Zocial.ttf in Resources */,
+				E03F092CB93E421796BD6996 /* AkzidenzGroteskBE-Cn.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

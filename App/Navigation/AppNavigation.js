@@ -2,6 +2,7 @@ import { createStackNavigator, createAppContainer } from 'react-navigation'
 import LoginWithSpotifyScreen from '../Containers/LoginWithSpotifyScreen'
 import GameplayScreen from '../Containers/GameplayScreen'
 import LaunchScreen from '../Containers/LaunchScreen'
+import LobbyScreen from '../Lib/screens/Home//Lobby'
 
 import styles from './Styles/NavigationStyles'
 
@@ -9,11 +10,12 @@ import styles from './Styles/NavigationStyles'
 const PrimaryNav = createStackNavigator({
   LoginWithSpotifyScreen: { screen: LoginWithSpotifyScreen },
   GameplayScreen: { screen: GameplayScreen },
-  LaunchScreen: { screen: LaunchScreen }
+  LaunchScreen: { screen: LaunchScreen },
+  Lobby: { screen: LobbyScreen },
 }, {
   // Default config for all screens
   headerMode: 'none',
-  initialRouteName: 'LoginWithSpotifyScreen',
+  initialRouteName: 'Lobby',
   navigationOptions: {
     headerStyle: styles.header
   }
