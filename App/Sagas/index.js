@@ -17,6 +17,8 @@ import { LobbyTypes } from '../Redux/LobbyRedux'
 import { startup } from './StartupSagas'
 import { getUserAvatar } from './GithubSagas'
 import { fetchUserInOpenMatch } from './LobbySagas'
+import { initializeSpotify } from './AuthSagas'
+import { AuthTypes } from '../Redux/AuthRedux'
 
 /* ------------- API ------------- */
 
@@ -32,6 +34,8 @@ export default function * root () {
     // some sagas only receive an action
     takeLatest(StartupTypes.STARTUP, startup),
 
-    takeLatest(LobbyTypes.FETCH_USER_IN_OPEN_MATCH, fetchUserInOpenMatch, firestore)
+    takeLatest(LobbyTypes.FETCH_USER_IN_OPEN_MATCH, fetchUserInOpenMatch, firestore),
+
+    takeLatest(AuthTypes.INITIALIZE_SPOTIFY, initializeSpotify)
   ])
 }
