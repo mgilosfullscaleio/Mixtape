@@ -11,6 +11,7 @@ export const reducers = combineReducers({
   search: require('./SearchRedux').reducer,
 
   gameplay: require('./GameplayRedux').reducer,
+  auth: require('./AuthRedux').reducer,
 })
 
 export default () => {
