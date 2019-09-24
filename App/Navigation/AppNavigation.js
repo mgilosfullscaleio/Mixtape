@@ -1,7 +1,7 @@
 import { createStackNavigator, createAppContainer } from 'react-navigation'
 import GameplayScreen from '../Containers/GameplayScreen'
 import LaunchScreen from '../Containers/LaunchScreen'
-import LobbyScreen from '../Lib/screens/Home//Lobby'
+import LobbyScreen from '../Lib/screens/Home/Lobby/Lobby'
 
 import styles from './Styles/NavigationStyles'
 
