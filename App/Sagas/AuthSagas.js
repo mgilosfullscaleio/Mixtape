@@ -49,14 +49,37 @@ const initializeSpotifyIfNeeded = () => {
     });
 }
 
+const loginSpotifyWithOptions = async () => {
+  const isLogin = await Spotify.login(spotifyOptions)
+  if (isLogin) {
+    console.tron.log(await Spotify.getMe())
+    return Promise.resolve(Result.Ok({isLogin})) 
+  }
+  else 
+    return Promise.resolve(Result.Error('Wrong credentials'))
+}
+
 export function * initializeSpotify (api, action) {
-  yield put(AuthActions.loading())
-  
+  yield put(AuthActions.loadingRequest())
+
   const response = yield call(initializeSpotifyIfNeeded)
 
   yield put(
     response.matchWith({
       Ok: ({ value }) => AuthActions.spotifyAuthSuccess(value), 
+      Error: ({ value }) => AuthActions.spotifyAuthFailure(value)
+    })
+  )
+}
+
+export function * loginSpotify (api, action) {
+  yield put(AuthActions.loadingRequest())
+  
+  const response = yield call(loginSpotifyWithOptions)
+
+  yield put(
+    response.matchWith({
+      Ok: ({ value }) =>  AuthActions.spotifyAuthSuccess(value),  
       Error: ({ value }) => AuthActions.spotifyAuthFailure(value)
     })
   )

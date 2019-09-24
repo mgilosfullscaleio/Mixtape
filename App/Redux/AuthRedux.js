@@ -8,7 +8,7 @@ const { Types, Creators } = createActions({
   spotifyAuthFailure: ['error'],
   loadingRequest: null,
   //saga triggers
-  spotifyAuthRequest: ['data'],
+  loginSpotify: null,
   initializeSpotify: null
 })
 
