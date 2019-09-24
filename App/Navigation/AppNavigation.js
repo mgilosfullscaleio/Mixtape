@@ -2,7 +2,7 @@ import { createStackNavigator, createAppContainer } from 'react-navigation'
 import LoginWithSpotifyScreen from '../Containers/LoginWithSpotifyScreen'
 import GameplayScreen from '../Containers/GameplayScreen'
 import LaunchScreen from '../Containers/LaunchScreen'
-import LobbyScreen from '../Lib/screens/Home//Lobby'
+import LobbyScreen from '../Lib/screens/Home/Lobby/Lobby'
 
 import styles from './Styles/NavigationStyles'
 

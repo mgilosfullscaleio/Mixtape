@@ -12,6 +12,7 @@ export const reducers = combineReducers({
 
   gameplay: require('./GameplayRedux').reducer,
   lobby: require('./LobbyRedux').reducer,
+  auth: require('./AuthRedux').reducer,
 })
 
 export default () => {
