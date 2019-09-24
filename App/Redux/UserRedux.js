@@ -4,9 +4,12 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  userRequest: ['data'],
-  userSuccess: ['payload'],
-  userFailure: null
+  userSuccess: ['data'],
+  userFailure: ['error'],
+  loadingRequest: null,
+  
+  //
+  userRequest: ['spotifyId'],
 })
 
 export const UserTypes = Types
@@ -16,37 +19,31 @@ export default Creators
 
 export const INITIAL_STATE = Immutable({
   data: null,
-  fetching: null,
-  payload: null,
+  loading: false,
   error: null
 })
 
 /* ------------- Selectors ------------- */
 
 export const UserSelectors = {
-  getData: state => state.data
+  getName: state => state.user.data.name
 }
 
 /* ------------- Reducers ------------- */
 
-// request the data from an api
-export const request = (state, { data }) =>
-  state.merge({ fetching: true, data, payload: null })
+export const loadingRequest = (state) =>
+  state.merge({ loading: true })
 
-// successful api lookup
-export const success = (state, action) => {
-  const { payload } = action
-  return state.merge({ fetching: false, error: null, payload })
-}
+export const success = (state, { data }) =>
+  state.merge({ loading: false, error: null, data })
 
-// Something went wrong somewhere.
-export const failure = state =>
-  state.merge({ fetching: false, error: true, payload: null })
+export const failure = (state, { error }) =>
+  state.merge({ loading: false, error })
 
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.USER_REQUEST]: request,
   [Types.USER_SUCCESS]: success,
-  [Types.USER_FAILURE]: failure
+  [Types.USER_FAILURE]: failure,
+  [Types.LOADING_REQUEST]: loadingRequest,
 })
