@@ -3,13 +3,15 @@ import LoginWithSpotifyScreen from '../Containers/LoginWithSpotifyScreen'
 import GameplayScreen from '../Containers/GameplayScreen'
 import LaunchScreen from '../Containers/LaunchScreen'
 import LobbyScreen from '../Lib/screens/Home/Lobby/Lobby'
-import SpotifyLogin from '../Lib/screens/Auth/SpotifyLogin'
+import Login from '../Lib/screens/Auth/Login'
+import Home from '../Lib/screens/Home/Home'
 
 import styles from './Styles/NavigationStyles'
 
 // Manifest of possible screens
 const PrimaryNav = createStackNavigator({
-  SpotifyLogin: { screen: SpotifyLogin },
+  Home: { screen: Home },
+  Login: { screen: Login },
   LoginWithSpotifyScreen: { screen: LoginWithSpotifyScreen },
   GameplayScreen: { screen: GameplayScreen },
   LaunchScreen: { screen: LaunchScreen },
@@ -17,7 +19,7 @@ const PrimaryNav = createStackNavigator({
 }, {
   // Default config for all screens
   headerMode: 'none',
-  initialRouteName: 'SpotifyLogin',
+  initialRouteName: 'Login',
   navigationOptions: {
     headerStyle: styles.header
   }
