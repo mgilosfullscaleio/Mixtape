@@ -33,7 +33,7 @@ bin/
 .project
 .settings
 .classpath
-google-service.json
+google-services.json
 
 # node.js
 #
