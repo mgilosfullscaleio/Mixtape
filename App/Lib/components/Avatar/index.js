@@ -26,7 +26,6 @@ const Avatar = ({ style, size, ...props }) => {
     <Image
       style={[styles.image, sizeStyle, style]}
       resizeMode="cover"
-      defaultSource={images.avatarPlaceholder}
       {...props}
     />
   );

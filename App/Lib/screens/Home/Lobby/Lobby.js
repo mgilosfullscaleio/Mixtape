@@ -7,10 +7,12 @@ import {
   Header,
   ListItem
 } from '../../../components';
+import { connect } from 'react-redux'
 
 import { images, localization } from '../../../constants';
 import styles from './styles';
 import PlayerQueue from '../../../components/PlayerQueue/PlayerQueue';
+import LobbyActions, { LobbySelectors } from '../../../../Redux/LobbyRedux'
 
 const Lobby = ({ players, onQuitGame }) => {
   const renderHeader = () => <Header title={localization.loadingGame} />;
@@ -57,7 +59,7 @@ const Lobby = ({ players, onQuitGame }) => {
           source={images.quitGameButton}
           style={styles.quitGameButton}
           resizeMode="contain"
-          onPress={onQuitGame}
+          onPress={() => console.tron.log(this.props) }
         />
       </View>
     </Container>
@@ -79,4 +81,12 @@ Lobby.defaultProps = {
   onQuitGame: () => null
 };
 
-export default Lobby;
+const mapStateToProps = (state) => ({
+  players: LobbySelectors.selectPlayers(state)
+})
+ 
+const mapDispatchToProps = (dispatch) => ({
+  isUserInMatch: playerId => dispatch(LobbyActions.fetchUserInOpenMatch(playerId))
+})
+ 
+export default connect(mapStateToProps, mapDispatchToProps)(Lobby)
