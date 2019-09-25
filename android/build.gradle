@@ -37,5 +37,9 @@ allprojects {
 
         maven { url 'https://maven.google.com' }
         maven { url "https://jitpack.io" }
+
+        flatDir {
+            dirs project(':rn-spotify-sdk').file('libs'), 'libs'
+        }
     }
 }

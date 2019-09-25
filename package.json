@@ -81,10 +81,12 @@
     "mockery": "^2.1.0",
     "react-devtools-core": "3.6.0",
     "react-dom": "16.7.0",
+    "react-native-events": "^1.0.15",
     "react-test-renderer": "16.8.6",
     "reactotron-react-native": "^2.1.0",
     "reactotron-redux": "^2.1.0",
     "reactotron-redux-saga": "^3.0.0",
+    "rn-spotify-sdk": "^1.2.10",
     "snazzy": "^8.0.0",
     "standard": "10.0.2"
   },
