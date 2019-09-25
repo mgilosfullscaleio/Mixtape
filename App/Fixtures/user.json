@@ -1,0 +1,9 @@
+{
+  "id": "123asd",
+  "name": "John Doe",
+  "social": {
+    "spotify": {
+      "id": "123456"
+    }
+  }
+}
