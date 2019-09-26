@@ -1,5 +1,6 @@
 import { call, put } from 'redux-saga/effects'
 import AuthActions from '../Redux/AuthRedux'
+import UserActions from '../Redux/UserRedux'
 import Result from 'folktale/result'
 import Spotify from 'rn-spotify-sdk'
 
@@ -52,8 +53,9 @@ const initializeSpotifyIfNeeded = () => {
 const loginSpotifyWithOptions = async () => {
   const isLogin = await Spotify.login(spotifyOptions)
   if (isLogin) {
-    console.tron.log(await Spotify.getMe())
-    return Promise.resolve(Result.Ok({isLogin})) 
+    const user = await Spotify.getMe()
+    console.tron.log(user)
+    return Promise.resolve(Result.Ok(user.id)) 
   }
   else 
     return Promise.resolve(Result.Error('Wrong credentials'))
@@ -79,7 +81,7 @@ export function * loginSpotify (api, action) {
 
   yield put(
     response.matchWith({
-      Ok: ({ value }) =>  AuthActions.spotifyAuthSuccess(value),  
+      Ok: ({ value }) =>  UserActions.userRequest(value),  
       Error: ({ value }) => AuthActions.spotifyAuthFailure(value)
     })
   )
