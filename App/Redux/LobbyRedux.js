@@ -9,7 +9,9 @@ const { Types, Creators } = createActions({
 
   lobbyFailure: ['error'],
   fetchUserInOpenMatchSuccess: ['isPresent'],
+  
   // Saga Trigger
+  quitOpenMatch: null,
   fetchUserInOpenMatch: ['playerId'] //<--- PARAMS
 })
 
