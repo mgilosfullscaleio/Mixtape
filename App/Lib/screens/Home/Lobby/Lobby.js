@@ -19,6 +19,8 @@ const Lobby = props => {
 
   useEffect(() => {
     props.subscribePlayerJoin()
+
+    return props.unsubscribePlayerJoin
   }, [])
 
   return (
@@ -92,6 +94,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   quitLobby: () => dispatch(LobbyActions.quitOpenMatch()),
   subscribePlayerJoin: () => dispatch(LobbyActions.subscribePlayerJoin()),
+  unsubscribePlayerJoin: () => dispatch(LobbyActions.unsubscribePlayerJoin())
 })
  
 export default connect(mapStateToProps, mapDispatchToProps)(Lobby)

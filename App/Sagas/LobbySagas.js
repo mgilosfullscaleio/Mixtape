@@ -32,16 +32,25 @@ const onPlayerJoinChannel = firestore =>
     return () => unsubscribe()
   })
 
-export function * watchPlayerJoin (firestore, action) {
-  const channel = yield call(onPlayerJoinChannel, firestore)
+let playerJoinSubscriptionChannel
+
+export function * subscribePlayerJoin (firestore, action) {
+  playerJoinSubscriptionChannel = yield call(onPlayerJoinChannel, firestore)
 
   while (true) {
-    const player = yield take(channel)
+    const player = yield take(playerJoinSubscriptionChannel)
 
-    console.tron.log('watchPlayerJoin', player)
+    console.tron.log('subscribePlayerJoin', player)
 
     yield put(Actions.playerJoinMatch(player))
   }
 
   //consider closing this when logging out?
+}
+
+export function * unsubscribePlayerJoin (action) {
+  if (playerJoinSubscriptionChannel) {
+    playerJoinSubscriptionChannel.close()
+    playerJoinSubscriptionChannel = null
+  }
 }
