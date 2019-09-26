@@ -25,9 +25,9 @@ const createUser = info => {
 		.catch(e => Result.Error(e))
 }
 
-createUser({
-	name: `john${Date.now()}`
-})
+// createUser({
+// 	name: `john${Date.now()}`
+// })
 
 /*
 const findUser = id => {
