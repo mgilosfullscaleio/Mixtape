@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { View, Image } from 'react-native';
 import {
@@ -16,6 +16,10 @@ import LobbyActions, { LobbySelectors } from '../../../../Redux/LobbyRedux'
 
 const Lobby = props => {
   const renderHeader = () => <Header title={localization.loadingGame} />;
+
+  useEffect(() => {
+    props.subscribePlayerJoin()
+  }, [])
 
   return (
     <Container
@@ -82,11 +86,12 @@ Lobby.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  players: LobbySelectors.selectPlayers(state)
+  players: LobbySelectors.selectPlayers(state),
 })
  
 const mapDispatchToProps = (dispatch) => ({
-  quitLobby: () => dispatch(LobbyActions.quitOpenMatch())
+  quitLobby: () => dispatch(LobbyActions.quitOpenMatch()),
+  subscribePlayerJoin: () => dispatch(LobbyActions.subscribePlayerJoin()),
 })
  
 export default connect(mapStateToProps, mapDispatchToProps)(Lobby)

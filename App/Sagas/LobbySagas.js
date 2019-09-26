@@ -1,7 +1,7 @@
-import { call, put } from 'redux-saga/effects'
+import { call, put, take } from 'redux-saga/effects'
 import Actions from '../Redux/LobbyRedux'
 import { NavigationActions } from 'react-navigation'
-// import { LobbySagasSelectors } from '../Redux/LobbySagasRedux'
+import { eventChannel } from 'redux-saga'
 
 export function * fetchUserInOpenMatch (api, action) {
   const { playerId } = action
@@ -23,4 +23,25 @@ export function * quitOpenMatch (api, action) {
   yield call(api.quitOpenMatch)
 
   yield put(NavigationActions.navigate({ routeName: 'Home' }))
+}
+
+const onPlayerJoinChannel = firestore =>
+  eventChannel(emitter => {
+    const unsubscribe = firestore.playerJoinObserver(emitter)
+
+    return () => unsubscribe()
+  })
+
+export function * watchPlayerJoin (firestore, action) {
+  const channel = yield call(onPlayerJoinChannel, firestore)
+
+  while (true) {
+    const player = yield take(channel)
+
+    console.tron.log('watchPlayerJoin', player)
+
+    yield put(Actions.playerJoinMatch(player))
+  }
+
+  //consider closing this when logging out?
 }

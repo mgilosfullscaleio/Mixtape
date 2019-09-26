@@ -6,12 +6,13 @@ import Immutable from 'seamless-immutable'
 const { Types, Creators } = createActions({
   lobbyRequest: ['data'],
   lobbySuccess: ['payload'],
-
+  playerJoinMatch: ['player'],
   lobbyFailure: ['error'],
   fetchUserInOpenMatchSuccess: ['isPresent'],
   
   // Saga Trigger
   quitOpenMatch: null,
+  subscribePlayerJoin: null,
   fetchUserInOpenMatch: ['playerId'] //<--- PARAMS
 })
 
@@ -54,11 +55,17 @@ export const failure = state =>
 export const fetchUserInOpenMatchSuccess = (state, { isPresent }) =>
     state.merge({ isPresent })
 
+export const playerJoinMatch = (state, { player }) => {
+  const players = [player, ...state.players]
+  return state.merge({ players })
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOBBY_REQUEST]: request,
   [Types.LOBBY_SUCCESS]: success,
   [Types.LOBBY_FAILURE]: failure, 
-  [Types.FETCH_USER_IN_OPEN_MATCH_SUCCESS]: fetchUserInOpenMatchSuccess
+  [Types.FETCH_USER_IN_OPEN_MATCH_SUCCESS]: fetchUserInOpenMatchSuccess,
+  [Types.PLAYER_JOIN_MATCH]: playerJoinMatch,
 })
