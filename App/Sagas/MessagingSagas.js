@@ -1,5 +1,6 @@
-import { call, put } from 'redux-saga/effects'
+import { call, put, take } from 'redux-saga/effects'
 import MessagingActions from '../Redux/MessagingRedux'
+import { LobbyTypes } from '../Redux/LobbyRedux'
 import firebase from 'react-native-firebase'
 import Result from 'folktale/result'
 
@@ -41,4 +42,14 @@ export function * initiateAndroidPermission (action) {
       Error: ({ value }) => MessagingActions.requestAndroidPermissionFailure(value)
     })
   )
+}
+
+export function * subscribeGameStart (action) {
+  //TODO close connection
+  const messageListener = firebase.messaging().onMessage(message => {
+    console.tron.log(message)
+  });
+
+  yield take(LobbyTypes.QUIT_OPEN_MATCH)
+  messageListener()
 }

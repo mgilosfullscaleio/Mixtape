@@ -11,7 +11,8 @@ const { Types, Creators } = createActions({
 
   //saga trigger
   requestToken: null,
-  requestAndroidPermission: null
+  requestAndroidPermission: null,
+  subscribeGameStartMessage: null
 })
 
 export const MessagingTypes = Types

@@ -22,7 +22,7 @@ import { getUserAvatar } from './GithubSagas'
 import { fetchUserInOpenMatch, quitOpenMatch, subscribePlayerJoin, unsubscribePlayerJoin } from './LobbySagas'
 import { initializeSpotify, loginSpotify } from './AuthSagas'
 import { getUserFromSpotifyId } from './UserSagas'
-import { generateToken, initiateAndroidPermission } from './MessagingSagas'
+import { generateToken, initiateAndroidPermission, subscribeGameStart } from './MessagingSagas'
 
 /* ------------- API ------------- */
 
@@ -48,6 +48,7 @@ export default function * root () {
 
     takeLatest(MessagingTypes.REQUEST_TOKEN, generateToken),
     takeLatest(MessagingTypes.REQUEST_ANDROID_PERMISSION, initiateAndroidPermission),
+    takeLatest(MessagingTypes.SUBSCRIBE_GAME_START_MESSAGE, subscribeGameStart),
 
     takeLatest(UserTypes.USER_REQUEST, getUserFromSpotifyId, firestore),
   ])

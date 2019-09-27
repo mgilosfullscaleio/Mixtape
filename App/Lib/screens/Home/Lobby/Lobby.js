@@ -21,7 +21,8 @@ const Lobby = props => {
   useEffect(() => {
     props.subscribePlayerJoin()
     props.requestMessagingPermission()
-
+    props.subscribeGameStart()
+    
     return props.unsubscribePlayerJoin
   }, [])
 
@@ -98,7 +99,8 @@ const mapDispatchToProps = (dispatch) => ({
   quitLobby: () => dispatch(LobbyActions.quitOpenMatch()),
   subscribePlayerJoin: () => dispatch(LobbyActions.subscribePlayerJoin()),
   unsubscribePlayerJoin: () => dispatch(LobbyActions.unsubscribePlayerJoin()),
-  requestMessagingPermission: () => dispatch(MessagingActions.requestAndroidPermission())
+  requestMessagingPermission: () => dispatch(MessagingActions.requestAndroidPermission()),
+  subscribeGameStart: () =>  dispatch(MessagingActions.subscribeGameStartMessage()),
 })
  
 export default connect(mapStateToProps, mapDispatchToProps)(Lobby)
