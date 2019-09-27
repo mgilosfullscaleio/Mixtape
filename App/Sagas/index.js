@@ -21,6 +21,7 @@ import { getUserAvatar } from './GithubSagas'
 import { fetchUserInOpenMatch } from './LobbySagas'
 import { initializeSpotify, loginSpotify } from './AuthSagas'
 import { getUserFromSpotifyId } from './UserSagas'
+import { subscribeGameplay, saveSongSelection, voteRoundWinner } from './GameplaySagas'
 
 /* ------------- API ------------- */
 
@@ -42,5 +43,10 @@ export default function * root () {
     takeLatest(AuthTypes.LOGIN_SPOTIFY, loginSpotify),
 
     takeLatest(UserTypes.USER_REQUEST, getUserFromSpotifyId, firestore),
+
+    //GAME PLAY FUNCTIONS
+    takeLatest(GameplayTypes.SUBSCRIBE_GAMEPLAY, subscribeGameplay, firestore),
+    takeLatest(GameplayTypes.SAVE_SONG_SELECTION, saveSongSelection, firestore),
+    takeLatest(GameplayTypes.VOTE_ROUND_WINNER, voteRoundWinner, firestore),
   ])
 }

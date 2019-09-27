@@ -6,7 +6,14 @@ import Immutable from 'seamless-immutable'
 const { Types, Creators } = createActions({
   gameplayRequest: ['data'],
   gameplaySuccess: ['payload'],
-  gameplayFailure: null
+  gameplayFailure: null,
+  saveSongSelectionSuccess: ['song'],
+  voteRoundWinnerSuccess: null,
+
+  //saga trigger
+  subscribeGameplay: ['gameId', 'playerId', 'emitter'],
+  saveSongSelection: ['playerId', 'song'],
+  voteRoundWinner: ['playerId']
 })
 
 export const GameplayTypes = Types
@@ -44,10 +51,19 @@ export const success = (state, action) => {
 export const failure = state =>
   state.merge({ fetching: false, error: true, payload: null })
 
+export const saveSongSelectionSuccess = (state, { song }) => {
+  state.merge({ fetching: false, error: true, song })
+}
+
+export const voteRoundWinnerSuccess = state =>
+  state.merge({ fetching: false, error: false, payload: null })
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.GAMEPLAY_REQUEST]: request,
   [Types.GAMEPLAY_SUCCESS]: success,
-  [Types.GAMEPLAY_FAILURE]: failure
+  [Types.GAMEPLAY_FAILURE]: failure,
+  [Types.SAVE_SONG_SELECTION_SUCCESS]: saveSongSelectionSuccess,
+  [Types.VOTE_ROUND_WINNER_SUCCESS]: voteRoundWinnerSuccess,
 })

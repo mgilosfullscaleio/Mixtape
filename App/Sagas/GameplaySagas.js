@@ -30,3 +30,37 @@ export function * getGameplay (api, action) {
     yield put(GameplayActions.gameplayFailure())
   }
 }
+
+export function * subscribeGameplay(api, action) {
+  const { gameId, playerId, emitter} = action
+  
+  yield call(api.subscribeGameplay, gameId, playerId, emitter)
+}
+
+export function * saveSongSelection(api, action) {
+  const { playerId, song } = action
+
+  const response = yield call(api.updateSongSelection, playerId, song)
+
+  yield put(
+    response.matchWith({
+      Ok: ({ value }) => GameplayActions.saveSongSelectionSuccess(value), 
+      Error: ({ value }) => GameplayActions.gameplayFailure(value)
+    })
+  )
+}
+
+export function * voteRoundWinner(api, action) {
+  const { playerId } = action
+
+  const response = yield call(api.voteRoundWinner, playerId)
+
+  yield put(
+    response.matchWith({
+      Ok: ({ value }) => GameplayActions.saveSongSelectionSuccess(value), 
+      Error: ({ value }) => GameplayActions.gameplayFailure(value)
+    })
+  )
+}
+
+
