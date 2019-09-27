@@ -7,6 +7,7 @@ const { Types, Creators } = createActions({
   messagingSuccess: ['fcmToken'],
   messagingFailure: null,
   requestAndroidPermissionSuccess: ['granted'],
+  requestAndroidPermissionFailure: ['error'],
 
   //saga trigger
   requestToken: null,
@@ -42,10 +43,14 @@ export const permissionSuccess = (state, { granted }) =>
 export const failure = (state, { error }) =>
   state.merge({ error })
 
+export const permissionFailure = (state, { error }) =>
+  state.merge({ error, hasPermission: false })
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.MESSAGING_SUCCESS]: success,
   [Types.REQUEST_ANDROID_PERMISSION_SUCCESS]: permissionSuccess,
+  [Types.REQUEST_ANDROID_PERMISSION_FAILURE]: permissionFailure,
   [Types.MESSAGING_FAILURE]: failure
 })
