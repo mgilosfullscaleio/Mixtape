@@ -28,7 +28,7 @@ const Lobby = props => {
       contentContainerStyle={styles.container}
       renderHeader={renderHeader}
     >
-      <PlayerQueue joinedPlayers={props.players} maxPlayers={5} showTitle />
+      <PlayerQueue joinedPlayers={props.players} maxPlayers={props.maxPlayers} showTitle />
 
       <View style={styles.mechanicsContainer}>
         <ListItem
@@ -89,6 +89,7 @@ Lobby.defaultProps = {
 
 const mapStateToProps = (state) => ({
   players: LobbySelectors.selectPlayers(state),
+  maxPlayers: LobbySelectors.selectMaxPlayers(state)
 })
  
 const mapDispatchToProps = (dispatch) => ({

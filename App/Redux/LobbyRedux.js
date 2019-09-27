@@ -27,14 +27,16 @@ export const INITIAL_STATE = Immutable({
   fetching: null,
   payload: null,
   error: null,
-  players: []
+  players: [],
+  maxPlayers: 5
 })
 
 /* ------------- Selectors ------------- */
 
 export const LobbySelectors = {
   getData: state => state.data,
-  selectPlayers: state => state.lobby.players
+  selectPlayers: state => state.lobby.players,
+  selectMaxPlayers: state => state.lobby.maxPlayers
 }
 
 /* ------------- Reducers ------------- */
