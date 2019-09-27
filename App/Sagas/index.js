@@ -13,7 +13,7 @@ import { GameplayTypes } from '../Redux/GameplayRedux'
 import { LobbyTypes } from '../Redux/LobbyRedux'
 import { AuthTypes } from '../Redux/AuthRedux'
 import { UserTypes } from '../Redux/UserRedux'
-import { MessagingTypes } from '../Redux/UserRedux'
+import { MessagingTypes } from '../Redux/MessagingRedux'
 
 /* ------------- Sagas ------------- */
 
