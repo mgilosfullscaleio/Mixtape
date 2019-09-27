@@ -12,7 +12,11 @@ const getToken = () =>
       } else {
         return Result.Error('Failed to generate fcm token')
       } 
-    });
+    })
+
+const requestPerission = () =>
+  firebase.messaging().hasPermission()
+    .then(enabled => Result.Ok(enabled));
 
 export function * generateToken (action) {
   const response = yield call(getToken)
@@ -20,6 +24,17 @@ export function * generateToken (action) {
   yield put(
     response.matchWith({
       Ok: ({ value }) => MessagingActions.messagingSuccess(value),
+      Error: ({ value }) => MessagingActions.messagingFailure(value)
+    })
+  )
+}
+
+export function * initiateAndroidPermission (action) {
+  const response = yield call(requestPerission)
+
+  yield put(
+    response.matchWith({
+      Ok: ({ value }) => MessagingActions.requestAndroidPermissionSuccess(value),
       Error: ({ value }) => MessagingActions.messagingFailure(value)
     })
   )

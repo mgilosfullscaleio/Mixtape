@@ -36,5 +36,5 @@ export function * startup (action) {
   }
   
   yield put(AuthActions.initializeSpotify())
-  yield put(MessagingActions.messageRequest())
+  yield put(MessagingActions.requestToken())
 }

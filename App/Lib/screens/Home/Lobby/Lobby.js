@@ -13,12 +13,14 @@ import { images, localization } from '../../../constants';
 import styles from './styles';
 import PlayerQueue from '../../../components/PlayerQueue/PlayerQueue';
 import LobbyActions, { LobbySelectors } from '../../../../Redux/LobbyRedux'
+import MessagingActions, { MessagingSelectors } from '../../../../Redux/MessagingRedux'
 
 const Lobby = props => {
   const renderHeader = () => <Header title={localization.loadingGame} />;
 
   useEffect(() => {
     props.subscribePlayerJoin()
+    props.requestMessagingPermission()
 
     return props.unsubscribePlayerJoin
   }, [])
@@ -95,7 +97,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   quitLobby: () => dispatch(LobbyActions.quitOpenMatch()),
   subscribePlayerJoin: () => dispatch(LobbyActions.subscribePlayerJoin()),
-  unsubscribePlayerJoin: () => dispatch(LobbyActions.unsubscribePlayerJoin())
+  unsubscribePlayerJoin: () => dispatch(LobbyActions.unsubscribePlayerJoin()),
+  requestMessagingPermission: () => dispatch(MessagingActions.requestAndroidPermission())
 })
  
 export default connect(mapStateToProps, mapDispatchToProps)(Lobby)

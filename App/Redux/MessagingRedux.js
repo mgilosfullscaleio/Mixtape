@@ -6,9 +6,11 @@ import Immutable from 'seamless-immutable'
 const { Types, Creators } = createActions({
   messagingSuccess: ['fcmToken'],
   messagingFailure: null,
+  requestAndroidPermissionSuccess: ['granted'],
 
   //saga trigger
-  messagingRequest: null,
+  requestToken: null,
+  requestAndroidPermission: null
 })
 
 export const MessagingTypes = Types
@@ -18,19 +20,24 @@ export default Creators
 
 export const INITIAL_STATE = Immutable({
   fcmToken: null,
-  error: null
+  error: null,
+  hasPermission: false
 })
 
 /* ------------- Selectors ------------- */
 
 export const MessagingSelectors = {
-  selectToken: state => state.messaging.fcmToken
+  selectToken: state => state.messaging.fcmToken,
+  selectHasPermission: state => state.messaging.hasPermission
 }
 
 /* ------------- Reducers ------------- */
 
 export const success = (state, { fcmToken }) =>
   state.merge({ fcmToken, error: null })
+
+export const permissionSuccess = (state, { granted }) =>
+  state.merge({ hasPermission: granted, error: null })
 
 export const failure = (state, { error }) =>
   state.merge({ error })
@@ -39,5 +46,6 @@ export const failure = (state, { error }) =>
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.MESSAGING_SUCCESS]: success,
+  [Types.REQUEST_ANDROID_PERMISSION_SUCCESS]: permissionSuccess,
   [Types.MESSAGING_FAILURE]: failure
 })
