@@ -19,7 +19,7 @@ import { MessagingTypes } from '../Redux/MessagingRedux'
 
 import { startup } from './StartupSagas'
 import { getUserAvatar } from './GithubSagas'
-import { fetchUserInOpenMatch, quitOpenMatch, subscribePlayerJoin, unsubscribePlayerJoin } from './LobbySagas'
+import { fetchUserInOpenMatch, quitOpenMatch, subscribePlayerJoin, unsubscribePlayerJoin, addPlayerInMatch } from './LobbySagas'
 import { initializeSpotify, loginSpotify } from './AuthSagas'
 import { getUserFromSpotifyId } from './UserSagas'
 import { generateToken, initiateAndroidPermission, subscribeGameStart } from './MessagingSagas'
@@ -42,6 +42,7 @@ export default function * root () {
     takeLatest(LobbyTypes.QUIT_OPEN_MATCH, quitOpenMatch, firestore),
     takeLatest(LobbyTypes.SUBSCRIBE_PLAYER_JOIN, subscribePlayerJoin, firestore),
     takeLatest(LobbyTypes.UNSUBSCRIBE_PLAYER_JOIN, unsubscribePlayerJoin),
+    takeLatest(LobbyTypes.ADD_PLAYER_FOR_MATCH, addPlayerInMatch, firestore),
 
     takeLatest(AuthTypes.INITIALIZE_SPOTIFY, initializeSpotify),
     takeLatest(AuthTypes.LOGIN_SPOTIFY, loginSpotify),

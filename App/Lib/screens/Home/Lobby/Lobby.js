@@ -22,6 +22,7 @@ const Lobby = props => {
     props.subscribePlayerJoin()
     props.requestMessagingPermission()
     props.subscribeGameStart()
+    props.addPlayerForMatch()
     
     return props.unsubscribePlayerJoin
   }, [])
@@ -96,6 +97,7 @@ const mapStateToProps = (state) => ({
 })
  
 const mapDispatchToProps = (dispatch) => ({
+  addPlayerForMatch: () => dispatch(LobbyActions.addPlayerForMatch()),
   quitLobby: () => dispatch(LobbyActions.quitOpenMatch()),
   subscribePlayerJoin: () => dispatch(LobbyActions.subscribePlayerJoin()),
   unsubscribePlayerJoin: () => dispatch(LobbyActions.unsubscribePlayerJoin()),

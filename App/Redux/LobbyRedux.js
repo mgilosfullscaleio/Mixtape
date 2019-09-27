@@ -14,6 +14,7 @@ const { Types, Creators } = createActions({
   quitOpenMatch: null,
   subscribePlayerJoin: null,
   unsubscribePlayerJoin: null,
+  addPlayerForMatch: ['playerId'],
   fetchUserInOpenMatch: ['playerId'] //<--- PARAMS
 })
 

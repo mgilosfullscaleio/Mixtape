@@ -52,3 +52,7 @@ export function * unsubscribePlayerJoin (action) {
     playerJoinSubscriptionChannel = null
   }
 }
+
+export function * addPlayerInMatch (api, { playerId }) {
+  yield call(api.addPlayerToOpenMatch, playerId)
+}

@@ -14,5 +14,6 @@ export default {
     }, 3000)
 
     return () => {}
-  }
+  },
+  addPlayerToOpenMatch: playerId => Promise.resolve(Result.Ok())
 }
