@@ -47,7 +47,7 @@ export function * initiateAndroidPermission (action) {
 export function * subscribeGameStart (action) {
   //TODO close connection
   const messageListener = firebase.messaging().onMessage(message => {
-    console.tron.log(message)
+    console.tron.log('subscribeGameStart message', message)
   });
 
   yield take(LobbyTypes.QUIT_OPEN_MATCH)
