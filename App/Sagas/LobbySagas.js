@@ -4,7 +4,7 @@ import { NavigationActions } from 'react-navigation'
 import { eventChannel } from 'redux-saga'
 
 export function * quitOpenMatch (api, action) {
-  yield call(api.quitOpenMatch)
+  yield call(api.removePlayerFromOpenMatch)
 
   yield put(NavigationActions.navigate({ routeName: 'Home' }))
 }
