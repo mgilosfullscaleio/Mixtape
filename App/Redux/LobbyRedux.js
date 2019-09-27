@@ -8,14 +8,12 @@ const { Types, Creators } = createActions({
   lobbySuccess: ['payload'],
   playerJoinMatch: ['player'],
   lobbyFailure: ['error'],
-  fetchUserInOpenMatchSuccess: ['isPresent'],
   
   // Saga Trigger
   quitOpenMatch: null,
   subscribePlayerJoin: null,
   unsubscribePlayerJoin: null,
-  addPlayerForMatch: ['playerId'],
-  fetchUserInOpenMatch: ['playerId'] //<--- PARAMS
+  addPlayerForMatch: ['playerId']
 })
 
 export const LobbyTypes = Types
@@ -56,9 +54,6 @@ export const success = (state, action) => {
 export const failure = state =>
   state.merge({ fetching: false, error: true, payload: null })
 
-export const fetchUserInOpenMatchSuccess = (state, { isPresent }) =>
-    state.merge({ isPresent })
-
 export const playerJoinMatch = (state, { player }) => {
   const players = [player, ...state.players]
   return state.merge({ players })
@@ -69,7 +64,6 @@ export const playerJoinMatch = (state, { player }) => {
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOBBY_REQUEST]: request,
   [Types.LOBBY_SUCCESS]: success,
-  [Types.LOBBY_FAILURE]: failure, 
-  [Types.FETCH_USER_IN_OPEN_MATCH_SUCCESS]: fetchUserInOpenMatchSuccess,
+  [Types.LOBBY_FAILURE]: failure,
   [Types.PLAYER_JOIN_MATCH]: playerJoinMatch,
 })
