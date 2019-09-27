@@ -13,6 +13,7 @@ import { GameplayTypes } from '../Redux/GameplayRedux'
 import { LobbyTypes } from '../Redux/LobbyRedux'
 import { AuthTypes } from '../Redux/AuthRedux'
 import { UserTypes } from '../Redux/UserRedux'
+import { MessagingTypes } from '../Redux/UserRedux'
 
 /* ------------- Sagas ------------- */
 
@@ -21,6 +22,7 @@ import { getUserAvatar } from './GithubSagas'
 import { fetchUserInOpenMatch, quitOpenMatch, subscribePlayerJoin, unsubscribePlayerJoin } from './LobbySagas'
 import { initializeSpotify, loginSpotify } from './AuthSagas'
 import { getUserFromSpotifyId } from './UserSagas'
+import { generateToken } from './MessagingSagas'
 
 /* ------------- API ------------- */
 
@@ -43,6 +45,8 @@ export default function * root () {
 
     takeLatest(AuthTypes.INITIALIZE_SPOTIFY, initializeSpotify),
     takeLatest(AuthTypes.LOGIN_SPOTIFY, loginSpotify),
+
+    takeLatest(MessagingTypes.REQUEST_TOKEN, generateToken),
 
     takeLatest(UserTypes.USER_REQUEST, getUserFromSpotifyId, firestore),
   ])
