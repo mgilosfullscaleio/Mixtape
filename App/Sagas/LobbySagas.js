@@ -40,8 +40,6 @@ export function * subscribePlayerJoin (firestore, action) {
   while (true) {
     const player = yield take(playerJoinSubscriptionChannel)
 
-    console.tron.log('subscribePlayerJoin', player)
-
     yield put(Actions.playerJoinMatch(player))
   }
 
