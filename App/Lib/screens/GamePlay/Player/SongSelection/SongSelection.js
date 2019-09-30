@@ -1,21 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, Button } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { Container, Text, PlayerQueue } from '../../../../components';
-import RoundHeader from './components/RoundHeader';
-import PlayerAvatar from './components/PlayerAvatar';
-import SongBar from './components/SongBar';
+import RoundHeader from '../common/RoundHeader';
+import PlayerAvatar from '../common/PlayerAvatar';
 import SongSearchBar from './components/SongSearchBar';
+import SongPlayer from './components/SongPlayer';
+import PlayableSongBar from '../common/PlayableSongBar';
 
 import styles from './styles';
+import scale from '../../../../utils/scaleUtil';
 
 const SongSelection = ({
   players,
-  onQuitGame,
   round,
   timeLeft,
   scenario,
-  selectedSong
+  submittedSong,
+  selectedSong,
+  searchedSongs,
+  onQuitGame,
+  onPlaySong,
+  onSelectSong,
+  onSubmitSong,
+  onSearchTextChange
 }) => {
   const renderHeader = () => <RoundHeader round={round} timeLeft={timeLeft} />;
 
@@ -31,15 +39,44 @@ const SongSelection = ({
         <Text style={styles.scenario}>{scenario}</Text>
       </ScrollView>
 
-      {selectedSong && (
-        <ScrollView style={styles.bottomContainer}>
-          <SongBar song={selectedSong} />
-        </ScrollView>
+      {submittedSong && (
+        <View style={styles.bottomContainer}>
+          <PlayableSongBar
+            containerStyle={styles.songBar}
+            song={submittedSong}
+            onPlay={onPlaySong}
+          />
+        </View>
       )}
 
-      <SongSearchBar />
+      {!submittedSong && (
+        <SongSearchBar
+          songs={searchedSongs}
+          onSongPress={onSelectSong}
+          onSearchTextChange={onSearchTextChange}
+          initialPositionOffset={
+            selectedSong && {
+              x: 0,
+              y: styles.playerQueueContainer.marginTop + scale(3)
+            }
+          }
+        />
+      )}
 
-      <View style={styles.playerQueueContainer}>
+      {selectedSong && (
+        <SongPlayer
+          song={selectedSong}
+          onPlay={onPlaySong}
+          onSubmit={onSubmitSong}
+        />
+      )}
+
+      <View
+        style={[
+          styles.playerQueueContainer,
+          (selectedSong || submittedSong) && styles.noTopMargin
+        ]}
+      >
         <PlayerQueue
           joinedPlayers={players}
           maxPlayers={5}
@@ -58,19 +95,45 @@ SongSelection.propTypes = {
       profileImage: PropTypes.string
     })
   ).isRequired,
-  onQuitGame: PropTypes.func,
   round: PropTypes.number.isRequired,
   timeLeft: PropTypes.number.isRequired,
   scenario: PropTypes.string.isRequired,
   selectedSong: PropTypes.shape({
+    id: PropTypes.string,
     title: PropTypes.string,
-    singer: PropTypes.string
-  })
+    singer: PropTypes.string,
+    albumCover: PropTypes.string
+  }),
+  submittedSong: PropTypes.shape({
+    id: PropTypes.string,
+    title: PropTypes.string,
+    singer: PropTypes.string,
+    albumCover: PropTypes.string
+  }),
+  searchedSongs: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      title: PropTypes.string,
+      singer: PropTypes.string,
+      albumCover: PropTypes.string
+    })
+  ),
+  onQuitGame: PropTypes.func,
+  onPlaySong: PropTypes.func,
+  onSelectSong: PropTypes.func,
+  onSubmitSong: PropTypes.func,
+  onSearchTextChange: PropTypes.func,
 };
 
 SongSelection.defaultProps = {
+  selectedSong: undefined,
+  submittedSong: undefined,
+  searchedSongs: [],
   onQuitGame: () => null,
-  selectedSong: null
+  onPlaySong: () => null,
+  onSelectSong: () => null,
+  onSubmitSong: () => null,
+  onSearchTextChange: () => null
 };
 
 export default SongSelection;

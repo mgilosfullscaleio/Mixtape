@@ -11,6 +11,8 @@ import TabIcon from './TabIcon';
 import Avatar from './Avatar';
 import ListItem from './ListItem';
 import PlayerQueue from './PlayerQueue';
+import Badge from './Badge'
+import SongBar from './SongBar'
 
 export {
   Container,
@@ -23,5 +25,7 @@ export {
   TabIcon,
   Avatar,
   ListItem,
-  PlayerQueue
+  PlayerQueue,
+  Badge,
+  SongBar
 };
