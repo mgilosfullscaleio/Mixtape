@@ -15,11 +15,11 @@ const PrimaryNav = createStackNavigator({
   LoginWithSpotifyScreen: { screen: LoginWithSpotifyScreen },
   GameplayScreen: { screen: GameplayScreen },
   LaunchScreen: { screen: LaunchScreen },
-  Lobby: { screen: LobbyScreen },
+  HOME_LOBBY: { screen: LobbyScreen },
 }, {
   // Default config for all screens
   headerMode: 'none',
-  initialRouteName: 'Login',
+  initialRouteName: 'Home',
   navigationOptions: {
     headerStyle: styles.header
   }
