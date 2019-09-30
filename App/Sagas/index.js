@@ -19,7 +19,7 @@ import { UserTypes } from '../Redux/UserRedux'
 import { startup } from './StartupSagas'
 import { getUserAvatar } from './GithubSagas'
 import { fetchUserInOpenMatch } from './LobbySagas'
-import { initializeSpotify, loginSpotify } from './AuthSagas'
+import { initializeSpotify, loginSpotify, redirectToHome } from './AuthSagas'
 import { getUserFromSpotifyId } from './UserSagas'
 import { subscribeGameplay, saveSongSelection, voteRoundWinner, searchSong } from './GameplaySagas'
 
@@ -41,6 +41,7 @@ export default function * root () {
 
     takeLatest(AuthTypes.INITIALIZE_SPOTIFY, initializeSpotify),
     takeLatest(AuthTypes.LOGIN_SPOTIFY, loginSpotify),
+    takeLatest(AuthTypes.REDIRECT_TO_HOME, redirectToHome),
 
     takeLatest(UserTypes.USER_REQUEST, getUserFromSpotifyId, firestore),
 

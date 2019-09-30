@@ -6,10 +6,12 @@ import Immutable from 'seamless-immutable'
 const { Types, Creators } = createActions({
   spotifyAuthSuccess: ['payload'],
   spotifyAuthFailure: ['error'],
+  redirectToHomeFailure: ['error'],
   loadingRequest: null,
   //saga triggers
+  initializeSpotify: null,
   loginSpotify: null,
-  initializeSpotify: null
+  redirectToHome: ['isLoggedIn'],
 })
 
 export const AuthTypes = Types
@@ -19,7 +21,7 @@ export default Creators
 
 export const INITIAL_STATE = Immutable({
   isAuthenticated: false,
-  loading: false,
+  loading: true,
   error: null
 })
 
@@ -38,6 +40,9 @@ export const spotifyAuthSuccess = (state, { isAuthenticated }) =>
 export const spotifyAuthFailure = (state, { error }) =>
   state.merge({ loading: false, error })
 
+export const redirectToHomeFailure = (state, { error }) =>
+  state.merge({ loading: false, error })
+
 export const loadingRequest = (state) =>
   state.merge({ loading: true })
 
@@ -46,6 +51,7 @@ export const loadingRequest = (state) =>
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.SPOTIFY_AUTH_SUCCESS]: spotifyAuthSuccess,
   [Types.SPOTIFY_AUTH_FAILURE]: spotifyAuthFailure,
+  [Types.REDIRECT_TO_HOME_FAILURE]: redirectToHomeFailure,
   [Types.LOADING_REQUEST]: loadingRequest,
 })
 
