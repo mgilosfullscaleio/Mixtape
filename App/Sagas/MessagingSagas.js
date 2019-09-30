@@ -16,7 +16,7 @@ const getToken = () =>
       } 
     })
 
-const requestPerission = () =>
+const requestPermission = () =>
   firebase
     .messaging()
     .hasPermission()
@@ -39,7 +39,7 @@ export function * generateToken (action) {
 }
 
 export function * initiateAndroidPermission (action) {
-  const response = yield call(requestPerission)
+  const response = yield call(requestPermission)
 
   yield put(
     response.matchWith({
