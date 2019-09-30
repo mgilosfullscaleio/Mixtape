@@ -20,7 +20,11 @@ const requestPerission = () =>
   firebase
     .messaging()
     .hasPermission()
-    .then(enabled => Result.Ok(enabled))
+    .then(enabled => {
+      return (enabled) 
+        ? Result.Ok(true)
+          : firebase.messaging().requestPermission()
+    })
     .catch(e => Result.Error(e))
 
 export function * generateToken (action) {
