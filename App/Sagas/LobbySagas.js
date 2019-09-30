@@ -1,7 +1,9 @@
-import { call, put, take, takeEvery } from 'redux-saga/effects'
+import { call, put, take, takeEvery, select } from 'redux-saga/effects'
 import Actions, { LobbyTypes } from '../Redux/LobbyRedux'
 import { NavigationActions } from 'react-navigation'
 import { eventChannel } from 'redux-saga'
+import { UserSelectors } from '../Redux/UserRedux'
+import { MessagingSelectors } from '../Redux/MessagingRedux'
 
 export function * quitOpenMatch (api, action) {
   yield put(Actions.unsubscribeOpenMatchUpdates())
@@ -31,9 +33,9 @@ export function * subscribePlayerJoin (firestore, action) {
 }
 
 export function * addPlayerInMatch (api, action) {
-  yield call(api.addPlayerToOpenMatch, {
-    name: "Mike",
-    tapes: 5,
-    profileImage: "https://graph.facebook.com/2488753594477608/picture"
-  })
+  const userMatchData = yield select(UserSelectors.selectUserMatchData)
+  const fcmToken = yield select(MessagingSelectors.selectToken)
+  const userData = {...userMatchData, fcmToken}
+
+  yield call(api.addPlayerToOpenMatch, userData)
 }

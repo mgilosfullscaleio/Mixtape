@@ -18,7 +18,7 @@ export default Creators
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-  data: null,
+  data: require('../Fixtures/user.json'),
   loading: false,
   error: null
 })
@@ -26,8 +26,16 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Selectors ------------- */
 
 export const UserSelectors = {
-  getName: state => state.user.data.name
+  getName: state => state.user.data.name,
+  selectUserMatchData: state => createMatchData(state.user.data)
 }
+
+const createMatchData = userData => ({
+  id: userData.id,
+  name: userData.name,
+  profileImage: userData.profileImage,
+  tapes: userData.tapes
+})
 
 /* ------------- Reducers ------------- */
 
