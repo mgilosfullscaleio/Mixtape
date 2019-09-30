@@ -30,6 +30,10 @@ export function * subscribePlayerJoin (firestore, action) {
   channel.close()
 }
 
-export function * addPlayerInMatch (api, { playerId }) {
-  yield call(api.addPlayerToOpenMatch, playerId)
+export function * addPlayerInMatch (api, action) {
+  yield call(api.addPlayerToOpenMatch, {
+    name: "Mike",
+    tapes: 5,
+    profileImage: "https://graph.facebook.com/2488753594477608/picture"
+  })
 }

@@ -13,7 +13,7 @@ const { Types, Creators } = createActions({
   quitOpenMatch: null,
   subscribePlayerJoin: null,
   unsubscribeOpenMatchUpdates: null,
-  addPlayerForMatch: ['playerId']
+  addPlayerForMatch: null
 })
 
 export const LobbyTypes = Types

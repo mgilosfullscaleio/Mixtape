@@ -4,11 +4,33 @@ import Result from 'folktale/result'
 const firestore = firebase.firestore()
 const auth = firebase.auth()
 const Timestamp = firebase.firestore.Timestamp
+const FieldValue = firebase.firestore.FieldValue
 const USER = 'usersV2'
 
 const signIn = async () => await auth.signInAnonymously()
+
+// Move this to an action, in startup
 signIn()
 
+const addPlayerToOpenMatch = playerId =>
+  firestore
+    .collection('openmatch')
+    .doc('lobby')
+    .set({ players: FieldValue.arrayUnion(playerId) }, { merge: true })
+    .then(() => Promise.resolve(Result.Ok()))
+
+const playerJoinObserver = emitter =>
+  firestore
+    .collection(`openmatch`)
+    .doc('lobby')
+    .onSnapshot(docSnapshot  => {
+      console.tron.log('playerJoinObserver', docSnapshot)
+      emitter({
+        ...docSnapshot.data().players.pop()
+      })
+    })
+
+const removePlayerFromOpenMatch = () => Promise.resolve(Result.Ok(true))
 
 const createUser = info => {
 	const ref = firestore.collection(USER).doc()
@@ -67,5 +89,10 @@ const getUsers = () =>
 */
 
 export default {
-	createUser
+  signIn,
+  createUser,
+
+  addPlayerToOpenMatch,
+  playerJoinObserver,
+  removePlayerFromOpenMatch
 }
