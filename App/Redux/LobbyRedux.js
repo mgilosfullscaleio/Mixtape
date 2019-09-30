@@ -6,7 +6,7 @@ import Immutable from 'seamless-immutable'
 const { Types, Creators } = createActions({
   lobbyRequest: ['data'],
   lobbySuccess: ['payload'],
-  playerJoinMatch: ['player'],
+  playerJoinMatch: ['players'],
   lobbyFailure: ['error'],
   
   // Saga Trigger
@@ -54,10 +54,7 @@ export const success = (state, action) => {
 export const failure = state =>
   state.merge({ fetching: false, error: true, payload: null })
 
-export const playerJoinMatch = (state, { player }) => {
-  const players = [player, ...state.players]
-  return state.merge({ players })
-}
+export const playerJoinMatch = (state, { players }) => state.merge({ players })
 
 /* ------------- Hookup Reducers To Types ------------- */
 

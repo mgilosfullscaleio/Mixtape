@@ -24,10 +24,7 @@ const playerJoinObserver = emitter =>
     .collection(`openmatch`)
     .doc('lobby')
     .onSnapshot(docSnapshot  => {
-      console.tron.log('playerJoinObserver', docSnapshot)
-      emitter({
-        ...docSnapshot.data().players.pop()
-      })
+      emitter(docSnapshot.data().players)
     })
 
 const removePlayerFromOpenMatch = () => Promise.resolve(Result.Ok(true))

@@ -23,11 +23,10 @@ const onPlayerJoinChannel = firestore =>
 export function * subscribePlayerJoin (firestore, action) {
   const channel = yield call(onPlayerJoinChannel, firestore)
 
-  yield takeEvery(channel, function * (payload) {
-    yield put(Actions.playerJoinMatch(payload))
+  yield takeEvery(channel, function * (players) {
+    yield put(Actions.playerJoinMatch(players))
   })
 
-  //consider closing this when logging out?
   yield take(LobbyTypes.UNSUBSCRIBE_OPEN_MATCH_UPDATES)
   channel.close()
 }
@@ -35,7 +34,7 @@ export function * subscribePlayerJoin (firestore, action) {
 export function * addPlayerInMatch (api, action) {
   const userMatchData = yield select(UserSelectors.selectUserMatchData)
   const fcmToken = yield select(MessagingSelectors.selectToken)
-  const userData = {...userMatchData, fcmToken}
+  const userData = {...userMatchData, fcmToken, id: Date.now().toString()}
 
   yield call(api.addPlayerToOpenMatch, userData)
 }
