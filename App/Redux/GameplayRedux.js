@@ -6,7 +6,9 @@ import Immutable from 'seamless-immutable'
 const { Types, Creators } = createActions({
   gameplayRequest: ['data'],
   gameplaySuccess: ['payload'],
-  gameplayFailure: null
+  gameplayFailure: null,
+
+  subscribeToGameWithId: ['gameId']
 })
 
 export const GameplayTypes = Types
