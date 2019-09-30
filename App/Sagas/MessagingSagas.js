@@ -58,7 +58,7 @@ export function * subscribeGameStart (action) {
     if (notification.title === 'OPEN_MATCH') {
       yield put(LobbyActions.unsubscribeOpenMatchUpdates())
       yield put(GameplayActions.subscribeToGameWithId(notification.body))
-      yield put(NavigationActions.navigate({ routeName: 'GameplayScreen' }))
+      yield put(NavigationActions.navigate({ routeName: 'Gameplay' }))
     }
   })
 
@@ -73,7 +73,7 @@ export function * subscribeGameStart (action) {
   yield takeEvery(messageChannel, function* (message) {
     yield put(LobbyActions.unsubscribeOpenMatchUpdates())
     yield put(GameplayActions.subscribeToGameWithId('ovs28CVpkYZtCUIE0i0S'))
-    yield put(NavigationActions.navigate({ routeName: 'GameplayScreen' }))
+    yield put(NavigationActions.navigate({ routeName: 'Gameplay' }))
   })
 
   yield take(LobbyTypes.UNSUBSCRIBE_OPEN_MATCH_UPDATES)
