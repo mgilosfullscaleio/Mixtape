@@ -20,9 +20,11 @@ import { MessagingTypes } from '../Redux/MessagingRedux'
 import { startup } from './StartupSagas'
 import { getUserAvatar } from './GithubSagas'
 import { quitOpenMatch, subscribePlayerJoin, addPlayerInMatch } from './LobbySagas'
-import { initializeSpotify, loginSpotify } from './AuthSagas'
 import { getUserFromSpotifyId } from './UserSagas'
 import { generateToken, initiateAndroidPermission, subscribeGameStart } from './MessagingSagas'
+import { fetchUserInOpenMatch } from './LobbySagas'
+import { initializeSpotify, loginSpotify, redirectToHome } from './AuthSagas'
+import { subscribeGameplay, saveSongSelection, voteRoundWinner, searchSong } from './GameplaySagas'
 
 /* ------------- API ------------- */
 
@@ -45,11 +47,19 @@ export default function * root () {
 
     takeLatest(AuthTypes.INITIALIZE_SPOTIFY, initializeSpotify),
     takeLatest(AuthTypes.LOGIN_SPOTIFY, loginSpotify),
+    takeLatest(AuthTypes.REDIRECT_TO_HOME, redirectToHome),
 
     takeLatest(MessagingTypes.REQUEST_TOKEN, generateToken),
     takeLatest(MessagingTypes.REQUEST_ANDROID_PERMISSION, initiateAndroidPermission),
     takeLatest(MessagingTypes.SUBSCRIBE_GAME_START_MESSAGE, subscribeGameStart),
 
     takeLatest(UserTypes.USER_REQUEST, getUserFromSpotifyId, firestore),
+
+    //GAME PLAY FUNCTIONS
+    takeLatest(GameplayTypes.SUBSCRIBE_GAMEPLAY, subscribeGameplay, firestore),
+    takeLatest(GameplayTypes.SAVE_SONG_SELECTION, saveSongSelection, firestore),
+    takeLatest(GameplayTypes.VOTE_ROUND_WINNER, voteRoundWinner, firestore),
+    
+    takeLatest(GameplayTypes.SEARCH_SONG, searchSong),
   ])
 }

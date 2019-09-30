@@ -15,5 +15,8 @@ export default {
 
     return () => {}
   },
-  addPlayerToOpenMatch: playerId => Promise.resolve(Result.Ok())
+  addPlayerToOpenMatch: playerId => Promise.resolve(Result.Ok()),
+  subscribeGameplay: (gameId, playerId, emitter) => Promise.resolve(Result.Ok(true)),
+  updateSongSelection: (playerId, song) => Promise.resolve(Result.Ok(true)),
+  voteRoundWinner: (playerId) => Promise.resolve(Result.Ok(true)),
 }

@@ -42,23 +42,36 @@ const initializeSpotifyIfNeeded = () => {
     .then(init => 
       init || Spotify.initialize(spotifyOptions).then(Debug('Spotify.initialize'))
     )
-    .then(Debug('initialize'))
-    .then(allowed => Result.Ok(allowed))
+    .then(init => Spotify.isLoggedInAsync() )
+    .then(isLoggedIn => Result.Ok(isLoggedIn))
     .catch(error => {
       console.tron.log('initializeSpotifyIfNeeded Error', error);
       return Result.Error(error);
     });
 }
 
+const doLogin = async (shouldRedirect) => {
+  if (shouldRedirect) {
+    try {
+      const user = await Spotify.getMe()
+      console.tron.log(user)
+      return Promise.resolve(Result.Ok(user.id)) 
+    }
+    catch (error) {
+      Spotify.logout()
+      return Promise.resolve(Result.Error(error))
+    }
+  }
+  return Promise.resolve(Result.Error('Wrong credentials'))
+}
+
 const loginSpotifyWithOptions = async () => {
   const isLogin = await Spotify.login(spotifyOptions)
-  if (isLogin) {
-    const user = await Spotify.getMe()
-    console.tron.log(user)
-    return Promise.resolve(Result.Ok(user.id)) 
-  }
-  else 
-    return Promise.resolve(Result.Error('Wrong credentials'))
+  return doLogin(isLogin) 
+}
+
+const navigationToHome = async (shouldRedirect) => {
+  return doLogin(shouldRedirect)
 }
 
 export function * initializeSpotify (api, action) {
@@ -68,13 +81,28 @@ export function * initializeSpotify (api, action) {
 
   yield put(
     response.matchWith({
-      Ok: ({ value }) => AuthActions.spotifyAuthSuccess(value), 
+      Ok: ({ value }) => AuthActions.redirectToHome(value), 
       Error: ({ value }) => AuthActions.spotifyAuthFailure(value)
     })
   )
 }
 
-export function * loginSpotify (api, action) {
+export function * redirectToHome (action) {
+  const { isLoggedIn } = action
+  yield put(AuthActions.loadingRequest())
+  
+  const response = yield call(navigationToHome, isLoggedIn)
+
+  yield put(
+    response.matchWith({
+      Ok: ({ value }) =>  UserActions.userRequest(value),  
+      Error: ({ value }) => AuthActions.redirectToHomeFailure(value)
+    })
+  )
+}
+
+
+export function * loginSpotify () {
   yield put(AuthActions.loadingRequest())
   
   const response = yield call(loginSpotifyWithOptions)

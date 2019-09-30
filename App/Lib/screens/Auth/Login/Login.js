@@ -13,10 +13,10 @@ const Login = (props) => (
   <Container style={styles.container}>
     <View style={styles.logoContainer}>
       <Image style={styles.logo} source={images.logo} resizeMode="contain" />
-      <Text style={styles.title}>{localization.chooseLogin}</Text>
+      {!props.isLoading && <Text style={styles.title}>{localization.chooseLogin}</Text> }
     </View>
 
-    <View style={styles.buttonsContainer}>
+    <View style={[styles.buttonsContainer, { opacity: Number(!props.isLoading) }]}>
       <TouchableImage
         style={styles.button}
         source={images.spotifyButton}
@@ -32,11 +32,6 @@ const Login = (props) => (
 Login.propTypes = {
   onLoginSpotify: PropTypes.func,
   isLoading: PropTypes.bool
-};
-
-Login.defaultProps = {
-  onLoginSpotify: () => null,
-  isLoading: false
 };
 
 const mapStateToProps = (state) => ({

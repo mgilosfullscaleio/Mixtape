@@ -8,7 +8,16 @@ const { Types, Creators } = createActions({
   gameplaySuccess: ['payload'],
   gameplayFailure: null,
 
-  subscribeToGameWithId: ['gameId']
+  subscribeToGameWithId: ['gameId'],
+  saveSongSelectionSuccess: ['song'],
+  voteRoundWinnerSuccess: null,
+  searchedSongsSuccess: ['searchedSongs'],
+
+  //saga trigger
+  subscribeGameplay: ['gameId', 'playerId', 'emitter'],
+  saveSongSelection: ['playerId', 'song'],
+  voteRoundWinner: ['playerId'],
+  searchSong: ['keyword', 'limit']
 })
 
 export const GameplayTypes = Types
@@ -21,13 +30,16 @@ export const INITIAL_STATE = Immutable({
   data: null,
   fetching: null,
   payload: null,
-  error: null
+  error: null,
+
+  searchedSongs: [],
 })
 
 /* ------------- Selectors ------------- */
 
 export const GameplaySelectors = {
-  getRound: state => state.gameplay.round
+  getRound: state => state.gameplay.round,
+  searchedSongs: state => state.gameplay.searchedSongs,
 }
 
 /* ------------- Reducers ------------- */
@@ -46,10 +58,23 @@ export const success = (state, action) => {
 export const failure = state =>
   state.merge({ fetching: false, error: true, payload: null })
 
+export const saveSongSelectionSuccess = (state, { song }) => {
+  state.merge({ fetching: false, error: true, song })
+}
+
+export const voteRoundWinnerSuccess = state =>
+  state.merge({ fetching: false, error: false, payload: null })
+
+export const searchedSongsSuccess = (state, { searchedSongs }) =>
+  state.merge({ fetching: false, error: false, searchedSongs })
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.GAMEPLAY_REQUEST]: request,
   [Types.GAMEPLAY_SUCCESS]: success,
-  [Types.GAMEPLAY_FAILURE]: failure
+  [Types.GAMEPLAY_FAILURE]: failure,
+  [Types.SAVE_SONG_SELECTION_SUCCESS]: saveSongSelectionSuccess,
+  [Types.VOTE_ROUND_WINNER_SUCCESS]: voteRoundWinnerSuccess,
+  [Types.SEARCHED_SONGS_SUCCESS]: searchedSongsSuccess,
 })

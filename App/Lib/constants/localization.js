@@ -18,7 +18,11 @@ const localization = {
   round2: 'ROUND TWO',
   round3: 'ROUND THREE',
   round4: 'ROUND FOUR',
-  round5: 'ROUND FIVE'
+  round5: 'ROUND FIVE',
+  searchSpotify: 'SEARCH SPOTIFY',
+  chooseWinner: 'CHOOSE THE WINNER',
+  winner: 'WINNER',
+  congratulations: 'CONGRATULATIONS!'
 };
 
 export default localization;
