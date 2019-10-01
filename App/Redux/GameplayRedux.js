@@ -26,7 +26,7 @@ export default Creators
 
 export const INITIAL_STATE = Immutable({
   round: 2,
-  fetching: null,
+  loading: null,
   error: null,
   gameId: null,
   searchedSongs: [],
@@ -37,21 +37,22 @@ export const INITIAL_STATE = Immutable({
 export const GameplaySelectors = {
   getRound: state => state.gameplay.round,
   searchedSongs: state => state.gameplay.searchedSongs,
+  isLoading: state => state.gameplay.loading,
 }
 
 /* ------------- Reducers ------------- */
 
 export const failure = state =>
-  state.merge({ fetching: false, error: true, payload: null })
+  state.merge({ loading: false, error: true, payload: null })
 
 export const saveSongSelectionSuccess = (state, { song }) =>
-  state.merge({ fetching: false, error: true, song })
+  state.merge({ loading: false, error: true, song })
 
 export const voteRoundWinnerSuccess = state =>
-  state.merge({ fetching: false, error: false, payload: null })
+  state.merge({ loading: false, error: false, payload: null })
 
 export const searchedSongsSuccess = (state, { searchedSongs }) =>
-  state.merge({ fetching: false, error: false, searchedSongs })
+  state.merge({ loading: false, error: false, searchedSongs })
 
 export const saveGameId = (state, { gameId }) =>
   state.merge({ gameId })
