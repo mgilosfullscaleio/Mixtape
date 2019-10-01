@@ -4,13 +4,14 @@ import { NavigationActions } from 'react-navigation'
 import { eventChannel } from 'redux-saga'
 import { UserSelectors } from '../Redux/UserRedux'
 import { MessagingSelectors } from '../Redux/MessagingRedux'
+import { screens } from '../Lib/constants'
 
 export function * quitOpenMatch (api, action) {
   yield put(Actions.unsubscribeOpenMatchUpdates())
 
   yield call(api.removePlayerFromOpenMatch)
 
-  yield put(NavigationActions.navigate({ routeName: 'Home' }))
+  yield put(NavigationActions.navigate({ routeName: screens.home.root }))
 }
 
 const onPlayerJoinChannel = firestore =>

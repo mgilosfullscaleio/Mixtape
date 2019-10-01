@@ -87,7 +87,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SAVE_SONG_SELECTION_SUCCESS]: saveSongSelectionSuccess,
   [Types.VOTE_ROUND_WINNER_SUCCESS]: voteRoundWinnerSuccess,
   [Types.SEARCHED_SONGS_SUCCESS]: searchedSongsSuccess,
-  [Types.SEARCHED_SONGS_SUCCESS]: searchedSongsSuccess,
   [Types.SAVE_GAME_ID]: saveGameId,
   [Types.SAVE_GAME_INFO]: saveGameInfo,
   [Types.SAVE_GAME_UPDATE]: saveGameUpdate,
