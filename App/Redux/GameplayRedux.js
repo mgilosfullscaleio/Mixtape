@@ -87,7 +87,7 @@ export const saveGameInfo = (state, { gameInfo }) =>
 export const saveGameUpdate = (state, { gameUpdate }) =>
   state.merge({ card: gameUpdate.card, })
 
-export const saveGameUpdate = (state, { timerTick }) =>
+export const setTimerTick = (state, { timerTick }) =>
   state.merge({ timerTick })
 
 /* ------------- Hookup Reducers To Types ------------- */

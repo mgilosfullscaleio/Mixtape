@@ -12,6 +12,21 @@ const onGameplayChannel = (firestore, gameId, userId, currentRound) =>
     return () => unsubscribe()
   })
 
+const onTimerTickChannel = startTime =>
+  eventChannel(emitter => {
+    const elapse = Math.floor((Date.now() - new Date(startTime).getTime()) / 1000)
+    let tick = 60 - elapse
+
+    const timerId = setInterval(() => {
+      tick = tick - 1
+      if (tick < 0) clearInterval(timerId)
+      else emitter(tick)
+
+    }, 1000)
+
+    return () => clearInterval(timerId)
+  })
+
 export function * subscribeGameplay(firestore, action) {
   const gameId = yield select(GameplaySelectors.selectGameId)
   const userId = yield select(UserSelectors.selectUserId)
@@ -23,30 +38,21 @@ export function * subscribeGameplay(firestore, action) {
   //subscribe to gameplay of round
   if (gameplayInfo.currentRound <= 5) {
 
-    //start timer countdown from game start
-    const elapse = Math.floor((Date.now() - new Date(gameplayInfo.created).getTime()) / 1000)
-    const startTime = 60 - elapse
-    let tick = startTime
-    console.tron.log('duration', startTime, elapse)
-    const timerId = setInterval(() => {
-      console.tron.log('timer', tick)
-      tick = tick - 1
-      if (tick < 0) {
-        clearInterval(timerId)
-      } else {
-        yield put(GameplayActions.setTimerTick(tick))
-      }
-    }, 1000)
-
     yield put(GameplayActions.saveGameInfo(gameplayInfo))
     
-    const channel = yield call(onGameplayChannel, firestore, gameId, userId, gameplayInfo.currentRound)
-    yield takeEvery(channel, function* (docUpdate) {
+    const timerChannel = yield call(onTimerTickChannel, gameplayInfo.created)
+    yield takeEvery(timerChannel, function* (tick) {
+      yield put(GameplayActions.setTimerTick(tick))
+    })
+
+    const gameplayChannel = yield call(onGameplayChannel, firestore, gameId, userId, gameplayInfo.currentRound)
+    yield takeEvery(gameplayChannel, function* (docUpdate) {
       yield put(GameplayActions.saveGameUpdate(docUpdate))
     })
 
     yield take(GameplayTypes.UNSUBSCRIBE_GAMEPLAY_UPDATES)
-    channel.close()
+    gameplayChannel.close()
+    timerChannel.close()
   }
 }
 
