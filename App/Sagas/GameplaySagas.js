@@ -4,9 +4,9 @@ import Spotify from 'rn-spotify-sdk'
 import Result from 'folktale/result'
 import { UserSelectors } from '../Redux/UserRedux'
 
-const onGameplayChannel = (firestore, gameId, userId) =>
+const onGameplayChannel = (firestore, gameId, userId, currentRound) =>
   eventChannel(emitter => {
-    const unsubscribe = firestore.gameplayObserver(emitter, gameId, userId)
+    const unsubscribe = firestore.gameplayObserver(emitter, gameId, userId, currentRound)
 
     return () => unsubscribe()
   })
@@ -15,15 +15,21 @@ export function * subscribeGameplay(firestore, action) {
   const gameId = yield select(GameplaySelectors.selectGameId())
   const userId = yield select(UserSelectors.selectUserId())
 
-  const channel = yield call(onGameplayChannel, firestore, gameId, userId)
+  //check currentRound of the game
+  const currentRound = firestore.getCurrentRoundFromGameId(gameId)
 
-  yield takeEvery(channel, function * (action) {
-    console.tron.log('gameplay actions', actions)
-    // yield put(Actions.playerJoinMatch(players))
-  })
+  //subscribe to gameplay of round
+  if (currentRound <= 5) {
+    const channel = yield call(onGameplayChannel, firestore, gameId, userId, currentRound)
+    yield takeEvery(channel, function * (docUpdate) {
+      console.tron.log('gameplay docUpdate', docUpdate)
+      // yield put(Actions.playerJoinMatch(players))
+    })
 
-  // yield take(LobbyTypes.UNSUBSCRIBE_OPEN_MATCH_UPDATES)
-  // channel.close()
+    // yield take(CLOSE_GAMEPLAY_CHANNEL_ACTION)
+    // channel.close()
+  }
+
 }
 
 export function * saveSongSelection(api, action) {

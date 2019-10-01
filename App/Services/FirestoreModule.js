@@ -27,13 +27,6 @@ const playerJoinObserver = emitter =>
       emitter(docSnapshot.data().players)
     })
 
-const gameplayObserver = (gameId, userId) =>
-  firestore
-    .collection(`card_games/${gameId}/gameplay`)
-    .onSnapshot(docSnapshot  => {
-      emitter(docSnapshot.data().players)
-    })
-
 const removePlayerFromOpenMatch = () => Promise.resolve(Result.Ok(true))
 
 const createUser = info => {
@@ -49,6 +42,32 @@ const createUser = info => {
 	return ref.set(userData)
 		.then(() => Result.Ok(userData))
 		.catch(e => Result.Error(e))
+}
+
+const getCurrentRoundFromGameId = gameId =>
+  firestore
+    .collection(`card_games/${gameId}/gameplay`)
+    .doc('info')
+    .get()
+    .then(docs => docs.data().currentRound)
+    .catch(error => Result.Error(`Cant find currentRound with gameId ${gameId}\n${error}`))
+
+const gameplayObserver = async (emitter, gameId, userId, currentRound) => {
+  const roundRef = firestore
+    .collection(`card_games/${gameId}/gameplay`)
+    .doc(currentRound.toString())
+
+  //update round by adding ourself to the players
+  await roundRef.set({
+    players: {
+      [`${userId}`]: {}
+    }
+  }, {merge: true})
+
+  return roundRef
+    .onSnapshot(snapshot  => {
+      emitter(snapshot.data())
+    })
 }
 
 // createUser({
@@ -98,5 +117,8 @@ export default {
 
   addPlayerToOpenMatch,
   playerJoinObserver,
-  removePlayerFromOpenMatch
+  removePlayerFromOpenMatch,
+
+  getCurrentRoundFromGameId,
+  gameplayObserver
 }
