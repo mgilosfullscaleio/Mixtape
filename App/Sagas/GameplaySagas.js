@@ -23,6 +23,21 @@ export function * subscribeGameplay(firestore, action) {
   //subscribe to gameplay of round
   if (gameplayInfo.currentRound <= 5) {
 
+    //start timer countdown from game start
+    const elapse = Math.floor((Date.now() - new Date(gameplayInfo.created).getTime()) / 1000)
+    const startTime = 60 - elapse
+    let tick = startTime
+    console.tron.log('duration', startTime, elapse)
+    const timerId = setInterval(() => {
+      console.tron.log('timer', tick)
+      tick = tick - 1
+      if (tick < 0) {
+        clearInterval(timerId)
+      } else {
+        yield put(GameplayActions.setTimerTick(tick))
+      }
+    }, 1000)
+
     yield put(GameplayActions.saveGameInfo(gameplayInfo))
     
     const channel = yield call(onGameplayChannel, firestore, gameId, userId, gameplayInfo.currentRound)
