@@ -26,9 +26,8 @@ export function * subscribeGameplay(firestore, action) {
     yield put(GameplayActions.saveGameInfo(gameplayInfo))
     
     const channel = yield call(onGameplayChannel, firestore, gameId, userId, gameplayInfo.currentRound)
-    yield takeEvery(channel, function * (docUpdate) {
-      console.tron.log('gameplay docUpdate', docUpdate)
-      // yield put(Actions.playerJoinMatch(players))
+    yield takeEvery(channel, function* (docUpdate) {
+      yield put(GameplayActions.saveGameUpdate(docUpdate))
     })
 
     yield take(GameplayTypes.UNSUBSCRIBE_GAMEPLAY_UPDATES)
