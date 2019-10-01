@@ -59,6 +59,7 @@ export default function * root () {
     takeLatest(GameplayTypes.SUBSCRIBE_GAMEPLAY, subscribeGameplay, firestore),
     takeLatest(GameplayTypes.SAVE_SONG_SELECTION, saveSongSelection, firestore),
     takeLatest(GameplayTypes.VOTE_ROUND_WINNER, voteRoundWinner, firestore),
+    takeLatest(GameplayTypes.SUBSCRIBE_GAMEPLAY_UPDATES, subscribeGameplay, firestore),
     
     takeLatest(GameplayTypes.SEARCH_SONG, searchSong),
   ])

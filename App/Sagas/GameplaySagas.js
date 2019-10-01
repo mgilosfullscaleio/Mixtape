@@ -1,5 +1,5 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects'
-import GameplayActions, { GameplaySelectors } from '../Redux/GameplayRedux'
+import GameplayActions, { GameplaySelectors, GameplayTypes } from '../Redux/GameplayRedux'
 import Spotify from 'rn-spotify-sdk'
 import Result from 'folktale/result'
 import { UserSelectors } from '../Redux/UserRedux'
@@ -26,10 +26,9 @@ export function * subscribeGameplay(firestore, action) {
       // yield put(Actions.playerJoinMatch(players))
     })
 
-    // yield take(CLOSE_GAMEPLAY_CHANNEL_ACTION)
-    // channel.close()
+    yield take(GameplayTypes.UNSUBSCRIBE_GAMEPLAY_UPDATES)
+    channel.close()
   }
-
 }
 
 export function * saveSongSelection(api, action) {

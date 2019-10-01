@@ -16,7 +16,9 @@ const { Types, Creators } = createActions({
   subscribeGameplay: null,
   saveSongSelection: ['playerId', 'song'],
   voteRoundWinner: ['playerId'],
-  searchSong: ['keyword', 'limit']
+  searchSong: ['keyword', 'limit'],
+  subscribeGameplayUpdates: null,
+  unsubscribeGameplayUpdates: null
 })
 
 export const GameplayTypes = Types
@@ -28,7 +30,7 @@ export const INITIAL_STATE = Immutable({
   round: 2,
   loading: null,
   error: null,
-  gameId: null,
+  gameId: 'xPKKw5L8avkfjnuWsWhE',
   searchedSongs: [],
 })
 
