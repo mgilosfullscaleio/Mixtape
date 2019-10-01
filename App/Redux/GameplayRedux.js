@@ -42,17 +42,17 @@ export const GameplaySelectors = {
 
 /* ------------- Reducers ------------- */
 
-export const failure = state =>
-  state.merge({ loading: false, error: true, payload: null })
+export const failure = (state, { error }) =>
+  state.merge({ loading: false, error })
 
 export const saveSongSelectionSuccess = (state, { song }) =>
-  state.merge({ loading: false, error: true, song })
+  state.merge({ loading: false, song })
 
 export const voteRoundWinnerSuccess = state =>
   state.merge({ loading: false, error: false, payload: null })
 
 export const searchedSongsSuccess = (state, { searchedSongs }) =>
-  state.merge({ loading: false, error: false, searchedSongs })
+  state.merge({ loading: false, error: null, searchedSongs })
 
 export const saveGameId = (state, { gameId }) =>
   state.merge({ gameId })
