@@ -19,7 +19,7 @@ const PrimaryNav = createStackNavigator({
 }, {
   // Default config for all screens
   headerMode: 'none',
-  initialRouteName: 'Home',
+  initialRouteName: 'Gameplay',
   navigationOptions: {
     headerStyle: styles.header
   }
