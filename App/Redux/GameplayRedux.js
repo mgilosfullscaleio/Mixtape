@@ -12,6 +12,7 @@ const { Types, Creators } = createActions({
   voteRoundWinnerSuccess: null,
   searchedSongsSuccess: ['searchedSongs'],
   saveGameInfo: ['gameInfo'],
+  saveGameUpdate: ['gameUpdate'],
 
   //saga trigger
   subscribeGameplay: null,
@@ -51,7 +52,9 @@ export const GameplaySelectors = {
   getRound: state => state.gameplay.round,
   searchedSongs: state => state.gameplay.searchedSongs,
   isLoading: state => state.gameplay.loading,
-  selectGameId: state => state.gameplay.gameId
+  selectGameId: state => state.gameplay.gameId,
+  selectCardContent: state => state.gameplay.card.content,
+  selectCardTitle: state => state.gameplay.card.title
 }
 
 /* ------------- Reducers ------------- */
@@ -72,7 +75,10 @@ export const saveGameId = (state, { gameId }) =>
   state.merge({ gameId })
 
 export const saveGameInfo = (state, { gameInfo }) =>
-  state.merge({ round: gameInfo.currentRound, players: gameInfo.players, card: gameInfo.card })
+  state.merge({ round: gameInfo.currentRound, players: gameInfo.players })
+
+export const saveGameUpdate = (state, { gameUpdate }) =>
+  state.merge({ card: gameUpdate.card, })
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -84,4 +90,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SEARCHED_SONGS_SUCCESS]: searchedSongsSuccess,
   [Types.SAVE_GAME_ID]: saveGameId,
   [Types.SAVE_GAME_INFO]: saveGameInfo,
+  [Types.SAVE_GAME_UPDATE]: saveGameUpdate,
 })
