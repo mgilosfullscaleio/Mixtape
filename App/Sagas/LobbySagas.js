@@ -8,7 +8,11 @@ import { MessagingSelectors } from '../Redux/MessagingRedux'
 export function * quitOpenMatch (api, action) {
   yield put(Actions.unsubscribeOpenMatchUpdates())
 
-  yield call(api.removePlayerFromOpenMatch)
+  const userMatchData = yield select(UserSelectors.selectUserMatchData)
+  const fcmToken = yield select(MessagingSelectors.selectToken)
+  const userData = {...userMatchData, fcmToken, id: '1569898707610'}
+
+  yield call(api.removePlayerFromOpenMatch, userData)
 
   yield put(NavigationActions.navigate({ routeName: 'Home' }))
 }
