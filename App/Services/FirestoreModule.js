@@ -85,9 +85,12 @@ const getUsers = () =>
     .then(docs => Result.Ok(docs))
 */
 
+const getUser = spotifyId => Promise.resolve(Result.Ok(require('../Fixtures/user.json')))
+
 export default {
   signIn,
   createUser,
+  getUser,
 
   addPlayerToOpenMatch,
   playerJoinObserver,
