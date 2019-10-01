@@ -17,13 +17,15 @@ export function * subscribeGameplay(firestore, action) {
   const userId = yield select(UserSelectors.selectUserId)
 
   //check currentRound of the game
-  const currentRound = yield call(firestore.getCurrentRoundFromGameId, gameId)
-console.tron.log('subscribeGameplay', gameId, userId, currentRound)
+  const gameplayInfo = yield call(firestore.getGameplayInfo, gameId)
+  console.tron.log('subscribeGameplay', gameplayInfo)
+
   //subscribe to gameplay of round
-  if (currentRound <= 5) {
-    // const players = yield call(firestore.getPlayersFromGameId, gameId)
+  if (gameplayInfo.currentRound <= 5) {
+
+    yield put(GameplayActions.saveGameInfo(gameplayInfo))
     
-    const channel = yield call(onGameplayChannel, firestore, gameId, userId, currentRound)
+    const channel = yield call(onGameplayChannel, firestore, gameId, userId, gameplayInfo.currentRound)
     yield takeEvery(channel, function * (docUpdate) {
       console.tron.log('gameplay docUpdate', docUpdate)
       // yield put(Actions.playerJoinMatch(players))

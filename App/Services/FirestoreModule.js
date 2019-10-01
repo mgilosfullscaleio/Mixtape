@@ -44,13 +44,13 @@ const createUser = info => {
 		.catch(e => Result.Error(e))
 }
 
-const getCurrentRoundFromGameId = gameId =>
+const getGameplayInfo = gameId =>
   firestore
     .collection(`card_games/${gameId}/gameplay`)
     .doc('info')
     .get()
-    .then(docs => docs.data().currentRound)
-    .catch(error => Result.Error(`Cant find currentRound with gameId ${gameId}\n${error}`))
+    .then(docs => docs.data())
+    .catch(error => Result.Error(`Error with gameId ${gameId}\n${error}`))
 
 const gameplayObserver = async (emitter, gameId, userId, currentRound) => {
   const roundRef = firestore
@@ -119,6 +119,6 @@ export default {
   playerJoinObserver,
   removePlayerFromOpenMatch,
 
-  getCurrentRoundFromGameId,
+  getGameplayInfo,
   gameplayObserver
 }

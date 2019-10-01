@@ -11,6 +11,7 @@ const { Types, Creators } = createActions({
   saveSongSelectionSuccess: ['song'],
   voteRoundWinnerSuccess: null,
   searchedSongsSuccess: ['searchedSongs'],
+  saveGameInfo: ['gameInfo'],
 
   //saga trigger
   subscribeGameplay: null,
@@ -28,6 +29,7 @@ export default Creators
 
 export const INITIAL_STATE = Immutable({
   round: 2,
+  players: [],
   loading: null,
   error: null,
   gameId: 'xPKKw5L8avkfjnuWsWhE',
@@ -60,6 +62,9 @@ export const searchedSongsSuccess = (state, { searchedSongs }) =>
 export const saveGameId = (state, { gameId }) =>
   state.merge({ gameId })
 
+export const saveGameInfo = (state, { gameInfo }) =>
+  state.merge({ round: gameInfo.currentRound, players: gameInfo.players })
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -69,4 +74,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SEARCHED_SONGS_SUCCESS]: searchedSongsSuccess,
   [Types.SEARCHED_SONGS_SUCCESS]: searchedSongsSuccess,
   [Types.SAVE_GAME_ID]: saveGameId,
+  [Types.SAVE_GAME_INFO]: saveGameInfo,
 })
