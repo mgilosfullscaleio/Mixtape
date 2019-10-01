@@ -13,7 +13,7 @@ const { Types, Creators } = createActions({
   searchedSongsSuccess: ['searchedSongs'],
 
   //saga trigger
-  subscribeGameplay: ['gameId', 'playerId', 'emitter'],
+  subscribeGameplay: null,
   saveSongSelection: ['playerId', 'song'],
   voteRoundWinner: ['playerId'],
   searchSong: ['keyword', 'limit']

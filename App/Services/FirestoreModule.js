@@ -27,6 +27,13 @@ const playerJoinObserver = emitter =>
       emitter(docSnapshot.data().players)
     })
 
+const gameplayObserver = (gameId, userId) =>
+  firestore
+    .collection(`card_games/${gameId}/gameplay`)
+    .onSnapshot(docSnapshot  => {
+      emitter(docSnapshot.data().players)
+    })
+
 const removePlayerFromOpenMatch = () => Promise.resolve(Result.Ok(true))
 
 const createUser = info => {

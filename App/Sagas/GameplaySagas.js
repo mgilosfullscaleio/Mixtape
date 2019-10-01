@@ -1,12 +1,29 @@
-import { call, put } from 'redux-saga/effects'
-import GameplayActions from '../Redux/GameplayRedux'
+import { call, put, select, takeEvery } from 'redux-saga/effects'
+import GameplayActions, { GameplaySelectors } from '../Redux/GameplayRedux'
 import Spotify from 'rn-spotify-sdk'
 import Result from 'folktale/result'
+import { UserSelectors } from '../Redux/UserRedux'
 
-export function * subscribeGameplay(api, action) {
-  const { gameId, playerId, emitter} = action
-  
-  yield call(api.subscribeGameplay, gameId, playerId, emitter)
+const onGameplayChannel = (firestore, gameId, userId) =>
+  eventChannel(emitter => {
+    const unsubscribe = firestore.gameplayObserver(emitter, gameId, userId)
+
+    return () => unsubscribe()
+  })
+
+export function * subscribeGameplay(firestore, action) {
+  const gameId = yield select(GameplaySelectors.selectGameId())
+  const userId = yield select(UserSelectors.selectUserId())
+
+  const channel = yield call(onGameplayChannel, firestore, gameId, userId)
+
+  yield takeEvery(channel, function * (action) {
+    console.tron.log('gameplay actions', actions)
+    // yield put(Actions.playerJoinMatch(players))
+  })
+
+  // yield take(LobbyTypes.UNSUBSCRIBE_OPEN_MATCH_UPDATES)
+  // channel.close()
 }
 
 export function * saveSongSelection(api, action) {

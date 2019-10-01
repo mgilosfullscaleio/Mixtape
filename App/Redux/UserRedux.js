@@ -17,6 +17,34 @@ export default Creators
 
 /* ------------- Initial State ------------- */
 
+/*
+USER
+{
+  id
+  name
+  email
+  coins
+  points
+  musicSrc
+  avatar
+  address: {
+    geopoint
+    location
+  }
+  social: {
+    facebook: {
+      friends: [] //facebookId
+      profilePhoto
+      facebookId
+    }
+    spotify: {
+      id
+      profilePhoto
+    }
+  }
+  created
+}
+*/
 export const INITIAL_STATE = Immutable({
   data: require('../Fixtures/user.json'),
   loading: false,
@@ -27,7 +55,8 @@ export const INITIAL_STATE = Immutable({
 
 export const UserSelectors = {
   getName: state => state.user.data.name,
-  selectUserMatchData: state => createMatchData(state.user.data)
+  selectUserMatchData: state => createMatchData(state.user.data),
+  selectUserId: state => state.user.data.id
 }
 
 const createMatchData = userData => ({
