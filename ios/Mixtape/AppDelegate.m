@@ -6,10 +6,15 @@
  */
 
 #import "AppDelegate.h"
- 
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
+
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import <Firebase.h>
+#import <RNFirebaseMessaging.h>
+#import <RNFirebaseNotifications.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <React/RCTLinkingManager.h>
 
@@ -20,6 +25,11 @@
   
   [[FBSDKApplicationDelegate sharedInstance] application:application
   didFinishLaunchingWithOptions:launchOptions];
+  //[Fabric with:@[[Crashlytics class]]];
+
+  [FIRApp configure];
+  [[UNUserNotificationCenter currentNotificationCenter] setDelegate:self];
+  [RNFirebaseNotifications configure];
   
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
@@ -49,6 +59,27 @@
   }
 
   return NO;
+}
+// FCM support
+
+- (void)application:(UIApplication *)application
+didReceiveRemoteNotification:(nonnull NSDictionary *)userInfo
+fetchCompletionHandler:(nonnull void (^)(UIBackgroundFetchResult))completionHandler{
+  [[RNFirebaseNotifications instance] didReceiveRemoteNotification:userInfo
+                                            fetchCompletionHandler:completionHandler];
+}
+
+- (void)application:(UIApplication *)application
+didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
+  [[RNFirebaseMessaging instance] didRegisterUserNotificationSettings:notificationSettings];
+}
+
+-(void) userNotificationCenter:(UNUserNotificationCenter *)center
+didReceiveNotificationResponse:(UNNotificationResponse *)response
+         withCompletionHandler:(void (^)(void))completionHandler {
+  
+  [[RNFirebaseMessaging instance] didReceiveRemoteNotification:response.notification.request.content.userInfo];
+  completionHandler();
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge

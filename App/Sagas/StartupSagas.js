@@ -2,6 +2,7 @@ import { put, select } from 'redux-saga/effects'
 import GithubActions, { GithubSelectors } from '../Redux/GithubRedux'
 import { is } from 'ramda'
 import AuthActions from '../Redux/AuthRedux'
+import MessagingActions from '../Redux/MessagingRedux'
 
 // exported to make available for tests
 export const selectAvatar = GithubSelectors.selectAvatar
@@ -35,4 +36,5 @@ export function * startup (action) {
   }
   
   yield put(AuthActions.initializeSpotify())
+  yield put(MessagingActions.requestToken())
 }

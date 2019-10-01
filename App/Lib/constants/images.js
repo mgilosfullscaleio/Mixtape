@@ -23,7 +23,10 @@ const images = {
   crownedTape: require('../assets/images/crowned-tape.png'),
   tape: require('../assets/images/tape.png'),
   quitGameButton: require('../assets/images/quit-game-button.png'),
-  songBarPlay: require('../assets/images/song-bar-play.png')
+  submitButton: require('../assets/images/submit-button.png'),
+  songBarPlay: require('../assets/images/song-bar-play.png'),
+  addToPlaylist: require('../assets/images/add-to-playlist.png'),
+  highlightedSongBar: require('../assets/images/highlighted-song-bar.png')
 };
 
 export default images;

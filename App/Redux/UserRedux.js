@@ -4,9 +4,12 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  userRequest: ['data'],
-  userSuccess: ['payload'],
-  userFailure: null
+  userSuccess: ['data'],
+  userFailure: ['error'],
+  loadingRequest: null,
+  
+  //saga triggers
+  userRequest: ['spotifyId'],
 })
 
 export const UserTypes = Types
@@ -14,39 +17,70 @@ export default Creators
 
 /* ------------- Initial State ------------- */
 
+/*
+USER
+{
+  id
+  name
+  email
+  coins
+  points
+  musicSrc
+  avatar
+  address: {
+    geopoint
+    location
+  }
+  social: {
+    facebook: {
+      friends: [] //facebookId
+      profilePhoto
+      facebookId
+    }
+    spotify: {
+      id
+      profilePhoto
+    }
+  }
+  created
+}
+*/
 export const INITIAL_STATE = Immutable({
-  data: null,
-  fetching: null,
-  payload: null,
+  data: require('../Fixtures/user.json'),
+  loading: false,
   error: null
 })
 
 /* ------------- Selectors ------------- */
 
 export const UserSelectors = {
-  getData: state => state.data
+  getName: state => state.user.data.name,
+  selectUserMatchData: state => createMatchData(state.user.data),
+  selectUserId: state => state.user.data.id
 }
+
+const createMatchData = userData => ({
+  id: userData.id,
+  name: userData.name,
+  profileImage: userData.profileImage,
+  tapes: userData.tapes
+})
 
 /* ------------- Reducers ------------- */
 
-// request the data from an api
-export const request = (state, { data }) =>
-  state.merge({ fetching: true, data, payload: null })
+export const loadingRequest = (state) =>
+  state.merge({ loading: true })
 
-// successful api lookup
-export const success = (state, action) => {
-  const { payload } = action
-  return state.merge({ fetching: false, error: null, payload })
-}
+export const success = (state, { data }) =>
+  state.merge({ loading: false, error: null, data })
 
-// Something went wrong somewhere.
-export const failure = state =>
-  state.merge({ fetching: false, error: true, payload: null })
+export const failure = (state, { error }) =>
+  state.merge({ loading: false, error })
 
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.USER_REQUEST]: request,
   [Types.USER_SUCCESS]: success,
-  [Types.USER_FAILURE]: failure
+  [Types.USER_FAILURE]: failure,
+  [Types.LOADING_REQUEST]: loadingRequest,
 })

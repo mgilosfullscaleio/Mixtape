@@ -1,0 +1,11 @@
+{
+  "id": "2488753594477608",
+  "name": "John Doe",
+  "tapes": 9,
+  "profileImage": "https://graph.facebook.com/2488753594477608/picture",
+  "social": {
+    "spotify": {
+      "id": "123456"
+    }
+  }
+}

@@ -10,11 +10,21 @@ import FirestoreModule from '../Services/FirestoreModule'
 import { StartupTypes } from '../Redux/StartupRedux'
 import { GithubTypes } from '../Redux/GithubRedux'
 import { GameplayTypes } from '../Redux/GameplayRedux'
+import { LobbyTypes } from '../Redux/LobbyRedux'
+import { AuthTypes } from '../Redux/AuthRedux'
+import { UserTypes } from '../Redux/UserRedux'
+import { MessagingTypes } from '../Redux/MessagingRedux'
 
 /* ------------- Sagas ------------- */
 
 import { startup } from './StartupSagas'
 import { getUserAvatar } from './GithubSagas'
+import { quitOpenMatch, subscribePlayerJoin, addPlayerInMatch } from './LobbySagas'
+import { getUserFromSpotifyId } from './UserSagas'
+import { generateToken, initiateAndroidPermission, subscribeGameStart } from './MessagingSagas'
+import { fetchUserInOpenMatch } from './LobbySagas'
+import { initializeSpotify, loginSpotify, redirectToHome } from './AuthSagas'
+import { subscribeGameplay, saveSongSelection, voteRoundWinner, searchSong } from './GameplaySagas'
 
 /* ------------- API ------------- */
 
@@ -29,5 +39,28 @@ export default function * root () {
   yield all([
     // some sagas only receive an action
     takeLatest(StartupTypes.STARTUP, startup),
+
+    takeLatest(LobbyTypes.QUIT_OPEN_MATCH, quitOpenMatch, firestore),
+    takeLatest(LobbyTypes.SUBSCRIBE_PLAYER_JOIN, subscribePlayerJoin, firestore),
+    // takeLatest(LobbyTypes.UNSUBSCRIBE_OPEN_MATCH_UPDATES, unsubscribeOpenMatchUpdates),
+    takeLatest(LobbyTypes.ADD_PLAYER_FOR_MATCH, addPlayerInMatch, firestore),
+
+    takeLatest(AuthTypes.INITIALIZE_SPOTIFY, initializeSpotify),
+    takeLatest(AuthTypes.LOGIN_SPOTIFY, loginSpotify),
+    takeLatest(AuthTypes.REDIRECT_TO_HOME, redirectToHome),
+
+    takeLatest(MessagingTypes.REQUEST_TOKEN, generateToken),
+    takeLatest(MessagingTypes.REQUEST_ANDROID_PERMISSION, initiateAndroidPermission),
+    takeLatest(MessagingTypes.SUBSCRIBE_GAME_START_MESSAGE, subscribeGameStart),
+
+    takeLatest(UserTypes.USER_REQUEST, getUserFromSpotifyId, firestore),
+
+    //GAME PLAY FUNCTIONS
+    takeLatest(GameplayTypes.SUBSCRIBE_GAMEPLAY, subscribeGameplay, firestore),
+    takeLatest(GameplayTypes.SAVE_SONG_SELECTION, saveSongSelection, firestore),
+    takeLatest(GameplayTypes.VOTE_ROUND_WINNER, voteRoundWinner, firestore),
+    takeLatest(GameplayTypes.SUBSCRIBE_GAMEPLAY_UPDATES, subscribeGameplay, firestore),
+    
+    takeLatest(GameplayTypes.SEARCH_SONG, searchSong),
   ])
 }

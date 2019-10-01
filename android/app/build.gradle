@@ -134,6 +134,10 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true 
+        
+        ndk {  
+            abiFilters "armeabi-v7a", "x86"  
+        } 
     }
     splits {
         abi {
@@ -178,18 +182,24 @@ android {
         }
     }
 
-    // packagingOptions {
-    //     pickFirst '**/armeabi-v7a/libc++_shared.so'
-    //     pickFirst '**/x86/libc++_shared.so'
-    //     pickFirst '**/arm64-v8a/libc++_shared.so'
-    //     pickFirst '**/x86_64/libc++_shared.so'
-    //     pickFirst '**/x86/libjsc.so'
-    //     pickFirst '**/armeabi-v7a/libjsc.so'
-    // }
+    packagingOptions {
+        pickFirst '**/armeabi-v7a/libc++_shared.so'
+        pickFirst '**/x86/libc++_shared.so'
+        pickFirst '**/arm64-v8a/libc++_shared.so'
+        pickFirst '**/x86_64/libc++_shared.so'
+        pickFirst '**/x86/libjsc.so'
+        pickFirst '**/armeabi-v7a/libjsc.so'
+        pickFirst 'lib/armeabi-v7a/libgnustl_shared.so'
+        pickFirst 'lib/x86/libgnustl_shared.so'
+        exclude 'lib/arm64-v8a/libgnustl_shared.so'
+        exclude 'lib/x86_64/libgnustl_shared.so'
+    }
 }
 
 dependencies {
     implementation project(':react-native-fbsdk')
+    implementation project(':rn-spotify-sdk')
+    implementation project(':react-native-events')
     implementation project(':react-native-firebase')
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-device-info')
@@ -203,6 +213,9 @@ dependencies {
     implementation "com.google.firebase:firebase-firestore:19.0.0"
     implementation "com.google.firebase:firebase-auth:17.0.0"
     implementation "com.google.firebase:firebase-functions:17.0.0"
+    implementation "com.google.firebase:firebase-messaging:18.0.0"
+
+    implementation 'me.leolin:ShortcutBadger:1.1.21@aar'
     
     if (enableHermes) {
       def hermesPath = "../../node_modules/hermesvm/android/";

@@ -23,11 +23,18 @@ const styles = ScaledSheet.create({
     flex: 1
   },
 
+  songBar: {
+    backgroundColor: colors.gray
+  },
+
   playerQueueContainer: {
-    marginTop: '57@s',
+    marginTop: '57@s', // should be the same as SongSearchBar's headerContainer.height
     paddingVertical: '15@s',
-    paddingHorizontal: '20@s',
-    backgroundColor: 'rgba(0,0,0,0.3)' // colors.black
+    backgroundColor: colors.black
+  },
+
+  noTopMargin: {
+    marginTop: 0
   }
 });
 

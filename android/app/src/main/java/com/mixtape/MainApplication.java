@@ -8,6 +8,8 @@ import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
 import com.facebook.react.bridge.JavaScriptExecutorFactory;
 import com.facebook.react.ReactApplication;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
+import com.lufinkey.react.spotify.RNSpotifyPackage;
+import com.lufinkey.react.eventemitter.RNEventEmitterPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
@@ -18,6 +20,8 @@ import com.facebook.soloader.SoLoader;
 import io.invertase.firebase.firestore.RNFirebaseFirestorePackage; 
 import io.invertase.firebase.auth.RNFirebaseAuthPackage;
 import io.invertase.firebase.functions.RNFirebaseFunctionsPackage;
+import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
+import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
 
 import java.util.List;
 
@@ -37,6 +41,8 @@ public class MainApplication extends Application implements ReactApplication {
       packages.add(new RNFirebaseFirestorePackage());
       packages.add(new RNFirebaseAuthPackage());
       packages.add(new RNFirebaseFunctionsPackage());
+      packages.add(new RNFirebaseMessagingPackage());
+      packages.add(new RNFirebaseNotificationsPackage());
       return packages;
     }
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { View, Image } from 'react-native';
 import {
@@ -7,20 +7,32 @@ import {
   Header,
   ListItem
 } from '../../../components';
+import { connect } from 'react-redux'
 
 import { images, localization } from '../../../constants';
 import styles from './styles';
 import PlayerQueue from '../../../components/PlayerQueue/PlayerQueue';
+import LobbyActions, { LobbySelectors } from '../../../../Redux/LobbyRedux'
+import MessagingActions, { MessagingSelectors } from '../../../../Redux/MessagingRedux'
 
-const Lobby = ({ players, onQuitGame }) => {
+const Lobby = props => {
   const renderHeader = () => <Header title={localization.loadingGame} />;
+
+  useEffect(() => {
+    props.subscribePlayerJoin()
+    props.requestMessagingPermission()
+    props.subscribeGameStart()
+    props.addPlayerForMatch()
+    
+    return props.unsubscribeOpenMatchUpdates
+  }, [])
 
   return (
     <Container
       contentContainerStyle={styles.container}
       renderHeader={renderHeader}
     >
-      <PlayerQueue joinedPlayers={players} maxPlayers={5} showTitle />
+      <PlayerQueue joinedPlayers={props.players} maxPlayers={props.maxPlayers} showTitle />
 
       <View style={styles.mechanicsContainer}>
         <ListItem
@@ -57,7 +69,7 @@ const Lobby = ({ players, onQuitGame }) => {
           source={images.quitGameButton}
           style={styles.quitGameButton}
           resizeMode="contain"
-          onPress={onQuitGame}
+          onPress={props.quitLobby}
         />
       </View>
     </Container>
@@ -76,7 +88,21 @@ Lobby.propTypes = {
 };
 
 Lobby.defaultProps = {
-  onQuitGame: () => null
+  quitLobby: () => null
 };
 
-export default Lobby;
+const mapStateToProps = (state) => ({
+  players: LobbySelectors.selectPlayers(state),
+  maxPlayers: LobbySelectors.selectMaxPlayers(state)
+})
+ 
+const mapDispatchToProps = (dispatch) => ({
+  addPlayerForMatch: () => dispatch(LobbyActions.addPlayerForMatch()),
+  quitLobby: () => dispatch(LobbyActions.quitOpenMatch()),
+  subscribePlayerJoin: () => dispatch(LobbyActions.subscribePlayerJoin()),
+  unsubscribeOpenMatchUpdates: () => dispatch(LobbyActions.unsubscribeOpenMatchUpdates()),
+  requestMessagingPermission: () => dispatch(MessagingActions.requestAndroidPermission()),
+  subscribeGameStart: () =>  dispatch(MessagingActions.subscribeGameStartMessage()),
+})
+ 
+export default connect(mapStateToProps, mapDispatchToProps)(Lobby)

@@ -103,7 +103,7 @@ const songs = [
   {
     title: 'When a Man Loves a Woman',
     singer: 'Michael Bolton'
-  }
+  },
 ];
 
 export default { user, players, playersInGame, scenario, songs };

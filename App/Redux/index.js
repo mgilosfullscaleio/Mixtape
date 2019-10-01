@@ -11,7 +11,10 @@ export const reducers = combineReducers({
   search: require('./SearchRedux').reducer,
 
   gameplay: require('./GameplayRedux').reducer,
+  lobby: require('./LobbyRedux').reducer,
   auth: require('./AuthRedux').reducer,
+  user: require('./UserRedux').reducer,
+  messaging: require('./MessagingRedux').reducer,
 })
 
 export default () => {
