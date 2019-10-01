@@ -42,7 +42,8 @@ export const INITIAL_STATE = Immutable({
   card: null,
   loading: false,
   error: null,
-  gameId: 'xPKKw5L8avkfjnuWsWhE',
+  gameId: 'ymuEdpZCpQTFLjWUbj5h',
+  gameStart: 0,
   searchedSongs: [],
 })
 
@@ -75,7 +76,11 @@ export const saveGameId = (state, { gameId }) =>
   state.merge({ gameId })
 
 export const saveGameInfo = (state, { gameInfo }) =>
-  state.merge({ round: gameInfo.currentRound, players: gameInfo.players })
+  state.merge({ 
+    round: gameInfo.currentRound, 
+    players: gameInfo.players,
+    gameStart: gameInfo.created
+  })
 
 export const saveGameUpdate = (state, { gameUpdate }) =>
   state.merge({ card: gameUpdate.card, })

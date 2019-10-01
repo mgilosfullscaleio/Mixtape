@@ -59,7 +59,12 @@ const getGameplayInfo = gameId =>
     .collection(`card_games/${gameId}/gameplay`)
     .doc('info')
     .get()
-    .then(docs => docs.data())
+    .then(docs => 
+      ({
+        ...docs.data(),
+        created: docs.data().created.toDate().toISOString() //convert it to a normal date object
+      })
+    )
     .catch(error => Result.Error(`Error with gameId ${gameId}\n${error}`))
 
 const gameplayObserver = async (emitter, gameId, userId, currentRound) => {
