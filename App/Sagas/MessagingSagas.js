@@ -23,10 +23,9 @@ const requestPermission = () =>
     .messaging()
     .hasPermission()
     .then(enabled => {
-      return (enabled) 
-        ? Result.Ok(true)
-          : firebase.messaging().requestPermission()
+      return (enabled) || firebase.messaging().requestPermission()
     })
+    .then(granted => Result.Ok(granted))
     .catch(e => Result.Error(e))
 
 export function * generateToken (action) {
@@ -71,6 +70,7 @@ export function * subscribeGameStart (action) {
   const messageChannel = yield call(onMessageReceived, firebase.messaging())
 
   yield takeEvery(messageChannel, function* (message) {
+    console.tron.log(message)
     yield put(LobbyActions.unsubscribeOpenMatchUpdates())
     yield put(GameplayActions.subscribeToGameWithId('ovs28CVpkYZtCUIE0i0S'))
     yield put(NavigationActions.navigate({ routeName: 'Gameplay' }))
