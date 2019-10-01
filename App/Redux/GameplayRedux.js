@@ -39,7 +39,7 @@ export const INITIAL_STATE = Immutable({
   round: 2,
   players: [],
   card: null,
-  loading: null,
+  loading: false,
   error: null,
   gameId: 'xPKKw5L8avkfjnuWsWhE',
   searchedSongs: [],
