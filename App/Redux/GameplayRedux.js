@@ -43,7 +43,7 @@ export const INITIAL_STATE = Immutable({
   loading: false,
   error: null,
   gameId: 'ymuEdpZCpQTFLjWUbj5h',
-  gameStart: 0,
+  gameStart: null,  //date ISOString
   searchedSongs: [],
 })
 
