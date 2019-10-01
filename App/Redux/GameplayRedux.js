@@ -26,10 +26,19 @@ export const GameplayTypes = Types
 export default Creators
 
 /* ------------- Initial State ------------- */
+/*
+Card {
+  content, title, id
+}
 
+players [
+  { fcmToken, id, name, profileImage, tapes }
+]
+*/
 export const INITIAL_STATE = Immutable({
   round: 2,
   players: [],
+  card: null,
   loading: null,
   error: null,
   gameId: 'xPKKw5L8avkfjnuWsWhE',
@@ -63,7 +72,7 @@ export const saveGameId = (state, { gameId }) =>
   state.merge({ gameId })
 
 export const saveGameInfo = (state, { gameInfo }) =>
-  state.merge({ round: gameInfo.currentRound, players: gameInfo.players })
+  state.merge({ round: gameInfo.currentRound, players: gameInfo.players, card: gameInfo.card })
 
 /* ------------- Hookup Reducers To Types ------------- */
 
