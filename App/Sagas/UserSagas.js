@@ -14,6 +14,6 @@ export function * getUserFromSpotifyId (api, action) {
     })
   )
   if (response.getOrElse(""))
-    yield put(NavigationActions.navigate({ routeName: 'Gameplay' }))
+    yield put(NavigationActions.navigate({ routeName: 'Home' }))
 }
 
