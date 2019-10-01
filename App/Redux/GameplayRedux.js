@@ -13,7 +13,7 @@ const { Types, Creators } = createActions({
   searchedSongsSuccess: ['searchedSongs'],
   saveGameInfo: ['gameInfo'],
   saveGameUpdate: ['gameUpdate'],
-
+  setTimerTick: ['timerTick'],
   //saga trigger
   subscribeGameplay: null,
   saveSongSelection: ['playerId', 'song'],
@@ -42,8 +42,10 @@ export const INITIAL_STATE = Immutable({
   card: null,
   loading: false,
   error: null,
-  gameId: 'xPKKw5L8avkfjnuWsWhE',
+  gameId: 'ymuEdpZCpQTFLjWUbj5h',
+  gameStart: null,  //date ISOString
   searchedSongs: [],
+  timerTick: 0
 })
 
 /* ------------- Selectors ------------- */
@@ -54,7 +56,8 @@ export const GameplaySelectors = {
   isLoading: state => state.gameplay.loading,
   selectGameId: state => state.gameplay.gameId,
   selectCardContent: state => state.gameplay.card.content,
-  selectCardTitle: state => state.gameplay.card.title
+  selectCardTitle: state => state.gameplay.card.title,
+  selectTimerTick: state => state.gameplay.timerTick
 }
 
 /* ------------- Reducers ------------- */
@@ -75,10 +78,17 @@ export const saveGameId = (state, { gameId }) =>
   state.merge({ gameId })
 
 export const saveGameInfo = (state, { gameInfo }) =>
-  state.merge({ round: gameInfo.currentRound, players: gameInfo.players })
+  state.merge({ 
+    round: gameInfo.currentRound, 
+    players: gameInfo.players,
+    gameStart: gameInfo.created
+  })
 
 export const saveGameUpdate = (state, { gameUpdate }) =>
   state.merge({ card: gameUpdate.card, })
+
+export const setTimerTick = (state, { timerTick }) =>
+  state.merge({ timerTick })
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -89,5 +99,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SEARCHED_SONGS_SUCCESS]: searchedSongsSuccess,
   [Types.SAVE_GAME_ID]: saveGameId,
   [Types.SAVE_GAME_INFO]: saveGameInfo,
-  [Types.SAVE_GAME_UPDATE]: saveGameUpdate,
+  [Types.SET_TIMER_TICK]: setTimerTick,
 })

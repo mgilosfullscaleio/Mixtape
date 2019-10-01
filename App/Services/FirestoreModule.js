@@ -27,7 +27,17 @@ const playerJoinObserver = emitter =>
       emitter(docSnapshot.data().players)
     })
 
-const removePlayerFromOpenMatch = () => Promise.resolve(Result.Ok(true))
+const removePlayerFromOpenMatch = user => {//Promise.resolve(Result.Ok(true))
+  console.tron.log('removePlayerFromOpenMatch', user)
+  firestore
+    .collection(`openmatch`)
+    .doc('lobby')
+    .set({ 
+      players: FieldValue.arrayRemove(user)
+    }, { merge: true })
+    .then(() => Promise.resolve(Result.Ok(true)))
+    .catch(e => Promise.resolve(Result.Error(e)))
+}
 
 const createUser = info => {
 	const ref = firestore.collection(USER).doc()
@@ -49,7 +59,12 @@ const getGameplayInfo = gameId =>
     .collection(`card_games/${gameId}/gameplay`)
     .doc('info')
     .get()
-    .then(docs => docs.data())
+    .then(docs => 
+      ({
+        ...docs.data(),
+        created: docs.data().created.toDate().toISOString() //convert it to a normal date object
+      })
+    )
     .catch(error => Result.Error(`Error with gameId ${gameId}\n${error}`))
 
 const gameplayObserver = async (emitter, gameId, userId, currentRound) => {
