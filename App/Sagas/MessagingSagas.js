@@ -56,7 +56,7 @@ export function * subscribeGameStart (action) {
   yield takeEvery(notificationChannel, function* (notification) {
     if (notification.title === 'OPEN_MATCH') {
       yield put(LobbyActions.unsubscribeOpenMatchUpdates())
-      yield put(GameplayActions.subscribeToGameWithId(notification.body))
+      yield put(GameplayActions.saveGameId(notification.body))
       yield put(NavigationActions.navigate({ routeName: 'Gameplay' }))
     }
   })
@@ -72,7 +72,7 @@ export function * subscribeGameStart (action) {
   yield takeEvery(messageChannel, function* (message) {
     console.tron.log(message)
     yield put(LobbyActions.unsubscribeOpenMatchUpdates())
-    yield put(GameplayActions.subscribeToGameWithId('ovs28CVpkYZtCUIE0i0S'))
+    yield put(GameplayActions.saveGameId('ovs28CVpkYZtCUIE0i0S'))
     yield put(NavigationActions.navigate({ routeName: 'Gameplay' }))
   })
 

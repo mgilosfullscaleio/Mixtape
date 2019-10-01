@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 
@@ -10,6 +10,12 @@ import GameplayActions, { GameplaySelectors } from '../../../../../Redux/Gamepla
 const SongSelectionContainer = (props) => {
   const [submittedSong, setSubmittedSong] = useState();
   const [selectedSong, setSelectedSong] = useState();
+
+  useEffect(() => {
+    props.subscribeGameplayUpdates()
+    
+    return props.unsubscribeGameplayUpdates
+  }, [])
 
   const handlePlaySong = song => {
     console.log('play song:', song);
@@ -62,7 +68,9 @@ const mapStateToProps = (state) => ({
  
 const mapDispatchToProps = (dispatch) => ({
   //isUserInMatch: playerId => dispatch(LobbyActions.fetchUserInOpenMatch(playerId))
-  searchSong: (keyword, limit) => dispatch(GameplayActions.searchSong(keyword, limit))
+  searchSong: (keyword, limit) => dispatch(GameplayActions.searchSong(keyword, limit)),
+  subscribeGameplayUpdates: () => dispatch(GameplayActions.subscribeGameplayUpdates()),
+  unsubscribeGameplayUpdates: () => dispatch(GameplayActions.unsubscribeGameplayUpdates()),
 })
  
 export default connect(mapStateToProps, mapDispatchToProps)(SongSelectionContainer)

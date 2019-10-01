@@ -44,6 +44,32 @@ const createUser = info => {
 		.catch(e => Result.Error(e))
 }
 
+const getGameplayInfo = gameId =>
+  firestore
+    .collection(`card_games/${gameId}/gameplay`)
+    .doc('info')
+    .get()
+    .then(docs => docs.data())
+    .catch(error => Result.Error(`Error with gameId ${gameId}\n${error}`))
+
+const gameplayObserver = async (emitter, gameId, userId, currentRound) => {
+  const roundRef = firestore
+    .collection(`card_games/${gameId}/gameplay`)
+    .doc(`round${currentRound}`)
+
+  //update round by adding ourself to the players
+  await roundRef.set({
+    players: {
+      [`${userId}`]: {}
+    }
+  }, {merge: true})
+
+  return roundRef
+    .onSnapshot(snapshot  => {
+      emitter(snapshot.data())
+    })
+}
+
 // createUser({
 // 	name: `john${Date.now()}`
 // })
@@ -94,5 +120,8 @@ export default {
 
   addPlayerToOpenMatch,
   playerJoinObserver,
-  removePlayerFromOpenMatch
+  removePlayerFromOpenMatch,
+
+  getGameplayInfo,
+  gameplayObserver
 }
