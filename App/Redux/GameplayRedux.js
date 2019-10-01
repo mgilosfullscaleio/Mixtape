@@ -40,6 +40,7 @@ export const GameplaySelectors = {
   getRound: state => state.gameplay.round,
   searchedSongs: state => state.gameplay.searchedSongs,
   isLoading: state => state.gameplay.loading,
+  selectGameId: state => state.gameplay.gameId
 }
 
 /* ------------- Reducers ------------- */

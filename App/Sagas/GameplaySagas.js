@@ -1,8 +1,9 @@
-import { call, put, select, takeEvery } from 'redux-saga/effects'
+import { call, put, select, takeEvery, take } from 'redux-saga/effects'
 import GameplayActions, { GameplaySelectors, GameplayTypes } from '../Redux/GameplayRedux'
 import Spotify from 'rn-spotify-sdk'
 import Result from 'folktale/result'
 import { UserSelectors } from '../Redux/UserRedux'
+import { eventChannel } from 'redux-saga'
 
 const onGameplayChannel = (firestore, gameId, userId, currentRound) =>
   eventChannel(emitter => {
@@ -12,14 +13,16 @@ const onGameplayChannel = (firestore, gameId, userId, currentRound) =>
   })
 
 export function * subscribeGameplay(firestore, action) {
-  const gameId = yield select(GameplaySelectors.selectGameId())
-  const userId = yield select(UserSelectors.selectUserId())
+  const gameId = yield select(GameplaySelectors.selectGameId)
+  const userId = yield select(UserSelectors.selectUserId)
 
   //check currentRound of the game
-  const currentRound = firestore.getCurrentRoundFromGameId(gameId)
-
+  const currentRound = yield call(firestore.getCurrentRoundFromGameId, gameId)
+console.tron.log('subscribeGameplay', gameId, userId, currentRound)
   //subscribe to gameplay of round
   if (currentRound <= 5) {
+    // const players = yield call(firestore.getPlayersFromGameId, gameId)
+    
     const channel = yield call(onGameplayChannel, firestore, gameId, userId, currentRound)
     yield takeEvery(channel, function * (docUpdate) {
       console.tron.log('gameplay docUpdate', docUpdate)
