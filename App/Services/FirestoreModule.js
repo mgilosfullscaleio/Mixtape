@@ -55,7 +55,7 @@ const getGameplayInfo = gameId =>
 const gameplayObserver = async (emitter, gameId, userId, currentRound) => {
   const roundRef = firestore
     .collection(`card_games/${gameId}/gameplay`)
-    .doc(currentRound.toString())
+    .doc(`round${currentRound}`)
 
   //update round by adding ourself to the players
   await roundRef.set({
