@@ -7,8 +7,7 @@ const { Types, Creators } = createActions({
   gameplayRequest: ['data'],
   gameplaySuccess: ['payload'],
   gameplayFailure: null,
-
-  subscribeToGameWithId: ['gameId'],
+  saveGameId: ['gameId'],
   saveSongSelectionSuccess: ['song'],
   voteRoundWinnerSuccess: null,
   searchedSongsSuccess: ['searchedSongs'],
@@ -68,6 +67,9 @@ export const voteRoundWinnerSuccess = state =>
 export const searchedSongsSuccess = (state, { searchedSongs }) =>
   state.merge({ fetching: false, error: false, searchedSongs })
 
+export const saveGameId = (state, { gameId }) =>
+  state.merge({ gameId })
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -77,4 +79,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SAVE_SONG_SELECTION_SUCCESS]: saveSongSelectionSuccess,
   [Types.VOTE_ROUND_WINNER_SUCCESS]: voteRoundWinnerSuccess,
   [Types.SEARCHED_SONGS_SUCCESS]: searchedSongsSuccess,
+  [Types.SEARCHED_SONGS_SUCCESS]: searchedSongsSuccess,
+  [Types.SAVE_GAME_ID]: saveGameId,
 })
