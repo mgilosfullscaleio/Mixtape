@@ -99,5 +99,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SEARCHED_SONGS_SUCCESS]: searchedSongsSuccess,
   [Types.SAVE_GAME_ID]: saveGameId,
   [Types.SAVE_GAME_INFO]: saveGameInfo,
+  [Types.SAVE_GAME_UPDATE]: saveGameUpdate,
   [Types.SET_TIMER_TICK]: setTimerTick,
 })
