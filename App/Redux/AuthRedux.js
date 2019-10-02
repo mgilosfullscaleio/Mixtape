@@ -21,7 +21,7 @@ export default Creators
 
 export const INITIAL_STATE = Immutable({
   isAuthenticated: false,
-  loading: true,
+  loading: false,
   error: null
 })
 
