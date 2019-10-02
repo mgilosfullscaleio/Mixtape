@@ -85,6 +85,18 @@ const gameplayObserver = async (emitter, gameId, userId, currentRound) => {
     })
 }
 
+const updateSongSelection = (gameId, currentRound, userId, song) =>
+  firestore
+    .collection(`card_games/${gameId}/gameplay`)
+    .doc(`round${currentRound}`)
+    .set({
+      players: {
+        [`${userId}`]: song
+      }
+    }, {merge: true})
+    .then(() => Result.Ok(song))
+    .catch(e => Result.Error(e))
+
 // createUser({
 // 	name: `john${Date.now()}`
 // })
@@ -135,5 +147,6 @@ export default {
   removePlayerFromOpenMatch,
 
   getGameplayInfo,
-  gameplayObserver
+  gameplayObserver,
+  updateSongSelection
 }
