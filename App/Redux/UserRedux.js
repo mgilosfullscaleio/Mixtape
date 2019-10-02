@@ -65,7 +65,7 @@ export const UserSelectors = {
 const createMatchData = userData => ({
   id: userData.id,
   name: userData.name,
-  profileImage: userData.profileImage,
+  profileImage: userData.avatar,
   tapes: userData.tapes
 })
 
