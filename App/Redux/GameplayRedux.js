@@ -37,7 +37,7 @@ players [
 ]
 */
 export const INITIAL_STATE = Immutable({
-  round: 2,
+  round: 1,
   players: [],
   card: null,
   loading: false,
