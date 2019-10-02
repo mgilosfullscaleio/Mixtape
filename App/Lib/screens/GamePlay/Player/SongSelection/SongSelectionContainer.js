@@ -32,6 +32,8 @@ const SongSelectionContainer = (props) => {
 
   const handleSeachTextChange = keyword => props.searchSong(keyword, 20)
 
+  //const handleCardScenario = () => props.selectCardContent()
+
   return (
     <SongSelection
       players={mockData.playersInGame}
@@ -52,18 +54,21 @@ const SongSelectionContainer = (props) => {
 SongSelectionContainer.propTypes = {
   onLogin: PropTypes.func,
   searchSong: PropTypes.func,
-  isLoggingIn: PropTypes.bool
+  selectCardContent: PropTypes.func,
+  isLoggingIn: PropTypes.bool,
 };
 
 SongSelectionContainer.defaultProps = {
   onLogin: () => null,
   searchSong: () => null,
-  isLoggingIn: false
+  isLoggingIn: false,
+  selectCardContent: {},
 };
 
 const mapStateToProps = (state) => ({
   //isLoading: AuthSelectors.isLoading(state)
-  searchedSongs: GameplaySelectors.searchedSongs(state)
+  searchedSongs: GameplaySelectors.searchedSongs(state),
+  //selectCardContent: GameplaySelectors.selectCardContent(state)
 })
  
 const mapDispatchToProps = (dispatch) => ({
