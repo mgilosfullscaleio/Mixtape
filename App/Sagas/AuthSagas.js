@@ -1,4 +1,4 @@
-import { call, put } from 'redux-saga/effects'
+import { call, put, all } from 'redux-saga/effects'
 import AuthActions from '../Redux/AuthRedux'
 import UserActions from '../Redux/UserRedux'
 import Result from 'folktale/result'
@@ -52,12 +52,12 @@ const doLogin = async (shouldRedirect) => {
     try {
       const user = await Spotify.getMe()
       return Promise.resolve(Result.Ok(user))
-    }
-    catch (error) {
+    } catch (error) {
       Spotify.logout()
       return Promise.resolve(Result.Error(error))
     }
   }
+
   return Promise.resolve(Result.Error('Wrong credentials'))
 }
 
@@ -66,28 +66,27 @@ const loginSpotifyWithOptions = async () => {
   return doLogin(isLogin) 
 }
 
-const navigationToHome = async (shouldRedirect) => {
-  return doLogin(shouldRedirect)
-}
-
 export function * initializeSpotify (api, action) {
   yield put(AuthActions.loadingRequest())
 
   const response = yield call(initializeSpotifyIfNeeded)
 
-  yield put(
-    response.matchWith({
-      Ok: ({ value }) => AuthActions.redirectToHome(value), 
-      Error: ({ value }) => AuthActions.spotifyAuthFailure(value)
-    })
-  )
+  all([
+    yield put(AuthActions.spotifyAuthSuccess(true)),
+    yield put(
+      response.matchWith({
+        Ok: ({ value }) => AuthActions.redirectToHome(value), 
+        Error: ({ value }) => AuthActions.spotifyAuthFailure(value)
+      })
+    )
+  ])
 }
 
 export function * redirectToHome (action) {
   const { isLoggedIn } = action
   yield put(AuthActions.loadingRequest())
   
-  const response = yield call(navigationToHome, isLoggedIn)
+  const response = yield call(doLogin, isLoggedIn)
 
   yield put(
     response.matchWith({
