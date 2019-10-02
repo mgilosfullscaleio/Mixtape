@@ -82,47 +82,6 @@ const updateSongSelection = (gameId, currentRound, userId, song) =>
     .then(() => Result.Ok(song))
     .catch(e => Result.Error(e))
 
-// createUser({
-// 	name: `john${Date.now()}`
-// })
-
-/*
-const findUser = id => {
-  return firebase
-    .firestore()
-    .collection('users')
-    .where('social.spotify.id', '==', id)
-		.get()
-		.then(snapshot => snapshot.docs)
-		.then(docs => docs.map(doc => doc.data()))
-    .catch(error => Result.Error('Cant find user with id'))
-}
-
-const updateUser = user =>
-  firestore
-    .collection('users')
-    .doc(user.id)
-    .update(user)
-    .then(() => Result.Ok(user))
-    .catch(error => Result.Error(`Error updating bet\n${error}`))
-
-const deleteUser = user =>
-  firestore
-    .collection('users')
-    .doc(user.id)
-    .delete()
-    .then(() => Result.Ok(user))
-		.catch(error => Result.Error(`Error deleting bet\n${error}`))
-
-const getUsers = () => 
-  firestore
-    .collection('users')
-    .get()
-    .then(snapshot => snapshot.docs)
-    .then(docs => docs.map(doc => doc.data()))
-    .then(docs => Result.Ok(docs))
-*/
-
 const findUserWithSpotifyId = spotifyId =>
   firestore
     .collection(USER)
@@ -137,34 +96,6 @@ const findUserWithSpotifyId = spotifyId =>
     )
     .catch(error => Result.Error(error))
 
-/*
-USER
-{
-  id
-  name
-  email
-  coins
-  points
-  musicSrc
-  avatar
-  address: {
-    geopoint
-    location
-  }
-  social: {
-    facebook: {
-      friends: [] //facebookId
-      profilePhoto
-      facebookId
-    }
-    spotify: {
-      id
-      profilePhoto
-    }
-  }
-  created
-}
-*/
 const createUserFromSpotifyAccount = info => {
   const ref = firestore.collection(USER).doc()
   const userData = {
@@ -181,14 +112,10 @@ const createUserFromSpotifyAccount = info => {
     created: Timestamp.now()
   }
 
-  console.tron.log('createUser', userData)
-
   return ref.set(userData)
     .then(() => Result.Ok(userData))
     .catch(e => Result.Error(e))
 }
-
-  // Promise.resolve(Result.Ok(require('../Fixtures/user.json')))
 
 export default {
   signIn,
