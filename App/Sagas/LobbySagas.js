@@ -39,7 +39,7 @@ export function * subscribePlayerJoin (firestore, action) {
 export function * addPlayerInMatch (api, action) {
   const userMatchData = yield select(UserSelectors.selectUserMatchData)
   const fcmToken = yield select(MessagingSelectors.selectToken)
-  const userData = {...userMatchData, fcmToken, id: Date.now().toString()}
+  const userData = {...userMatchData, fcmToken}
 
   yield call(api.addPlayerToOpenMatch, userData)
 }
