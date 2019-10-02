@@ -2,6 +2,7 @@ import { call, put } from 'redux-saga/effects'
 import UserActions from '../Redux/UserRedux'
 // import { UserSelectors } from '../Redux/UserRedux'
 import { NavigationActions } from 'react-navigation'
+import { screens } from '../Lib/constants'
 
 export function * getUserFromSpotifyId (api, action) {
   const { spotifyId } = action
@@ -14,6 +15,6 @@ export function * getUserFromSpotifyId (api, action) {
     })
   )
   if (response.getOrElse(""))
-    yield put(NavigationActions.navigate({ routeName: 'Gameplay' }))
+    yield put(NavigationActions.navigate({ routeName: screens.root.main }))
 }
 

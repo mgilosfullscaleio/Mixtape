@@ -6,6 +6,7 @@ import Result from 'folktale/result'
 import { eventChannel } from 'redux-saga'
 import { NavigationActions } from 'react-navigation'
 import GameplayActions from '../Redux/GameplayRedux'
+import { screens } from '../Lib/constants'
 
 //TODO consider extracting api for firebase messaging
 const getToken = () =>
@@ -23,10 +24,9 @@ const requestPermission = () =>
     .messaging()
     .hasPermission()
     .then(enabled => {
-      return (enabled) 
-        ? Result.Ok(true)
-          : firebase.messaging().requestPermission()
+      return (enabled) || firebase.messaging().requestPermission()
     })
+    .then(granted => Result.Ok(granted))
     .catch(e => Result.Error(e))
 
 export function * generateToken (action) {
@@ -58,7 +58,7 @@ export function * subscribeGameStart (action) {
     if (notification.title === 'OPEN_MATCH') {
       yield put(LobbyActions.unsubscribeOpenMatchUpdates())
       yield put(GameplayActions.saveGameId(notification.body))
-      yield put(NavigationActions.navigate({ routeName: 'Gameplay' }))
+      yield put(NavigationActions.navigate({ routeName: screens.root.gamePlay }))
     }
   })
 
@@ -72,8 +72,8 @@ export function * subscribeGameStart (action) {
 
   yield takeEvery(messageChannel, function* (message) {
     yield put(LobbyActions.unsubscribeOpenMatchUpdates())
-    yield put(GameplayActions.saveGameId('ovs28CVpkYZtCUIE0i0S'))
-    yield put(NavigationActions.navigate({ routeName: 'Gameplay' }))
+    yield put(GameplayActions.saveGameId(message.data.gameId))
+    yield put(NavigationActions.navigate({ routeName: screens.root.gamePlay }))
   })
 
   yield take(LobbyTypes.UNSUBSCRIBE_OPEN_MATCH_UPDATES)
