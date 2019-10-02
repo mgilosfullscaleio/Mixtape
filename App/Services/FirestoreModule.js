@@ -103,7 +103,7 @@ const createUserFromSpotifyAccount = info => {
     name: info.display_name,
     coins: 10,
     points: 10,
-    avatar: null,
+    avatar: info.images && info.images[0].url,
     social: {
       spotify: {
         id: info.id
