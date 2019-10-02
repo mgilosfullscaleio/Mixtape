@@ -6,10 +6,13 @@ import Immutable from 'seamless-immutable'
 const { Types, Creators } = createActions({
   userSuccess: ['data'],
   userFailure: ['error'],
+  createUserSuccess: ['user'],
+  createUserFailure: ['error'],
   loadingRequest: null,
   
   //saga triggers
-  userRequest: ['spotifyId'],
+  userRequest: ['spotifyAcc'],
+  createUser: ['spotifyAcc']
 })
 
 export const UserTypes = Types
@@ -62,7 +65,7 @@ export const UserSelectors = {
 const createMatchData = userData => ({
   id: userData.id,
   name: userData.name,
-  profileImage: userData.profileImage,
+  profileImage: userData.avatar,
   tapes: userData.tapes
 })
 
@@ -77,10 +80,15 @@ export const success = (state, { data }) =>
 export const failure = (state, { error }) =>
   state.merge({ loading: false, error })
 
+export const createUserSuccess = (state, { data }) =>
+  state.merge({ loading: false, error: null, data })
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.USER_SUCCESS]: success,
   [Types.USER_FAILURE]: failure,
   [Types.LOADING_REQUEST]: loadingRequest,
+  [Types.CREATE_USER_SUCCESS]: createUserSuccess,
+  [Types.CREATE_USER_FAILURE]: failure,
 })

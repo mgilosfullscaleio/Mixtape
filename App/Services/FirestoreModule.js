@@ -1,6 +1,6 @@
 import firebase from 'react-native-firebase'
 import Result from 'folktale/result'
-
+import { head, isNil } from 'ramda'
 const firestore = firebase.firestore()
 const auth = firebase.auth()
 const Timestamp = firebase.firestore.Timestamp
@@ -39,21 +39,6 @@ const removePlayerFromOpenMatch = user => {//Promise.resolve(Result.Ok(true))
     .catch(e => Promise.resolve(Result.Error(e)))
 }
 
-const createUser = info => {
-	const ref = firestore.collection(USER).doc()
-	const userData = {
-		id: ref.id,
-		created: Timestamp.now(),
-		...info,
-	}
-
-	console.tron.log('createUser', userData)
-
-	return ref.set(userData)
-		.then(() => Result.Ok(userData))
-		.catch(e => Result.Error(e))
-}
-
 const getGameplayInfo = gameId =>
   firestore
     .collection(`card_games/${gameId}/gameplay`)
@@ -85,58 +70,63 @@ const gameplayObserver = async (emitter, gameId, userId, currentRound) => {
     })
 }
 
-// createUser({
-// 	name: `john${Date.now()}`
-// })
+const updateSongSelection = (gameId, currentRound, userId, song) =>
+  firestore
+    .collection(`card_games/${gameId}/gameplay`)
+    .doc(`round${currentRound}`)
+    .set({
+      players: {
+        [`${userId}`]: song
+      }
+    }, {merge: true})
+    .then(() => Result.Ok(song))
+    .catch(e => Result.Error(e))
 
-/*
-const findUser = id => {
-  return firebase
-    .firestore()
-    .collection('users')
-    .where('social.spotify.id', '==', id)
+const findUserWithSpotifyId = spotifyId =>
+  firestore
+    .collection(USER)
+    .where('social.spotify.id', '==', spotifyId)
 		.get()
-		.then(snapshot => snapshot.docs)
-		.then(docs => docs.map(doc => doc.data()))
-    .catch(error => Result.Error('Cant find user with id'))
-}
-
-const updateUser = user =>
-  firestore
-    .collection('users')
-    .doc(user.id)
-    .update(user)
-    .then(() => Result.Ok(user))
-    .catch(error => Result.Error(`Error updating bet\n${error}`))
-
-const deleteUser = user =>
-  firestore
-    .collection('users')
-    .doc(user.id)
-    .delete()
-    .then(() => Result.Ok(user))
-		.catch(error => Result.Error(`Error deleting bet\n${error}`))
-
-const getUsers = () => 
-  firestore
-    .collection('users')
-    .get()
     .then(snapshot => snapshot.docs)
-    .then(docs => docs.map(doc => doc.data()))
-    .then(docs => Result.Ok(docs))
-*/
+    .then(head)
+    .then(doc =>
+      isNil(doc)
+        ? Result.Error('No user registered with Spotify Id') 
+          : Result.Ok(doc.data())
+    )
+    .catch(error => Result.Error(error))
 
-const getUser = spotifyId => Promise.resolve(Result.Ok(require('../Fixtures/user.json')))
+const createUserFromSpotifyAccount = info => {
+  const ref = firestore.collection(USER).doc()
+  const userData = {
+    id: ref.id,
+    name: info.display_name,
+    coins: 10,
+    points: 10,
+    avatar: info.images && info.images[0].url,
+    social: {
+      spotify: {
+        id: info.id
+      }
+    },
+    created: Timestamp.now()
+  }
+
+  return ref.set(userData)
+    .then(() => Result.Ok(userData))
+    .catch(e => Result.Error(e))
+}
 
 export default {
   signIn,
-  createUser,
-  getUser,
+  createUserFromSpotifyAccount,
+  findUserWithSpotifyId,
 
   addPlayerToOpenMatch,
   playerJoinObserver,
   removePlayerFromOpenMatch,
 
   getGameplayInfo,
-  gameplayObserver
+  gameplayObserver,
+  updateSongSelection
 }
