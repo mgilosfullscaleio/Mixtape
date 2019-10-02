@@ -37,7 +37,7 @@ players [
 ]
 */
 export const INITIAL_STATE = Immutable({
-  round: 2,
+  round: 1,
   players: [],
   card: null,
   loading: false,
@@ -99,5 +99,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SEARCHED_SONGS_SUCCESS]: searchedSongsSuccess,
   [Types.SAVE_GAME_ID]: saveGameId,
   [Types.SAVE_GAME_INFO]: saveGameInfo,
+  [Types.SAVE_GAME_UPDATE]: saveGameUpdate,
   [Types.SET_TIMER_TICK]: setTimerTick,
 })

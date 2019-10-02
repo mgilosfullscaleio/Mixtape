@@ -4,7 +4,7 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  spotifyAuthSuccess: ['payload'],
+  spotifyAuthSuccess: ['isAuthenticated'],
   spotifyAuthFailure: ['error'],
   redirectToHomeFailure: ['error'],
   loadingRequest: null,
@@ -21,7 +21,7 @@ export default Creators
 
 export const INITIAL_STATE = Immutable({
   isAuthenticated: false,
-  loading: true,
+  loading: false,
   error: null
 })
 
