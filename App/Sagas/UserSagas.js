@@ -15,7 +15,8 @@ export function * getUserFromSpotify (api, action) {
     })
   )
 
-  if (response.getOrElse(""))
+  const user = response.getOrElse(null)
+  if (user && user.id)
     yield put(NavigationActions.navigate({ routeName: screens.root.main }))
 }
 
@@ -30,7 +31,8 @@ export function * createUserFromSpotify (api, action) {
     })
   )
 
-  if (response.getOrElse(""))
+  const user = response.getOrElse(null)
+  if (user && user.id)
     yield put(NavigationActions.navigate({ routeName: screens.root.main }))
 }
 
