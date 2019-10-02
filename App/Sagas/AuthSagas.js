@@ -44,18 +44,14 @@ const initializeSpotifyIfNeeded = () => {
     )
     .then(init => Spotify.isLoggedInAsync() )
     .then(isLoggedIn => Result.Ok(isLoggedIn))
-    .catch(error => {
-      console.tron.log('initializeSpotifyIfNeeded Error', error);
-      return Result.Error(error);
-    });
+    .catch(error => Result.Error(error));
 }
 
 const doLogin = async (shouldRedirect) => {
   if (shouldRedirect) {
     try {
       const user = await Spotify.getMe()
-      console.tron.log(user)
-      return Promise.resolve(Result.Ok(user.id)) 
+      return Promise.resolve(Result.Ok(user))
     }
     catch (error) {
       Spotify.logout()

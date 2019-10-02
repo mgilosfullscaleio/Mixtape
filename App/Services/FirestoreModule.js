@@ -1,6 +1,6 @@
 import firebase from 'react-native-firebase'
 import Result from 'folktale/result'
-
+import { head, isNil } from 'ramda'
 const firestore = firebase.firestore()
 const auth = firebase.auth()
 const Timestamp = firebase.firestore.Timestamp
@@ -37,21 +37,6 @@ const removePlayerFromOpenMatch = user => {//Promise.resolve(Result.Ok(true))
     }, { merge: true })
     .then(() => Promise.resolve(Result.Ok(true)))
     .catch(e => Promise.resolve(Result.Error(e)))
-}
-
-const createUser = info => {
-	const ref = firestore.collection(USER).doc()
-	const userData = {
-		id: ref.id,
-		created: Timestamp.now(),
-		...info,
-	}
-
-	console.tron.log('createUser', userData)
-
-	return ref.set(userData)
-		.then(() => Result.Ok(userData))
-		.catch(e => Result.Error(e))
 }
 
 const getGameplayInfo = gameId =>
@@ -138,12 +123,77 @@ const getUsers = () =>
     .then(docs => Result.Ok(docs))
 */
 
-const getUser = spotifyId => Promise.resolve(Result.Ok(require('../Fixtures/user.json')))
+const findUserWithSpotifyId = spotifyId =>
+  firestore
+    .collection(USER)
+    .where('social.spotify.id', '==', spotifyId)
+		.get()
+    .then(snapshot => snapshot.docs)
+    .then(head)
+    .then(doc =>
+      isNil(doc)
+        ? Result.Error('No user registered with Spotify Id') 
+          : Result.Ok(doc.data())
+    )
+    .catch(error => Result.Error(error))
+
+/*
+USER
+{
+  id
+  name
+  email
+  coins
+  points
+  musicSrc
+  avatar
+  address: {
+    geopoint
+    location
+  }
+  social: {
+    facebook: {
+      friends: [] //facebookId
+      profilePhoto
+      facebookId
+    }
+    spotify: {
+      id
+      profilePhoto
+    }
+  }
+  created
+}
+*/
+const createUserFromSpotifyAccount = info => {
+  const ref = firestore.collection(USER).doc()
+  const userData = {
+    id: ref.id,
+    name: info.display_name,
+    coins: 10,
+    points: 10,
+    avatar: null,
+    social: {
+      spotify: {
+        id: info.id
+      }
+    },
+    created: Timestamp.now()
+  }
+
+  console.tron.log('createUser', userData)
+
+  return ref.set(userData)
+    .then(() => Result.Ok(userData))
+    .catch(e => Result.Error(e))
+}
+
+  // Promise.resolve(Result.Ok(require('../Fixtures/user.json')))
 
 export default {
   signIn,
-  createUser,
-  getUser,
+  createUserFromSpotifyAccount,
+  findUserWithSpotifyId,
 
   addPlayerToOpenMatch,
   playerJoinObserver,
