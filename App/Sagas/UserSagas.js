@@ -1,12 +1,13 @@
-import { call, put } from 'redux-saga/effects'
+import { call, put, select, delay } from 'redux-saga/effects'
 import UserActions from '../Redux/UserRedux'
 // import { UserSelectors } from '../Redux/UserRedux'
 import { NavigationActions } from 'react-navigation'
 import { screens } from '../Lib/constants'
+import { GameplaySelectors } from '../Redux/GameplayRedux'
 
-export function * getUserFromSpotify (api, action) {
+export function * getUserFromSpotify (firestore, action) {
   const { spotifyAcc } = action
-  const response = yield call(api.findUserWithSpotifyId, spotifyAcc.id)
+  const response = yield call(firestore.findUserWithSpotifyId, spotifyAcc.id)
   
   yield put(
     response.matchWith({
@@ -15,8 +16,17 @@ export function * getUserFromSpotify (api, action) {
     })
   )
 
+  // yield delay(2000)
+
+  const gameId = yield select(GameplaySelectors.selectGameId)
+  const gameplayInfo = yield call(firestore.getGameplayInfo, gameId)
+  const continueGame = gameplayInfo.currentRound <= 5
+  console.tron.log('gameId', gameId, gameplayInfo)
+  if (continueGame)
+    yield put(NavigationActions.navigate({ routeName: screens.root.gamePlay }))
+
   const user = response.getOrElse(null)
-  if (user && user.id)
+  if (user && user.id && !continueGame)
     yield put(NavigationActions.navigate({ routeName: screens.root.main }))
 }
 
