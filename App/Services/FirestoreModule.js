@@ -39,6 +39,7 @@ const removePlayerFromOpenMatch = user => {//Promise.resolve(Result.Ok(true))
     .catch(e => Promise.resolve(Result.Error(e)))
 }
 
+// TODO this is not returning a Result
 const getGameplayInfo = gameId =>
   firestore
     .collection(`card_games/${gameId}/gameplay`)
@@ -103,7 +104,7 @@ const createUserFromSpotifyAccount = info => {
     name: info.display_name,
     coins: 10,
     points: 10,
-    avatar: info.images && info.images[0].url,
+    avatar: info.images && info.images[0] && info.images[0].url,
     social: {
       spotify: {
         id: info.id
