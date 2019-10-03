@@ -1,9 +1,11 @@
-import { call, put, select, delay } from 'redux-saga/effects'
+import { call, put, select, takeEvery, take } from 'redux-saga/effects'
 import UserActions from '../Redux/UserRedux'
-// import { UserSelectors } from '../Redux/UserRedux'
+import { UserSelectors } from '../Redux/UserRedux'
 import { NavigationActions } from 'react-navigation'
 import { screens } from '../Lib/constants'
-import { GameplaySelectors } from '../Redux/GameplayRedux'
+import { eventChannel } from 'redux-saga'
+import GameplayActions, { GameplaySelectors } from '../Redux/GameplayRedux'
+import LobbyActions, { LobbyTypes } from '../Redux/LobbyRedux'
 
 export function * getUserFromSpotify (firestore, action) {
   const { spotifyAcc } = action
@@ -15,8 +17,6 @@ export function * getUserFromSpotify (firestore, action) {
       Error: ({ value }) => UserActions.createUser(spotifyAcc)
     })
   )
-
-  // yield delay(2000)
 
   const gameId = yield select(GameplaySelectors.selectGameId)
   const gameplayInfo = yield call(firestore.getGameplayInfo, gameId)
@@ -45,4 +45,25 @@ export function * createUserFromSpotify (api, action) {
   if (user && user.id)
     yield put(NavigationActions.navigate({ routeName: screens.root.main }))
 }
+
+export function * subscribeGameStart(firestore, action) {
+  const userId = yield select(UserSelectors.selectUserId)
+  const channel = yield call(onGameStartReceived, firestore, userId)
+
+  yield takeEvery(channel, function* (gameId) {
+    yield put(LobbyActions.unsubscribeOpenMatchUpdates())
+    yield put(GameplayActions.saveGameId(gameId))
+    yield put(NavigationActions.navigate({ routeName: screens.root.gamePlay }))
+  })
+
+  yield take(LobbyTypes.UNSUBSCRIBE_OPEN_MATCH_UPDATES)
+  channel.close()
+}
+
+const onGameStartReceived = (firestore, userId) =>
+  eventChannel(emitter => {
+    const unsubscribe = firestore.userObserver(emitter, userId)
+
+    return () => unsubscribe()
+  })
 

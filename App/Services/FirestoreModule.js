@@ -118,6 +118,17 @@ const createUserFromSpotifyAccount = info => {
     .catch(e => Result.Error(e))
 }
 
+const userObserver = (emitter, userId) =>
+  firestore
+    .collection(USER)
+    .doc(userId)
+    .onSnapshot(docSnapshot => {
+      if (docSnapshot.exists) {
+        const gameId = docSnapshot.data().gameId
+        if (gameId) emitter(gameId)
+      }
+    })
+
 export default {
   signIn,
   createUserFromSpotifyAccount,
@@ -129,5 +140,7 @@ export default {
 
   getGameplayInfo,
   gameplayObserver,
-  updateSongSelection
+  updateSongSelection,
+
+  userObserver
 }

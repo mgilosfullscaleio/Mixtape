@@ -19,9 +19,9 @@ import { MessagingTypes } from '../Redux/MessagingRedux'
 
 import { startup } from './StartupSagas'
 import { getUserAvatar } from './GithubSagas'
-import { quitOpenMatch, subscribePlayerJoin, addPlayerInMatch } from './LobbySagas'
-import { getUserFromSpotify, createUserFromSpotify } from './UserSagas'
-import { generateToken, initiateAndroidPermission, subscribeGameStart } from './MessagingSagas'
+import { quitOpenMatch, subscribePlayerJoin, addPlayerInMatch, subscribeOpenMatch } from './LobbySagas'
+import { getUserFromSpotify, createUserFromSpotify, subscribeGameStart } from './UserSagas'
+import { generateToken, initiateAndroidPermission, subscribeTokenRefresh } from './MessagingSagas'
 import { fetchUserInOpenMatch } from './LobbySagas'
 import { initializeSpotify, loginSpotify, redirectToHome } from './AuthSagas'
 import { subscribeGameplay, saveSongSelection, voteRoundWinner, searchSong } from './GameplaySagas'
@@ -42,8 +42,9 @@ export default function * root () {
 
     takeLatest(LobbyTypes.QUIT_OPEN_MATCH, quitOpenMatch, firestore),
     takeLatest(LobbyTypes.SUBSCRIBE_PLAYER_JOIN, subscribePlayerJoin, firestore),
-    // takeLatest(LobbyTypes.UNSUBSCRIBE_OPEN_MATCH_UPDATES, unsubscribeOpenMatchUpdates),
+    takeLatest(LobbyTypes.SUBSCRIBE_OPEN_MATCH, subscribeOpenMatch),
     takeLatest(LobbyTypes.ADD_PLAYER_FOR_MATCH, addPlayerInMatch, firestore),
+    // takeLatest(LobbyTypes.UNSUBSCRIBE_OPEN_MATCH_UPDATES, unsubscribeOpenMatchUpdates),
 
     takeLatest(AuthTypes.INITIALIZE_SPOTIFY, initializeSpotify),
     takeLatest(AuthTypes.LOGIN_SPOTIFY, loginSpotify),
@@ -51,10 +52,12 @@ export default function * root () {
 
     takeLatest(MessagingTypes.REQUEST_TOKEN, generateToken),
     takeLatest(MessagingTypes.REQUEST_ANDROID_PERMISSION, initiateAndroidPermission),
-    takeLatest(MessagingTypes.SUBSCRIBE_GAME_START_MESSAGE, subscribeGameStart),
+    takeLatest(MessagingTypes.SUBSCRIBE_TOKEN_REFRESH, subscribeTokenRefresh),
+    // takeLatest(MessagingTypes.SUBSCRIBE_GAME_START_MESSAGE, subscribeGameStart, firestore),
 
     takeLatest(UserTypes.USER_REQUEST, getUserFromSpotify, firestore),
     takeLatest(UserTypes.CREATE_USER, createUserFromSpotify, firestore),
+    takeLatest(UserTypes.SUBSCRIBE_GAME_START_MESSAGE, subscribeGameStart, firestore),
 
     //GAME PLAY FUNCTIONS
     takeLatest(GameplayTypes.SUBSCRIBE_GAMEPLAY, subscribeGameplay, firestore),

@@ -1,13 +1,14 @@
 import { call, put, take, takeEvery, select } from 'redux-saga/effects'
-import Actions, { LobbyTypes } from '../Redux/LobbyRedux'
+import LobbyActions, { LobbyTypes } from '../Redux/LobbyRedux'
 import { NavigationActions } from 'react-navigation'
 import { eventChannel } from 'redux-saga'
-import { UserSelectors } from '../Redux/UserRedux'
+import UserActions, { UserSelectors } from '../Redux/UserRedux'
+import MessagingActions from '../Redux/MessagingRedux'
 import { MessagingSelectors } from '../Redux/MessagingRedux'
 import { screens } from '../Lib/constants'
 
 export function * quitOpenMatch (api, action) {
-  yield put(Actions.unsubscribeOpenMatchUpdates())
+  yield put(LobbyActions.unsubscribeOpenMatchUpdates())
 
   const userMatchData = yield select(UserSelectors.selectUserMatchData)
   const fcmToken = yield select(MessagingSelectors.selectToken)
@@ -29,7 +30,7 @@ export function * subscribePlayerJoin (firestore, action) {
   const channel = yield call(onPlayerJoinChannel, firestore)
 
   yield takeEvery(channel, function * (players) {
-    yield put(Actions.playerJoinMatch(players))
+    yield put(LobbyActions.playerJoinMatch(players))
   })
 
   yield take(LobbyTypes.UNSUBSCRIBE_OPEN_MATCH_UPDATES)
@@ -42,4 +43,12 @@ export function * addPlayerInMatch (api, action) {
   const userData = {...userMatchData, fcmToken}
 
   yield call(api.addPlayerToOpenMatch, userData)
+}
+
+export function * subscribeOpenMatch (api, action) {
+  yield put(LobbyActions.addPlayerForMatch())
+  yield put(LobbyActions.subscribePlayerJoin())
+  yield put(MessagingActions.requestAndroidPermission())
+  yield put(MessagingActions.subscribeGameStartMessage())
+  yield put(UserActions.subscribeGameStartMessage())
 }
