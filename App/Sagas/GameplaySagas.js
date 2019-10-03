@@ -32,11 +32,12 @@ export function * subscribeGameplay(firestore, action) {
   const userId = yield select(UserSelectors.selectUserId)
 
   //check currentRound of the game
-  const gameplayInfo = yield call(firestore.getGameplayInfo, gameId)
+  const result = yield call(firestore.getGameplayInfo, gameId)
+  const gameplayInfo = result.getOrElse(null)
   console.tron.log('subscribeGameplay', gameplayInfo)
 
   //subscribe to gameplay of round
-  if (gameplayInfo.currentRound <= 5) {
+  if (gameplayInfo && gameplayInfo.currentRound <= 5) {
 
     yield put(GameplayActions.saveGameInfo(gameplayInfo))
     

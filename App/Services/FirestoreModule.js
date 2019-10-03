@@ -46,7 +46,7 @@ const getGameplayInfo = gameId =>
     .doc('info')
     .get()
     .then(docs => 
-      ({
+      Result.Ok({
         ...docs.data(),
         created: docs.data().created.toDate().toISOString() //convert it to a normal date object
       })

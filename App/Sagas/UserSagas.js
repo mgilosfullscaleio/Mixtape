@@ -19,8 +19,10 @@ export function * getUserFromSpotify (firestore, action) {
   )
 
   const gameId = yield select(GameplaySelectors.selectGameId)
-  const gameplayInfo = yield call(firestore.getGameplayInfo, gameId)
-  const continueGame = gameplayInfo.currentRound <= 5
+  const gameplayInfoResult = yield call(firestore.getGameplayInfo, gameId)
+  const gameplayInfo = gameplayInfoResult.getOrElse(null)
+  const continueGame = gameplayInfo && gameplayInfo.currentRound <= 5
+
   console.tron.log('gameId', gameId, gameplayInfo)
   if (continueGame)
     yield put(NavigationActions.navigate({ routeName: screens.root.gamePlay }))
