@@ -125,9 +125,23 @@ const userObserver = (emitter, userId) =>
     .onSnapshot(docSnapshot => {
       if (docSnapshot.exists) {
         const gameId = docSnapshot.data().gameId
-        if (gameId) emitter(gameId)
+        if (gameId) {
+          emitter(gameId)
+
+          //remove gameId after
+          removeGameIdFromUser(userId)
+        }  
+
       }
     })
+
+const removeGameIdFromUser = userId =>
+  firestore
+    .collection(USER)
+    .doc(userId)
+    .set({
+      gameId: FieldValue.delete()
+    }, { merge:true })
 
 export default {
   signIn,
