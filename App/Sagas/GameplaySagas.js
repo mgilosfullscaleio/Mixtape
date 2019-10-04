@@ -46,8 +46,8 @@ export function * subscribeGameplay(firestore, action) {
     
     const timerChannel = yield call(onTimerTickChannel, gameplayInfo.created)
     yield takeEvery(timerChannel, function* (tick) {
-      // if (tick <= 0)
-      //   yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinnerSelection }))
+      if (tick <= 0)
+        yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinnerSelection }))
       
       const defaultTick = tick < 0 ? 0 : tick
       yield put(GameplayActions.setTimerTick(defaultTick))
