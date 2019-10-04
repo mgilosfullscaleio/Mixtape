@@ -9,7 +9,18 @@ const home = {
 };
 
 const gamePlay = {
-  playerSongSelection: 'PLAYER_SONG_SELECTION'
+  playerSongSelection: 'PLAYER_SONG_SELECTION',
+  roundWinnerSelection: 'ROUND_WINNER_SELECTION',
+  roundWinner: 'ROUND_WINNER',
+  gameWinner: 'GAME_WINNER',
+  roundTieBreaker: 'ROUND_TIE_BREAKER',
+  roundWinnerRandomizer: 'ROUND_WINNER_RANDOMIZER'
+};
+
+const friends = {
+  facebook: 'FRIENDS_FACEBOOK',
+  friends: 'FRIENDS_FRIENDS',
+  contacts: 'FRIENDS_CONTACTS'
 };
 
 const main = {
@@ -24,4 +35,4 @@ const root = {
   gamePlay: 'GAMEPLAY'
 };
 
-export { auth, home, gamePlay, main, root };
+export { auth, home, gamePlay, friends, main, root };

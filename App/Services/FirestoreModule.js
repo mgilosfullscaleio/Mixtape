@@ -39,13 +39,14 @@ const removePlayerFromOpenMatch = user => {//Promise.resolve(Result.Ok(true))
     .catch(e => Promise.resolve(Result.Error(e)))
 }
 
+// TODO this is not returning a Result
 const getGameplayInfo = gameId =>
   firestore
     .collection(`card_games/${gameId}/gameplay`)
     .doc('info')
     .get()
     .then(docs => 
-      ({
+      Result.Ok({
         ...docs.data(),
         created: docs.data().created.toDate().toISOString() //convert it to a normal date object
       })
@@ -56,14 +57,7 @@ const gameplayObserver = async (emitter, gameId, userId, currentRound) => {
   const roundRef = firestore
     .collection(`card_games/${gameId}/gameplay`)
     .doc(`round${currentRound}`)
-
-  //update round by adding ourself to the players
-  await roundRef.set({
-    players: {
-      [`${userId}`]: {}
-    }
-  }, {merge: true})
-
+    
   return roundRef
     .onSnapshot(snapshot  => {
       emitter(snapshot.data())
@@ -76,7 +70,7 @@ const updateSongSelection = (gameId, currentRound, userId, song) =>
     .doc(`round${currentRound}`)
     .set({
       players: {
-        [`${userId}`]: song
+        [`${userId}`]: { song }
       }
     }, {merge: true})
     .then(() => Result.Ok(song))
@@ -103,7 +97,7 @@ const createUserFromSpotifyAccount = info => {
     name: info.display_name,
     coins: 10,
     points: 10,
-    avatar: info.images && info.images[0].url,
+    avatar: info.images && info.images[0] && info.images[0].url,
     social: {
       spotify: {
         id: info.id
@@ -117,6 +111,31 @@ const createUserFromSpotifyAccount = info => {
     .catch(e => Result.Error(e))
 }
 
+const userObserver = (emitter, userId) =>
+  firestore
+    .collection(USER)
+    .doc(userId)
+    .onSnapshot(docSnapshot => {
+      if (docSnapshot.exists) {
+        const gameId = docSnapshot.data().gameId
+        if (gameId) {
+          emitter(gameId)
+
+          //remove gameId after
+          removeGameIdFromUser(userId)
+        }  
+
+      }
+    })
+
+const removeGameIdFromUser = userId =>
+  firestore
+    .collection(USER)
+    .doc(userId)
+    .set({
+      gameId: FieldValue.delete()
+    }, { merge:true })
+
 export default {
   signIn,
   createUserFromSpotifyAccount,
@@ -128,5 +147,7 @@ export default {
 
   getGameplayInfo,
   gameplayObserver,
-  updateSongSelection
+  updateSongSelection,
+
+  userObserver
 }

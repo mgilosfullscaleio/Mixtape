@@ -14,7 +14,7 @@ const SongSelectionContainer = (props) => {
   useEffect(() => {
     props.subscribeGameplayUpdates()
     
-    return props.unsubscribeGameplayUpdates
+    //return //props.unsubscribeGameplayUpdates
   }, [])
 
   const handlePlaySong = song => {
@@ -22,8 +22,10 @@ const SongSelectionContainer = (props) => {
     props.navigation.navigate(screens.gamePlay.roundWinnerSelection);
   };
   const handleSubmitSong = song => {
+    const { uri, title, singer } = song;
     setSubmittedSong(song);
     setSelectedSong(undefined);
+    props.saveSongSelection({ uri, title, singer })
   };
   const handleSelectSong = song => {
     console.tron.log("song :", song);
@@ -36,8 +38,8 @@ const SongSelectionContainer = (props) => {
     <SongSelection
       players={mockData.playersInGame}
       round={1}
-      timeLeft={60}
-      scenario={mockData.scenario}
+      timeLeft={props.selectTimerTick}
+      scenario={props.selectCardContent}
       submittedSong={submittedSong}
       selectedSong={selectedSong}
       searchedSongs={props.searchedSongs}
@@ -52,18 +54,21 @@ const SongSelectionContainer = (props) => {
 SongSelectionContainer.propTypes = {
   onLogin: PropTypes.func,
   searchSong: PropTypes.func,
-  isLoggingIn: PropTypes.bool
+  saveSongSelection: PropTypes.func,
+  isLoggingIn: PropTypes.bool,
 };
 
 SongSelectionContainer.defaultProps = {
   onLogin: () => null,
   searchSong: () => null,
-  isLoggingIn: false
+  saveSongSelection: () => null,
+  isLoggingIn: false,
 };
 
 const mapStateToProps = (state) => ({
-  //isLoading: AuthSelectors.isLoading(state)
-  searchedSongs: GameplaySelectors.searchedSongs(state)
+  searchedSongs: GameplaySelectors.searchedSongs(state),
+  selectCardContent: GameplaySelectors.selectCardContent(state),
+  selectTimerTick: GameplaySelectors.selectTimerTick(state),
 })
  
 const mapDispatchToProps = (dispatch) => ({
@@ -71,6 +76,7 @@ const mapDispatchToProps = (dispatch) => ({
   searchSong: (keyword, limit) => dispatch(GameplayActions.searchSong(keyword, limit)),
   subscribeGameplayUpdates: () => dispatch(GameplayActions.subscribeGameplayUpdates()),
   unsubscribeGameplayUpdates: () => dispatch(GameplayActions.unsubscribeGameplayUpdates()),
+  saveSongSelection: song => dispatch(GameplayActions.saveSongSelection(song))
 })
  
 export default connect(mapStateToProps, mapDispatchToProps)(SongSelectionContainer)

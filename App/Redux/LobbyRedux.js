@@ -12,6 +12,7 @@ const { Types, Creators } = createActions({
   // Saga Trigger
   quitOpenMatch: null,
   subscribePlayerJoin: null,
+  subscribeOpenMatch: null,
   unsubscribeOpenMatchUpdates: null,
   addPlayerForMatch: null
 })

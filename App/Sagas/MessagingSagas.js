@@ -51,6 +51,17 @@ export function * initiateAndroidPermission (action) {
   )
 }
 
+export function * subscribeTokenRefresh (action) {
+  const tokenRefreshChannel = yield call(onTokenRefresh, firebase.messaging())
+
+  yield takeEvery(tokenRefreshChannel, function* (fcmToken) {
+    yield put(MessagingActions.generateTokenSuccess(fcmToken))
+  })
+
+  yield take(LobbyTypes.UNSUBSCRIBE_OPEN_MATCH_UPDATES)
+  tokenRefreshChannel.close()
+}
+
 export function * subscribeGameStart (action) {
   const notificationChannel = yield call(onNotificationReceived, firebase.notifications())
 
@@ -60,12 +71,6 @@ export function * subscribeGameStart (action) {
       yield put(GameplayActions.saveGameId(notification.body))
       yield put(NavigationActions.navigate({ routeName: screens.root.gamePlay }))
     }
-  })
-
-  const tokenRefreshChannel = yield call(onTokenRefresh, firebase.messaging())
-
-  yield takeEvery(tokenRefreshChannel, function* (fcmToken) {
-    yield put(MessagingActions.generateTokenSuccess(fcmToken))
   })
 
   const messageChannel = yield call(onMessageReceived, firebase.messaging())
@@ -78,7 +83,6 @@ export function * subscribeGameStart (action) {
 
   yield take(LobbyTypes.UNSUBSCRIBE_OPEN_MATCH_UPDATES)
   messageChannel.close()
-  tokenRefreshChannel.close()
   notificationChannel.close()
 }
 
