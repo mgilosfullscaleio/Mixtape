@@ -27,9 +27,10 @@ const playerJoinObserver = emitter =>
       emitter(docSnapshot.data().players)
     })
 
+// TODO not currently working
 const removePlayerFromOpenMatch = user => {//Promise.resolve(Result.Ok(true))
   console.tron.log('removePlayerFromOpenMatch', user)
-  firestore
+  return firestore
     .collection(`openmatch`)
     .doc('lobby')
     .set({ 
