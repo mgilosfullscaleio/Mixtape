@@ -73,21 +73,27 @@ const SongSelectionContainer = (props) => {
 
 SongSelectionContainer.propTypes = {
   onLogin: PropTypes.func,
+<<<<<<< Updated upstream
   searchSong: PropTypes.func,
   playSong: PropTypes.func,
   pauseSong: PropTypes.func,
   resumeSong: PropTypes.func,
   saveSongSelection: PropTypes.func,
+=======
+>>>>>>> Stashed changes
   isLoggingIn: PropTypes.bool,
 };
 
 SongSelectionContainer.defaultProps = {
   onLogin: () => null,
+<<<<<<< Updated upstream
   searchSong: () => null,
   playSong: () => null,
   pauseSong: () => null,
   resumeSong: () => null,
   saveSongSelection: () => null,
+=======
+>>>>>>> Stashed changes
   isLoggingIn: false,
 };
 

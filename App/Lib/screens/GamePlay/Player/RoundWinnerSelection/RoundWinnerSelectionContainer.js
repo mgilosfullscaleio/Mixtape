@@ -1,18 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux'
 import RoundWinnerSelection from './RoundWinnerSelection';
 
 import { mockData, screens } from '../../../../constants';
+import GameplayActions, { GameplaySelectors } from '../../../../../Redux/GameplayRedux';
 
-const RoundWinnerSelectionContainer = ({ navigation }) => {
+const RoundWinnerSelectionContainer = (props) => {
   const [submittedWinner, setSubmittedWinner] = useState();
   const [selectedWinner, setSelectedWinner] = useState();
+
+  useEffect(() => {
+    props.subscribeGameplayUpdates()
+    
+    return props.unsubscribeGameplayUpdates
+  }, [])
 
   const handlePlaySong = song => console.log('play song:', song);
   const handleSubmitWinner = song => {
     setSubmittedWinner(song);
     setSelectedWinner(undefined);
 
-    navigation.navigate(screens.gamePlay.roundWinner);
+    props.navigation.navigate(screens.gamePlay.roundWinner);
   };
   const handleSelectWinner = song => setSelectedWinner(song);
 
@@ -21,7 +29,7 @@ const RoundWinnerSelectionContainer = ({ navigation }) => {
       songs={mockData.songs}
       players={mockData.playersInGame}
       timeLeft={60}
-      scenario={mockData.scenario}
+      scenario={props.selectCardContent}
       submittedWinner={submittedWinner}
       userSongEntry={mockData.songs[0]}
       selectedWinner={selectedWinner}
@@ -32,4 +40,14 @@ const RoundWinnerSelectionContainer = ({ navigation }) => {
   );
 };
 
-export default RoundWinnerSelectionContainer;
+const mapStateToProps = (state) => ({
+  selectCardContent: GameplaySelectors.selectCardContent(state),
+})
+ 
+const mapDispatchToProps = (dispatch) => ({
+  //isUserInMatch: playerId => dispatch(LobbyActions.fetchUserInOpenMatch(playerId))
+  subscribeGameplayUpdates: () => dispatch(GameplayActions.subscribeGameplayUpdates()),
+  unsubscribeGameplayUpdates: () => dispatch(GameplayActions.unsubscribeGameplayUpdates()),
+})
+ 
+export default connect(mapStateToProps, mapDispatchToProps)(RoundWinnerSelectionContainer)
