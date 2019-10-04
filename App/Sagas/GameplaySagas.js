@@ -66,6 +66,8 @@ export function * subscribeGameplay(firestore, action) {
       yield put(GameplayActions.saveGameUpdate({card, players}))
     })
 
+    // yield put(GameplayActions.voteRoundWinner('vMpgxp3UPGzEI5ctqTjx'))
+
     yield take(GameplayTypes.UNSUBSCRIBE_GAMEPLAY_UPDATES)
     gameplayChannel.close()
     timerChannel.close()
@@ -88,10 +90,10 @@ export function * saveSongSelection(api, action) {
   )
 }
 
-export function * voteRoundWinner(api, action) {
-  const { playerId } = action
-
-  const response = yield call(api.voteRoundWinner, playerId)
+export function * voteRoundWinner(api, { playerId }) {
+  const gameId = yield select(GameplaySelectors.selectGameId)
+  const currentRound = yield select(GameplaySelectors.selectRound)
+  const response = yield call(api.voteRoundWinner, gameId, currentRound, playerId)
 
   yield put(
     response.matchWith({
