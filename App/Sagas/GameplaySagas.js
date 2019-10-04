@@ -140,4 +140,14 @@ export function * searchSong(action) {
   )
 }
 
+export function * playSong(song, startPosition=0) {
+  Spotify.playURI(song.song.uri, 0, startPosition);
+}
 
+export function * pauseSong() {
+  Spotify.setPlaying(false);
+}
+
+export function * resumeSong() {
+  Spotify.setPlaying(true);
+}

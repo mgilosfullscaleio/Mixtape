@@ -10,6 +10,7 @@ import PlayableSongBar from '../common/PlayableSongBar';
 
 import styles from './styles';
 import scale from '../../../../utils/scaleUtil';
+import { images } from '../../../../constants';
 
 const SongSelection = ({
   players,
@@ -19,6 +20,7 @@ const SongSelection = ({
   submittedSong,
   selectedSong,
   searchedSongs,
+  songIsPlaying,
   onQuitGame,
   onPlaySong,
   onSelectSong,
@@ -68,6 +70,7 @@ const SongSelection = ({
           song={selectedSong}
           onPlay={onPlaySong}
           onSubmit={onSubmitSong}
+          leftIcon={(!songIsPlaying)?images.songBarPlay:images.songBarPause}
         />
       )}
 
@@ -118,6 +121,7 @@ SongSelection.propTypes = {
       albumCover: PropTypes.string
     })
   ),
+  songIsPlaying: PropTypes.bool,
   onQuitGame: PropTypes.func,
   onPlaySong: PropTypes.func,
   onSelectSong: PropTypes.func,
@@ -129,6 +133,7 @@ SongSelection.defaultProps = {
   selectedSong: undefined,
   submittedSong: undefined,
   searchedSongs: [],
+  songIsPlaying: false,
   onQuitGame: () => null,
   onPlaySong: () => null,
   onSelectSong: () => null,

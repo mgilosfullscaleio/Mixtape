@@ -19,6 +19,9 @@ const { Types, Creators } = createActions({
   saveSongSelection: ['song'],
   voteRoundWinner: ['playerId'],
   searchSong: ['keyword', 'limit'],
+  playSong: ['song'],
+  pauseSong: null,
+  resumeSong: null,
   subscribeGameplayUpdates: null,
   unsubscribeGameplayUpdates: null
 })
