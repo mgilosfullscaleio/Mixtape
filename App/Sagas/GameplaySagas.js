@@ -11,7 +11,7 @@ const onGameplayChannel = (firestore, gameId, userId, currentRound) =>
   eventChannel(emitter => {
     const unsubscribe = firestore.gameplayObserver(emitter, gameId, userId, currentRound)
 
-    return () => unsubscribe()
+    return () => unsubscribe
   })
 
 const onTimerTickChannel = startTime =>
@@ -46,7 +46,7 @@ export function * subscribeGameplay(firestore, action) {
     
     const timerChannel = yield call(onTimerTickChannel, gameplayInfo.created)
     yield takeEvery(timerChannel, function* (tick) {
-      if (tick <= 0) 
+      if (tick <= 0)
         yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinnerSelection }))
       
       yield put(GameplayActions.setTimerTick(tick))
