@@ -69,7 +69,7 @@ export const GameplaySelectors = {
 }
 
 const computePlayerSubmittedSongs = players =>
-  players.filter(p => p.song).map(p => ({ playerId: p.id, ...p.song })
+  players.filter(p => p.song).map(p => ({ playerId: p.id, ...p.song }))
 
 /* ------------- Reducers ------------- */
 
