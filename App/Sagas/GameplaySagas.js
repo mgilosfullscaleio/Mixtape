@@ -140,8 +140,9 @@ export function * searchSong(action) {
   )
 }
 
-export function * playSong(song, startPosition=0) {
-  Spotify.playURI(song.song.uri, 0, startPosition);
+export function * playSong(action) {
+  const { song, startPosition = 0 } = action
+  Spotify.playURI(song.uri, 0, startPosition);
 }
 
 export function * pauseSong() {
