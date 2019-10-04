@@ -135,6 +135,8 @@ const removeGameIdFromUser = userId =>
       gameId: FieldValue.delete()
     }, { merge:true })
 
+const voteRoundWinner = playerId => Promise.resolve(Result.Ok(true))
+
 export default {
   signIn,
   createUserFromSpotifyAccount,
@@ -147,6 +149,7 @@ export default {
   getGameplayInfo,
   gameplayObserver,
   updateSongSelection,
+  voteRoundWinner,
 
   userObserver
 }
