@@ -46,10 +46,11 @@ export function * subscribeGameplay(firestore, action) {
     
     const timerChannel = yield call(onTimerTickChannel, gameplayInfo.created)
     yield takeEvery(timerChannel, function* (tick) {
-      if (tick <= 0)
-        yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinnerSelection }))
+      // if (tick <= 0)
+      //   yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinnerSelection }))
       
-      yield put(GameplayActions.setTimerTick(tick))
+      const defaultTick = tick < 0 ? 0 : tick
+      yield put(GameplayActions.setTimerTick(defaultTick))
     })
 
     const gameplayChannel = yield call(onGameplayChannel, firestore, gameId, userId, gameplayInfo.currentRound)
@@ -63,7 +64,10 @@ export function * subscribeGameplay(firestore, action) {
         return playerUpdate ? {...player, ...playerUpdate} : player
       })
 
-      yield put(GameplayActions.saveGameUpdate({card, players}))
+      // determine vote round winner
+      const roundWinner = computeRoundWinner(docUpdate.voteCount)
+
+      yield put(GameplayActions.saveGameUpdate({card, players, roundWinner}))
     })
 
     // yield put(GameplayActions.voteRoundWinner('vMpgxp3UPGzEI5ctqTjx'))
@@ -72,6 +76,20 @@ export function * subscribeGameplay(firestore, action) {
     gameplayChannel.close()
     timerChannel.close()
   }
+}
+
+const computeRoundWinner = (voteCount = {}) => {
+  const winner = Object.entries(voteCount)
+                      .map(([key, value]) =>
+                        ({
+                          playerId: key,
+                          vote: value
+                        })
+                      )
+                      .sort((a, b) => a.vote - b.vote)
+                      .pop()
+
+  return winner ? winner.playerId : null
 }
 
 export function * saveSongSelection(api, action) {

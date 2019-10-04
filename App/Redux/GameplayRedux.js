@@ -41,6 +41,7 @@ players [
 */
 export const INITIAL_STATE = Immutable({
   round: 1,
+  roundWinner: null, //playerId
   players: [],
   card: { title: '', content: '' },
   loading: false,
@@ -96,7 +97,7 @@ export const saveGameInfo = (state, { gameInfo }) =>
   })
 
 export const saveGameUpdate = (state, { gameUpdate }) =>
-  state.merge({ card: gameUpdate.card, players: gameUpdate.players })
+  state.merge({ card: gameUpdate.card, players: gameUpdate.players, roundWinner: gameUpdate.roundWinner })
 
 export const setTimerTick = (state, { timerTick }) =>
   state.merge({ timerTick })
