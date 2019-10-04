@@ -53,16 +53,15 @@ const getGameplayInfo = gameId =>
     )
     .catch(error => Result.Error(`Error with gameId ${gameId}\n${error}`))
 
-const gameplayObserver = async (emitter, gameId, userId, currentRound) => {
-  const roundRef = firestore
+const gameplayObserver = async (emitter, gameId, userId, currentRound) =>
+  firestore
     .collection(`card_games/${gameId}/gameplay`)
     .doc(`round${currentRound}`)
-    
-  return roundRef
     .onSnapshot(snapshot  => {
       emitter(snapshot.data())
+    }, err => {
+      console.tron.log(`Encountered error: ${err}`);
     })
-}
 
 const updateSongSelection = (gameId, currentRound, userId, song) =>
   firestore
