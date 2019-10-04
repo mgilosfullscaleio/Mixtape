@@ -14,7 +14,7 @@ const SongSelectionContainer = (props) => {
   useEffect(() => {
     props.subscribeGameplayUpdates()
     
-    //return //props.unsubscribeGameplayUpdates
+    return props.unsubscribeGameplayUpdates
   }, [])
 
   const handlePlaySong = song => {
