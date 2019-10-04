@@ -45,7 +45,8 @@ export const INITIAL_STATE = Immutable({
   gameId: 'SX55J0TcW3usKssctYZ8',
   gameStart: null,  //date ISOString
   searchedSongs: [],
-  timerTick: 0
+  timerTick: 0,
+  song: null
 })
 
 /* ------------- Selectors ------------- */
@@ -59,8 +60,13 @@ export const GameplaySelectors = {
   selectTimerTick: state => state.gameplay.timerTick,
   selectRound: state => state.gameplay.round,
   selectPlayers: state => state.gameplay.players,
-  selectPlayersAsMutable: state => state.gameplay.players
+  selectPlayersAsMutable: state => state.gameplay.players,
+  selectPlayerSubmittedSong: state => state.gameplay.song,
+  selectPlayerSubmittedSongs: state => computePlayerSubmittedSongs(state.gameplay.players)
 }
+
+const computePlayerSubmittedSongs = players =>
+  players.filter(p => p.song).map(p => p.song)
 
 /* ------------- Reducers ------------- */
 
