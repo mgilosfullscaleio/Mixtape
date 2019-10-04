@@ -17,7 +17,7 @@ export function * getUserFromSpotify (api, action) {
 
   const user = response.getOrElse(null)
   if (user && user.id)
-    yield put(NavigationActions.navigate({ routeName: screens.root.main }))
+    yield put(NavigationActions.navigate({ routeName: screens.root.gamePlay }))
 }
 
 export function * createUserFromSpotify (api, action) {

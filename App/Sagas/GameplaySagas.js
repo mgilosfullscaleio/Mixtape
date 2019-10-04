@@ -4,6 +4,8 @@ import Spotify from 'rn-spotify-sdk'
 import Result from 'folktale/result'
 import { UserSelectors } from '../Redux/UserRedux'
 import { eventChannel } from 'redux-saga'
+import { screens } from '../Lib/constants'
+import { NavigationActions } from 'react-navigation'
 
 const onGameplayChannel = (firestore, gameId, userId, currentRound) =>
   eventChannel(emitter => {
@@ -14,13 +16,14 @@ const onGameplayChannel = (firestore, gameId, userId, currentRound) =>
 
 const onTimerTickChannel = startTime =>
   eventChannel(emitter => {
-    const elapse = Math.floor((Date.now() - new Date(startTime).getTime()) / 1000)
-    let tick = 60 - elapse
+    
 
     const timerId = setInterval(() => {
-      tick = tick - 1
+      const elapse = Math.floor((Date.now() - new Date(startTime).getTime()) / 1000)
+      let tick = 60 - elapse
+
+      emitter(tick)
       if (tick < 0) clearInterval(timerId)
-      else emitter(tick)
 
     }, 1000)
 
@@ -42,11 +45,15 @@ export function * subscribeGameplay(firestore, action) {
     
     const timerChannel = yield call(onTimerTickChannel, gameplayInfo.created)
     yield takeEvery(timerChannel, function* (tick) {
+      if (tick <= 0) 
+        yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinnerSelection }))
+      
       yield put(GameplayActions.setTimerTick(tick))
     })
 
     const gameplayChannel = yield call(onGameplayChannel, firestore, gameId, userId, gameplayInfo.currentRound)
     yield takeEvery(gameplayChannel, function* (docUpdate) {
+      console.tron.log('docUpdate: ', docUpdate)
       yield put(GameplayActions.saveGameUpdate(docUpdate))
     })
 
@@ -57,9 +64,12 @@ export function * subscribeGameplay(firestore, action) {
 }
 
 export function * saveSongSelection(api, action) {
-  const { playerId, song } = action
+  const { song } = action
+  const gameId = yield select(GameplaySelectors.selectGameId)
+  const userId = yield select(UserSelectors.selectUserId)
+  const currentRound = yield select(GameplaySelectors.selectRound)
 
-  const response = yield call(api.updateSongSelection, playerId, song)
+  const response = yield call(api.updateSongSelection, gameId, currentRound, userId, song)
 
   yield put(
     response.matchWith({
@@ -92,7 +102,7 @@ const getSongTacksByKeywords = async (keyword, limit, offset=0) => {
       const albumImages = album.images || []
       return {
         id,
-        //uri: uri, 
+        uri, 
         title: name,
         singer: !!artists[0] ? artists[0].name : '',
         albumCover: !!albumImages[0] ? albumImages[0].url : '',

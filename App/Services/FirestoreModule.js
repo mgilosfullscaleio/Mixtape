@@ -56,14 +56,7 @@ const gameplayObserver = async (emitter, gameId, userId, currentRound) => {
   const roundRef = firestore
     .collection(`card_games/${gameId}/gameplay`)
     .doc(`round${currentRound}`)
-
-  //update round by adding ourself to the players
-  await roundRef.set({
-    players: {
-      [`${userId}`]: {}
-    }
-  }, {merge: true})
-
+    
   return roundRef
     .onSnapshot(snapshot  => {
       emitter(snapshot.data())
@@ -76,7 +69,7 @@ const updateSongSelection = (gameId, currentRound, userId, song) =>
     .doc(`round${currentRound}`)
     .set({
       players: {
-        [`${userId}`]: song
+        [`${userId}`]: { song }
       }
     }, {merge: true})
     .then(() => Result.Ok(song))
