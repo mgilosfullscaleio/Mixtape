@@ -42,7 +42,7 @@ export const INITIAL_STATE = Immutable({
   card: { title: '', content: '' },
   loading: false,
   error: null,
-  gameId: 'SX55J0TcW3usKssctYZ8',
+  gameId: 'oKCbihLIHyTLnM0A2Z1y',
   gameStart: null,  //date ISOString
   searchedSongs: [],
   timerTick: 0,
@@ -66,7 +66,7 @@ export const GameplaySelectors = {
 }
 
 const computePlayerSubmittedSongs = players =>
-  players.filter(p => p.song).map(p => p.song)
+  players.filter(p => p.song).map(p => ({ playerId: p.id, ...p.song })
 
 /* ------------- Reducers ------------- */
 
