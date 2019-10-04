@@ -20,7 +20,7 @@ const localization = {
   round4: 'ROUND FOUR',
   round5: 'ROUND FIVE',
   searchSpotify: 'SEARCH SPOTIFY',
-  chooseWinner: 'CHOOSE THE WINNER',
+  chooseWinner: 'CHOOSE WINNER',
   winner: 'WINNER',
   congratulations: 'CONGRATULATIONS!'
 };
