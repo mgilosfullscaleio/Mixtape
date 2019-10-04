@@ -37,7 +37,7 @@ export function * subscribeGameplay(firestore, action) {
   //check currentRound of the game
   const result = yield call(firestore.getGameplayInfo, gameId)
   const gameplayInfo = result.getOrElse(null)
-  console.tron.log('subscribeGameplay', gameplayInfo)
+  console.tron.log('subscribeGameplay', gameId, gameplayInfo)
 
   //subscribe to gameplay of round
   if (gameplayInfo && gameplayInfo.currentRound <= 5) {
@@ -55,7 +55,15 @@ export function * subscribeGameplay(firestore, action) {
     const gameplayChannel = yield call(onGameplayChannel, firestore, gameId, userId, gameplayInfo.currentRound)
     yield takeEvery(gameplayChannel, function* (docUpdate) {
       console.tron.log('docUpdate: ', docUpdate)
-      yield put(GameplayActions.saveGameUpdate(docUpdate))
+      const card = docUpdate.card || {title: '', content: ''}
+      const mutablePlayers = yield select(GameplaySelectors.selectPlayersAsMutable)
+      const players = mutablePlayers.map(player => {
+        // player id exist, then merge changes
+        const playerUpdate = docUpdate.players && docUpdate.players[player.id]
+        return playerUpdate ? {...player, ...playerUpdate} : player
+      })
+
+      yield put(GameplayActions.saveGameUpdate({card, players}))
     })
 
     yield take(GameplayTypes.UNSUBSCRIBE_GAMEPLAY_UPDATES)

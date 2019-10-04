@@ -58,6 +58,8 @@ export const GameplaySelectors = {
   selectCardTitle: state => state.gameplay.card.title,
   selectTimerTick: state => state.gameplay.timerTick,
   selectRound: state => state.gameplay.round,
+  selectPlayers: state => state.gameplay.players,
+  selectPlayersAsMutable: state => state.gameplay.players
 }
 
 /* ------------- Reducers ------------- */
@@ -85,7 +87,7 @@ export const saveGameInfo = (state, { gameInfo }) =>
   })
 
 export const saveGameUpdate = (state, { gameUpdate }) =>
-  state.merge({ card: gameUpdate.card || { title: '', content: '' }, })
+  state.merge({ card: gameUpdate.card, players: gameUpdate.players })
 
 export const setTimerTick = (state, { timerTick }) =>
   state.merge({ timerTick })
