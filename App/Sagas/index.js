@@ -24,7 +24,7 @@ import { getUserFromSpotify, createUserFromSpotify, subscribeGameStart } from '.
 import { generateToken, initiateAndroidPermission, subscribeTokenRefresh } from './MessagingSagas'
 import { fetchUserInOpenMatch } from './LobbySagas'
 import { initializeSpotify, loginSpotify, redirectToHome } from './AuthSagas'
-import { subscribeGameplay, saveSongSelection, voteRoundWinner, searchSong } from './GameplaySagas'
+import { subscribeGameplay, saveSongSelection, voteRoundWinner, searchSong, playSong, pauseSong, resumeSong } from './GameplaySagas'
 
 /* ------------- API ------------- */
 
@@ -66,5 +66,8 @@ export default function * root () {
     takeLatest(GameplayTypes.SUBSCRIBE_GAMEPLAY_UPDATES, subscribeGameplay, firestore),
     
     takeLatest(GameplayTypes.SEARCH_SONG, searchSong),
+    takeLatest(GameplayTypes.PLAY_SONG, playSong),
+    takeLatest(GameplayTypes.PAUSE_SONG, pauseSong),
+    takeLatest(GameplayTypes.RESUME_SONG, resumeSong),
   ])
 }
