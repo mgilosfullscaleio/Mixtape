@@ -25,7 +25,7 @@ const SongSelectionContainer = (props) => {
     const { uri, title, singer } = song;
     setSubmittedSong(song);
     setSelectedSong(undefined);
-    props.saveSongSelection({ uri, title, singer })
+    props.saveSongSelection({ id: uri, uri, title, singer })
   };
   const handleSelectSong = song => {
     console.tron.log("song :", song);
