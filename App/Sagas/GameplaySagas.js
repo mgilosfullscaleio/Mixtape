@@ -16,8 +16,6 @@ const onGameplayChannel = (firestore, gameId, userId, currentRound) =>
 
 const onTimerTickChannel = startTime =>
   eventChannel(emitter => {
-    
-
     const timerId = setInterval(() => {
       const elapse = Math.floor((Date.now() - new Date(startTime).getTime()) / 1000)
       let tick = 60 - elapse
