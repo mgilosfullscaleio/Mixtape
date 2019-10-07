@@ -27,7 +27,9 @@ const images = {
   songBarPlay: require('../assets/images/song-bar-play.png'),
   songBarPause: require('../assets/images/song-bar-pause.png'),
   addToPlaylist: require('../assets/images/add-to-playlist.png'),
-  highlightedSongBar: require('../assets/images/highlighted-song-bar.png')
+  highlightedSongBar: require('../assets/images/highlighted-song-bar.png'),
+  check: require('../assets/images/check.png'),
+  search: require('../assets/images/search.png')
 };
 
 export default images;

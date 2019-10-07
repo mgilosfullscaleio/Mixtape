@@ -19,6 +19,10 @@ const styles = ScaledSheet.create({
     flexGrow: 0
   },
 
+  listContentContainer: {
+    paddingHorizontal: '20@s'
+  },
+
   separator: {
     width: '20@s'
   }

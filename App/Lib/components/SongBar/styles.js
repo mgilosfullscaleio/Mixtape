@@ -11,7 +11,7 @@ const styles = ScaledSheet.create({
   },
 
   sideIcon: {
-    width: '36@s',
+    width: 36,
     height: undefined,
     aspectRatio: 1
   },
@@ -23,12 +23,12 @@ const styles = ScaledSheet.create({
   },
 
   title: {
-    fontSize: '22@s',
+    fontSize: 22,
     textTransform: 'uppercase'
   },
 
   singer: {
-    fontSize: '12@s',
+    fontSize: 12,
     textTransform: 'uppercase'
   }
 });

@@ -16,7 +16,7 @@ const styles = ScaledSheet.create({
   },
 
   scenario: {
-    fontSize: '28@s'
+    fontSize: 28
   },
 
   bottomContainer: {

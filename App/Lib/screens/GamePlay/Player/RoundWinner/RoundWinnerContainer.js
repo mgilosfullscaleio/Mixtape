@@ -6,7 +6,7 @@ import { mockData, screens } from '../../../../constants';
 const RoundWinnerContainer = ({ navigation }) => {
   const handlePlaySong = song => {
     console.log('play song:', song);
-    navigation.navigate(screens.gamePlay.roundWinnerSelection);
+    navigation.navigate(screens.gamePlay.roundTieBreaker);
   };
 
   return (

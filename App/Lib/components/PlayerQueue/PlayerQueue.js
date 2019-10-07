@@ -1,13 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, ViewPropTypes } from 'react-native';
 import Text from '../Text';
 import Avatar from '../Avatar';
 
 import { localization } from '../../constants';
 import styles from './styles';
 
-const PlayerQueue = ({ joinedPlayers, maxPlayers, showTitle, renderItem }) => {
+const PlayerQueue = ({
+  containerStyle,
+  listStyle,
+  listContentContainerStyle,
+  joinedPlayers,
+  maxPlayers,
+  showTitle,
+  renderItem
+}) => {
   const unjoinedPlayers = new Array(maxPlayers - joinedPlayers.length).fill({});
 
   const renderPlayerAvatar = player => (
@@ -17,8 +25,10 @@ const PlayerQueue = ({ joinedPlayers, maxPlayers, showTitle, renderItem }) => {
   const handleRenderItem = ({ item }) =>
     renderItem ? renderItem(item) : renderPlayerAvatar(item);
 
+  const renderSeparator = () => <View style={styles.separator} />;
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       {showTitle && (
         <Text style={styles.title}>
           {localization.playersInQueue(joinedPlayers.length, maxPlayers)}
@@ -26,10 +36,11 @@ const PlayerQueue = ({ joinedPlayers, maxPlayers, showTitle, renderItem }) => {
       )}
 
       <FlatList
-        style={styles.list}
+        style={[styles.list, listStyle]}
         data={[...joinedPlayers, ...unjoinedPlayers]}
         renderItem={handleRenderItem}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
+        contentContainerStyle={styles.listContentContainer}
+        ItemSeparatorComponent={renderSeparator}
         showsHorizontalScrollIndicator={false}
         horizontal
         keyExtractor={(item, index) => (item.id ? item.id : `${index}`)}
@@ -39,6 +50,9 @@ const PlayerQueue = ({ joinedPlayers, maxPlayers, showTitle, renderItem }) => {
 };
 
 PlayerQueue.propTypes = {
+  containerStyle: ViewPropTypes.style,
+  listStyle: ViewPropTypes.style,
+  listContentContainerStyle: ViewPropTypes.style,
   joinedPlayers: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,
@@ -52,6 +66,9 @@ PlayerQueue.propTypes = {
 };
 
 PlayerQueue.defaultProps = {
+  containerStyle: null,
+  listStyle: null,
+  listContentContainerStyle: null,
   showTitle: false,
   renderItem: null
 };

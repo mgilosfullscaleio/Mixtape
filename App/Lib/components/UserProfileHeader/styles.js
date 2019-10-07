@@ -79,17 +79,8 @@ const styles = ScaledSheet.create({
   },
 
   tapesBadge2: {
+    top: '-10@s',
     width: '20@s'
-  },
-
-  tapesBadgeText1: {
-    color: colors.black,
-    fontSize: '13@s'
-  },
-
-  tapesBadgeText2: {
-    color: colors.white,
-    fontSize: '13@s'
   }
 });
 

@@ -1,6 +1,7 @@
 const user = {
   id: '1111',
   name: 'Storm Spirit',
+  email: 'stormspirit@dota2.com',
   address: 'Kansas City, USA',
   tapes: 50,
   invitedFriends: 1,
@@ -11,6 +12,7 @@ const players = [
   {
     id: '1111',
     name: 'Storm Spirit',
+    email: 'stormspirit@dota2.com',
     address: 'Kansas City, USA',
     tapes: 50,
     profileImage: 'https://i.imgur.com/yAtIZqC.jpg'
@@ -19,6 +21,7 @@ const players = [
   {
     id: '1112',
     name: 'Goblin Techies',
+    email: 'techies@dota2.com',
     address: 'Kansas City, USA',
     tapes: 50,
     profileImage: 'https://i.imgur.com/D1I4fqC.jpg'
@@ -27,6 +30,7 @@ const players = [
   {
     id: '1113',
     name: 'Invoker',
+    email: 'injoker@dota2.com',
     address: 'Kansas City, USA',
     tapes: 50,
     profileImage: 'https://i.imgur.com/yKDUXbl.jpg'
@@ -35,6 +39,7 @@ const players = [
   {
     id: '1114',
     name: 'Abaddon',
+    email: 'abaddon@dota2.com',
     address: 'Kansas City, USA',
     tapes: 50,
     profileImage: 'https://i.imgur.com/6qJGzxO.jpg'
@@ -43,6 +48,7 @@ const players = [
   {
     id: '1115',
     name: 'Tinker',
+    email: 'tinker@dota2.com',
     address: 'Kansas City, USA',
     tapes: 50,
     profileImage: 'https://i.imgur.com/Q9MbYGu.jpg'
@@ -56,7 +62,8 @@ const playersInGame = [
     address: 'Kansas City, USA',
     tapes: 50,
     profileImage: 'https://i.imgur.com/yAtIZqC.jpg',
-    joined: true
+    joined: true,
+    score: 5
   },
 
   {
@@ -65,7 +72,8 @@ const playersInGame = [
     address: 'Kansas City, USA',
     tapes: 50,
     profileImage: 'https://i.imgur.com/D1I4fqC.jpg',
-    joined: true
+    joined: true,
+    score: 3
   },
 
   {
@@ -74,7 +82,8 @@ const playersInGame = [
     address: 'Kansas City, USA',
     tapes: 50,
     profileImage: 'https://i.imgur.com/yKDUXbl.jpg',
-    joined: true
+    joined: true,
+    score: 0
   },
 
   {
@@ -83,7 +92,8 @@ const playersInGame = [
     address: 'Kansas City, USA',
     tapes: 50,
     profileImage: 'https://i.imgur.com/6qJGzxO.jpg',
-    joined: false
+    joined: false,
+    score: 0
   },
 
   {
@@ -92,8 +102,79 @@ const playersInGame = [
     address: 'Kansas City, USA',
     tapes: 50,
     profileImage: 'https://i.imgur.com/Q9MbYGu.jpg',
-    joined: false
+    joined: false,
+    score: 0
   }
+];
+
+const contacts = [
+  {
+    title: 'A',
+    data: [
+      {
+        id: '2111',
+        name: 'Abaddon',
+        number: '+639123456789'
+      },
+      {
+        id: '2112',
+        name: 'Anti Mage',
+        number: '+639123456789'
+      }
+    ]
+  },
+
+  {
+    title: 'B',
+    data: [
+      {
+        id: '2113',
+        name: 'Batrider',
+        number: '+639123456789'
+      },
+      {
+        id: '2114',
+        name: 'Beastmaster',
+        number: '+639123456789'
+      },
+      {
+        id: '2115',
+        name: 'Bloodseeker',
+        number: '+639123456789'
+      },
+      {
+        id: '2116',
+        name: 'Bounty Hunter',
+        number: '+639123456789'
+      }
+    ]
+  },
+
+  {
+    title: 'C',
+    data: [
+      {
+        id: '2117',
+        name: 'Centaur Warrunner',
+        number: '+639123456789'
+      },
+      {
+        id: '2118',
+        name: 'Chaos Knight',
+        number: '+639123456789'
+      },
+      {
+        id: '2119',
+        name: 'Chen',
+        number: '+639123456789'
+      }
+    ]
+  }
+];
+
+const friends = [
+  ...players,
+  ...contacts.reduce((array, current) => array.concat(current.data), [])
 ];
 
 const scenario =
@@ -101,9 +182,53 @@ const scenario =
 
 const songs = [
   {
+    id: '1',
     title: 'When a Man Loves a Woman',
-    singer: 'Michael Bolton'
+    singer: 'Michael Bolton',
+    albumCover:
+      'https://cps-static.rovicorp.com/3/JPG_500/MI0000/322/MI0000322129.jpg',
+    user
   },
+  {
+    id: '2',
+    title: 'When a Man Loves a Woman',
+    singer: 'Michael Bolton',
+    albumCover:
+      'https://cps-static.rovicorp.com/3/JPG_500/MI0000/322/MI0000322129.jpg',
+    user
+  },
+  {
+    id: '3',
+    title: 'When a Man Loves a Woman',
+    singer: 'Michael Bolton',
+    albumCover:
+      'https://cps-static.rovicorp.com/3/JPG_500/MI0000/322/MI0000322129.jpg',
+    user
+  },
+  {
+    id: '4',
+    title: 'When a Man Loves a Woman',
+    singer: 'Michael Bolton',
+    albumCover:
+      'https://cps-static.rovicorp.com/3/JPG_500/MI0000/322/MI0000322129.jpg',
+    user
+  },
+  {
+    id: '5',
+    title: 'When a Man Loves a Woman',
+    singer: 'Michael Bolton',
+    albumCover:
+      'https://cps-static.rovicorp.com/3/JPG_500/MI0000/322/MI0000322129.jpg',
+    user
+  }
 ];
 
-export default { user, players, playersInGame, scenario, songs };
+export default {
+  user,
+  players,
+  playersInGame,
+  contacts,
+  friends,
+  scenario,
+  songs
+};

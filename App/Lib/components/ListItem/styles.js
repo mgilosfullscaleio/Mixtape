@@ -8,14 +8,14 @@ const styles = ScaledSheet.create({
   },
 
   leftIcon: {
-    width: '35@s',
+    width: 35,
     height: undefined,
     aspectRatio: 1
   },
 
   title: {
     flex: 1,
-    fontSize: '24@s',
+    fontSize: 24,
     marginLeft: '19@s',
     color: colors.white
   }

@@ -52,7 +52,7 @@ const RoundWinner = ({
         <PlayerQueue
           joinedPlayers={players}
           maxPlayers={5}
-          renderItem={player => <PlayerAvatar player={player} showScore />}
+          renderItem={player => <PlayerAvatar player={player} showBadge />}
         />
       </View>
     </Container>

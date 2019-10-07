@@ -19,7 +19,7 @@ const PlayableSongBar = ({ containerStyle, song, onPlay, ...props }) => (
   <SongBar
     containerStyle={[styles.container, containerStyle]}
     song={song}
-    //leftIcon={images.songBarPlay}
+    leftIcon={images.songBarPlay}
     onLeftIconPress={() => onPlay(song)}
     {...props}
   />

@@ -39,10 +39,10 @@ const SongSelectionContainer = (props) => {
     //props.navigation.navigate(screens.gamePlay.roundWinnerSelection);
   };
   const handleSubmitSong = song => {
-    const { uri, title, singer } = song;
+    const { id, uri, title, singer } = song;
     setSubmittedSong(song);
     setSelectedSong(undefined);
-    props.saveSongSelection({ id: uri, uri, title, singer })
+    props.saveSongSelection({ id, uri, title, singer })
   };
   const handleSelectSong = song => {
     setSongIsPlaying(false);

@@ -71,7 +71,9 @@ const RoundWinnerSelection = ({
         <PlayerQueue
           joinedPlayers={players}
           maxPlayers={5}
-          renderItem={player => <PlayerAvatar player={player} />}
+          renderItem={player => (
+            <PlayerAvatar player={player} type="checkmark" showBadge />
+          )}
         />
       </View>
     </Container>

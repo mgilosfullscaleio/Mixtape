@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ViewPropTypes, Text as BaseText } from 'react-native';
+import { View, ViewPropTypes, Text as BaseText, Image } from 'react-native';
 import { Text, Avatar } from '../../../../components';
 
 import { ScaledSheet } from '../../../../utils';
 import { colors } from '../../../../styles';
 import Badge from '../../../../components/Badge';
+import { images } from '../../../../constants';
 
 const styles = ScaledSheet.create({
   container: {
@@ -24,6 +25,16 @@ const styles = ScaledSheet.create({
 
   badge: {
     right: '-2.5@s'
+  },
+
+  check: {
+    position: 'absolute',
+    top: 0,
+    right: '-3.5@s',
+    zIndex: 3,
+    width: '10@s',
+    height: undefined,
+    aspectRatio: 1
   }
 });
 
@@ -32,17 +43,22 @@ const PlayerAvatar = ({
   size,
   containerStyle,
   titleStyle,
-  showScore
+  type,
+  showBadge
 }) => {
-  const renderBadge = () =>
-    showScore ? (
+  const badge =
+    type === 'count' ? (
       <Badge
         style={styles.badge}
         size={15}
         value={player.score}
         type={player.score ? 'green' : 'orange'}
       />
-    ) : null;
+    ) : (
+      <Image source={images.check} style={styles.check} />
+    );
+
+  const renderBadge = () => <>{showBadge && badge}</>;
 
   return (
     <View style={[styles.container, containerStyle]}>
@@ -73,14 +89,16 @@ PlayerAvatar.propTypes = {
   size: PropTypes.number,
   containerStyle: ViewPropTypes.style,
   titleStyle: BaseText.propTypes.style,
-  showScore: PropTypes.bool
+  type: PropTypes.oneOf(['checkmark', 'count']),
+  showBadge: PropTypes.bool
 };
 
 PlayerAvatar.defaultProps = {
   size: 40,
   containerStyle: null,
   titleStyle: null,
-  showScore: false
+  type: 'count',
+  showBadge: false
 };
 
 export default PlayerAvatar;

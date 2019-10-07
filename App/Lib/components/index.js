@@ -5,14 +5,16 @@ import BottomTabBar from './BottomTabBar';
 import Card from './Card';
 
 import Text from './Text';
+import TextInput from './TextInput';
 
 import TouchableImage from './TouchableImage';
 import TabIcon from './TabIcon';
 import Avatar from './Avatar';
 import ListItem from './ListItem';
 import PlayerQueue from './PlayerQueue';
-import Badge from './Badge'
-import SongBar from './SongBar'
+import SongBar from './SongBar';
+
+import Button from './Button';
 
 export {
   Container,
@@ -21,11 +23,12 @@ export {
   BottomTabBar,
   Card,
   Text,
+  TextInput,
   TouchableImage,
   TabIcon,
   Avatar,
   ListItem,
   PlayerQueue,
-  Badge,
-  SongBar
+  SongBar,
+  Button
 };

@@ -7,6 +7,7 @@ import TouchableImage from '../TouchableImage';
 
 import styles from './styles';
 import { images } from '../../constants';
+import Badge from '../Badge';
 
 const UserProfileHeader = ({ navigation, user }) => {
   return (
@@ -29,18 +30,16 @@ const UserProfileHeader = ({ navigation, user }) => {
           source={images.currency}
           style={styles.tapes}
           imageStyle={styles.icon1}
-          badgeStyle={styles.tapesBadge1}
-          badgeTextStyle={styles.tapesBadgeText1}
-          showBadge
-          badgeCount={user.tapes}
+          renderBadge={() => (
+            <Badge style={styles.tapesBadge1} value={user.tapes} type="green" />
+          )}
         />
         <TouchableImage
           source={images.invite}
           imageStyle={styles.icon2}
-          badgeStyle={styles.tapesBadge2}
-          badgeTextStyle={styles.tapesBadgeText2}
-          showBadge
-          badgeCount={user.invitedFriends}
+          renderBadge={() => (
+            <Badge style={styles.tapesBadge2} value={user.invitedFriends} />
+          )}
         />
       </View>
     </View>

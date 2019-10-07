@@ -22,7 +22,16 @@ const localization = {
   searchSpotify: 'SEARCH SPOTIFY',
   chooseWinner: 'CHOOSE THE WINNER',
   winner: 'WINNER',
-  congratulations: 'CONGRATULATIONS!'
+  congratulations: 'CONGRATULATIONS!',
+  overallWinner: 'OVERALL WINNER',
+  quitGame: 'QUIT GAME',
+  profile: 'PROFILE',
+  logout: 'LOGOUT',
+  username: 'USERNAME',
+  email: 'EMAIL ADDRESS',
+  search: 'Search',
+  sendInvites: (num = 0) => `SEND INVITES (${num})`,
+  tieBreaker: 'TIE BREAKER'
 };
 
 export default localization;
