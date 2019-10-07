@@ -88,16 +88,17 @@ const computeRoundWinner = (voteCount = {}) => {
 }
 
 export function * subscribeVotingRound(firestore, action) {
-  const gameId = yield select(GameplaySelectors.selectGameId)
   const userId = yield select(UserSelectors.selectUserId)
-  const gameStart = yield select(UserSelectors.selectGameStart)
+  const gameId = yield select(GameplaySelectors.selectGameId)
+  const gameStart = yield select(GameplaySelectors.selectGameStart)
   const currentRound = yield select(GameplaySelectors.selectRound)
+  const gameStartDate = new Date(gameStart).getTime()
+  const voteRoundStart = new Date(gameStartDate + 60000).toISOString()  // add 1 minute
 
-  //add another 1 min
-  const timerChannel = yield call(onTimerTickChannel, (gameStart + (1000 * 60)))
+  const timerChannel = yield call(onTimerTickChannel, voteRoundStart)
   yield takeEvery(timerChannel, function* (tick) {
     if (tick <= 0)
-      console.tron.log('timer end')
+      console.tron.log('Voting round end')
     
     const defaultTick = tick < 0 ? 0 : tick
     yield put(GameplayActions.setTimerTick(defaultTick))
@@ -109,7 +110,7 @@ export function * subscribeVotingRound(firestore, action) {
       const roundWinner = yield select(GameplaySelectors.selectRoundWinnerAsMutable)
       roundWinner[`round${currentRound}`] = computeRoundWinner(docUpdate.voteCount)
 
-      yield put(GameplayActions.updateRoundWinner({roundWinner}))
+      yield put(GameplayActions.updateRoundWinner(roundWinner))
     }
   })
 
