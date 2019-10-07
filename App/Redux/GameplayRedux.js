@@ -106,7 +106,7 @@ export const saveGameInfo = (state, { gameInfo }) =>
   })
 
 export const saveGameUpdate = (state, { gameUpdate }) =>
-  state.merge({ card: gameUpdate.card, players: gameUpdate.players, roundWinner: gameUpdate.roundWinner })
+  state.merge({ card: gameUpdate.card, players: gameUpdate.players })
 
 export const updateRoundWinner = (state, { roundWinner }) =>
   state.merge({ roundWinner })
