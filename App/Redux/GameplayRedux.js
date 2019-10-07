@@ -13,6 +13,7 @@ const { Types, Creators } = createActions({
   searchedSongsSuccess: ['searchedSongs'],
   saveGameInfo: ['gameInfo'],
   saveGameUpdate: ['gameUpdate'],
+  updateRoundWinner: ['roundWinner'],
   setTimerTick: ['timerTick'],
   //saga trigger
   subscribeGameplay: null,
@@ -23,6 +24,7 @@ const { Types, Creators } = createActions({
   pauseSong: null,
   resumeSong: null,
   subscribeGameplayUpdates: null,
+  subscribeVotingRoundUpdates: null,
   unsubscribeGameplayUpdates: null
 })
 
@@ -38,14 +40,21 @@ Card {
 players [
   { fcmToken, id, name, profileImage, tapes }
 ]
+
+roundWinner {
+  round1: playerId,
+  round2: playerId,
+  ...
+}
 */
 export const INITIAL_STATE = Immutable({
   round: 1,
+  roundWinner: {}, //playerId
   players: [],
   card: { title: '', content: '' },
   loading: false,
   error: null,
-  gameId: 'HvHbAlBvgIqEC8hpdXLB',
+  gameId: null,
   gameStart: null,  //date ISOString
   searchedSongs: [],
   timerTick: 0,
@@ -62,8 +71,9 @@ export const GameplaySelectors = {
   selectCardTitle: state => state.gameplay.card.title,
   selectTimerTick: state => state.gameplay.timerTick,
   selectRound: state => state.gameplay.round,
+  selectGameStart: state => state.gameplay.gameStart,
+  selectRoundWinnerAsMutable: state => Immutable.asMutable(state.gameplay.roundWinner),
   selectPlayers: state => state.gameplay.players,
-  selectPlayersAsMutable: state => state.gameplay.players,
   selectPlayerSubmittedSong: state => state.gameplay.song,
   selectPlayerSubmittedSongs: state => computePlayerSubmittedSongs(state.gameplay.song, state.gameplay.players)
 }
@@ -101,6 +111,9 @@ export const saveGameInfo = (state, { gameInfo }) =>
 export const saveGameUpdate = (state, { gameUpdate }) =>
   state.merge({ card: gameUpdate.card, players: gameUpdate.players })
 
+export const updateRoundWinner = (state, { roundWinner }) =>
+  state.merge({ roundWinner })
+
 export const setTimerTick = (state, { timerTick }) =>
   state.merge({ timerTick })
 
@@ -115,4 +128,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SAVE_GAME_INFO]: saveGameInfo,
   [Types.SAVE_GAME_UPDATE]: saveGameUpdate,
   [Types.SET_TIMER_TICK]: setTimerTick,
+  [Types.UPDATE_ROUND_WINNER]: updateRoundWinner,
 })

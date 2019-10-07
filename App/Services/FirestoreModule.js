@@ -27,9 +27,10 @@ const playerJoinObserver = emitter =>
       emitter(docSnapshot.data().players)
     })
 
+// TODO not currently working
 const removePlayerFromOpenMatch = user => {//Promise.resolve(Result.Ok(true))
   console.tron.log('removePlayerFromOpenMatch', user)
-  firestore
+  return firestore
     .collection(`openmatch`)
     .doc('lobby')
     .set({ 
@@ -135,7 +136,16 @@ const removeGameIdFromUser = userId =>
       gameId: FieldValue.delete()
     }, { merge:true })
 
-const voteRoundWinner = playerId => Promise.resolve(Result.Ok(true))
+const voteRoundWinner = (gameId, currentRound, playerId) =>
+  firestore
+    .collection(`card_games/${gameId}/gameplay`)
+    .doc(`round${currentRound}`)
+    .set({
+      voteCount: {
+        [`${playerId}`]: FieldValue.increment(1)
+      } 
+    }, { merge: true })
+    .then(() => Promise.resolve(Result.Ok()))
 
 export default {
   signIn,

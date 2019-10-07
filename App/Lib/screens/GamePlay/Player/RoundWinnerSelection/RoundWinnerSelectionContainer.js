@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux'
-import RoundWinnerSelection from './RoundWinnerSelection';
-
 import { mockData, screens } from '../../../../constants';
+import RoundWinnerSelection from './RoundWinnerSelection';
 import GameplayActions, { GameplaySelectors } from '../../../../../Redux/GameplayRedux';
 
 const RoundWinnerSelectionContainer = (props) => {
@@ -28,7 +27,7 @@ const RoundWinnerSelectionContainer = (props) => {
     <RoundWinnerSelection
       songs={props.selectPlayerSubmittedSongs}
       players={mockData.playersInGame}
-      timeLeft={60}
+      timeLeft={props.selectTimerTick}
       scenario={props.selectCardContent}
       submittedWinner={submittedWinner}
       userSongEntry={props.selectPlayerSubmittedSong}
@@ -41,6 +40,7 @@ const RoundWinnerSelectionContainer = (props) => {
 };
 
 const mapStateToProps = (state) => ({
+  selectTimerTick: GameplaySelectors.selectTimerTick(state),
   selectCardContent: GameplaySelectors.selectCardContent(state),
   selectPlayerSubmittedSong: GameplaySelectors.selectPlayerSubmittedSong(state),
   selectPlayerSubmittedSongs: GameplaySelectors.selectPlayerSubmittedSongs(state),
