@@ -26,12 +26,12 @@ const RoundWinnerSelectionContainer = (props) => {
 
   return (
     <RoundWinnerSelection
-      songs={mockData.songs}
+      songs={props.selectPlayerSubmittedSongs}
       players={mockData.playersInGame}
       timeLeft={60}
       scenario={props.selectCardContent}
       submittedWinner={submittedWinner}
-      userSongEntry={mockData.songs[0]}
+      userSongEntry={props.selectPlayerSubmittedSong}
       selectedWinner={selectedWinner}
       onPlaySong={handlePlaySong}
       onSelectWinner={handleSelectWinner}
@@ -42,6 +42,8 @@ const RoundWinnerSelectionContainer = (props) => {
 
 const mapStateToProps = (state) => ({
   selectCardContent: GameplaySelectors.selectCardContent(state),
+  selectPlayerSubmittedSong: GameplaySelectors.selectPlayerSubmittedSong(state),
+  selectPlayerSubmittedSongs: GameplaySelectors.selectPlayerSubmittedSongs(state),
 })
  
 const mapDispatchToProps = (dispatch) => ({

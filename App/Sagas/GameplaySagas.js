@@ -63,6 +63,10 @@ export function * subscribeGameplay(firestore, action) {
         return playerUpdate ? {...player, ...playerUpdate} : player
       })
 
+      const userPlayer = players.find(p => p.id === userId)
+      if (userPlayer.song) 
+        yield put(GameplayActions.saveSongSelectionSuccess(userPlayer.song))
+      
       yield put(GameplayActions.saveGameUpdate({card, players}))
     })
 
