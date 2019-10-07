@@ -71,7 +71,6 @@ export const GameplaySelectors = {
   selectRound: state => state.gameplay.round,
   selectRoundWinnerAsMutable: state => Immutable.asMutable(state.gameplay.roundWinner),
   selectPlayers: state => state.gameplay.players,
-  selectPlayersAsMutable: state => state.gameplay.players,
   selectPlayerSubmittedSong: state => state.gameplay.song,
   selectPlayerSubmittedSongs: state => computePlayerSubmittedSongs(state.gameplay.players)
 }

@@ -57,7 +57,7 @@ export function * subscribeGameplay(firestore, action) {
     yield takeEvery(gameplayChannel, function* (docUpdate) {
       console.tron.log('docUpdate: ', docUpdate)
       const card = docUpdate.card || {title: '', content: ''}
-      const mutablePlayers = yield select(GameplaySelectors.selectPlayersAsMutable)
+      const mutablePlayers = yield select(GameplaySelectors.selectPlayers)
       const players = mutablePlayers.map(player => {
         // player id exist, then merge changes
         const playerUpdate = docUpdate.players && docUpdate.players[player.id]
@@ -68,6 +68,7 @@ export function * subscribeGameplay(firestore, action) {
       const round = yield select(GameplaySelectors.selectRound)
       const roundWinner = yield select(GameplaySelectors.selectRoundWinnerAsMutable)
       roundWinner[`round${round}`] = computeRoundWinner(docUpdate.voteCount)
+      
       yield put(GameplayActions.saveGameUpdate({card, players, roundWinner}))
     })
 
