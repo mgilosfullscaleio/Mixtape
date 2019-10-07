@@ -13,6 +13,7 @@ const { Types, Creators } = createActions({
   searchedSongsSuccess: ['searchedSongs'],
   saveGameInfo: ['gameInfo'],
   saveGameUpdate: ['gameUpdate'],
+  updateRoundWinner: ['roundWinner'],
   setTimerTick: ['timerTick'],
   //saga trigger
   subscribeGameplay: null,
@@ -23,6 +24,7 @@ const { Types, Creators } = createActions({
   pauseSong: null,
   resumeSong: null,
   subscribeGameplayUpdates: null,
+  subscribeVotingRoundUpdates: null,
   unsubscribeGameplayUpdates: null
 })
 
@@ -69,6 +71,7 @@ export const GameplaySelectors = {
   selectCardTitle: state => state.gameplay.card.title,
   selectTimerTick: state => state.gameplay.timerTick,
   selectRound: state => state.gameplay.round,
+  selectGameStart: state => state.gameplay.gameStart,
   selectRoundWinnerAsMutable: state => Immutable.asMutable(state.gameplay.roundWinner),
   selectPlayers: state => state.gameplay.players,
   selectPlayerSubmittedSong: state => state.gameplay.song,
@@ -105,6 +108,9 @@ export const saveGameInfo = (state, { gameInfo }) =>
 export const saveGameUpdate = (state, { gameUpdate }) =>
   state.merge({ card: gameUpdate.card, players: gameUpdate.players, roundWinner: gameUpdate.roundWinner })
 
+export const updateRoundWinner = (state, { roundWinner }) =>
+  state.merge({ roundWinner })
+
 export const setTimerTick = (state, { timerTick }) =>
   state.merge({ timerTick })
 
@@ -119,4 +125,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SAVE_GAME_INFO]: saveGameInfo,
   [Types.SAVE_GAME_UPDATE]: saveGameUpdate,
   [Types.SET_TIMER_TICK]: setTimerTick,
+  [Types.UPDATE_ROUND_WINNER]: updateRoundWinner,
 })

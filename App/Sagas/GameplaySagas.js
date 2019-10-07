@@ -92,6 +92,37 @@ const computeRoundWinner = (voteCount = {}) => {
   return winner ? winner.playerId : null
 }
 
+export function * subscribeVotingRound(firestore, action) {
+  const gameId = yield select(GameplaySelectors.selectGameId)
+  const userId = yield select(UserSelectors.selectUserId)
+  const gameStart = yield select(UserSelectors.selectGameStart)
+  const currentRound = yield select(GameplaySelectors.selectRound)
+
+  //add another 1 min
+  const timerChannel = yield call(onTimerTickChannel, (gameStart + (1000 * 60)))
+  yield takeEvery(timerChannel, function* (tick) {
+    if (tick <= 0)
+      console.tron.log('timer end')
+    
+    const defaultTick = tick < 0 ? 0 : tick
+    yield put(GameplayActions.setTimerTick(defaultTick))
+  })
+
+  const gameplayChannel = yield call(onGameplayChannel, firestore, gameId, userId, currentRound)
+  yield takeEvery(gameplayChannel, function* (docUpdate) {
+    if (docUpdate.voteCount) {
+      const roundWinner = yield select(GameplaySelectors.selectRoundWinnerAsMutable)
+      roundWinner[`round${currentRound}`] = computeRoundWinner(docUpdate.voteCount)
+
+      yield put(GameplayActions.updateRoundWinner({roundWinner}))
+    }
+  })
+
+  yield take(GameplayTypes.UNSUBSCRIBE_GAMEPLAY_UPDATES)
+  gameplayChannel.close()
+  timerChannel.close()
+}
+
 export function * saveSongSelection(api, action) {
   const { song } = action
   const gameId = yield select(GameplaySelectors.selectGameId)
