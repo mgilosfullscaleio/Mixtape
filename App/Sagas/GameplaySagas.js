@@ -65,9 +65,9 @@ export function * subscribeGameplay(firestore, action) {
       })
 
       // determine vote round winner
+      const round = yield select(GameplaySelectors.selectRound)
       const roundWinner = yield select(GameplaySelectors.selectRoundWinnerAsMutable)
-      roundWinner[`round${GameplaySelectors.selectRound}`] = computeRoundWinner(docUpdate.voteCount)
-
+      roundWinner[`round${round}`] = computeRoundWinner(docUpdate.voteCount)
       yield put(GameplayActions.saveGameUpdate({card, players, roundWinner}))
     })
 
