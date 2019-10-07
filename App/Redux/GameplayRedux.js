@@ -38,10 +38,16 @@ Card {
 players [
   { fcmToken, id, name, profileImage, tapes }
 ]
+
+roundWinner {
+  round1: playerId,
+  round2: playerId,
+  ...
+}
 */
 export const INITIAL_STATE = Immutable({
   round: 1,
-  roundWinner: null, //playerId
+  roundWinner: {}, //playerId
   players: [],
   card: { title: '', content: '' },
   loading: false,
@@ -63,6 +69,7 @@ export const GameplaySelectors = {
   selectCardTitle: state => state.gameplay.card.title,
   selectTimerTick: state => state.gameplay.timerTick,
   selectRound: state => state.gameplay.round,
+  selectRoundWinnerAsMutable: state => Immutable.asMutable(state.gameplay.roundWinner),
   selectPlayers: state => state.gameplay.players,
   selectPlayersAsMutable: state => state.gameplay.players,
   selectPlayerSubmittedSong: state => state.gameplay.song,
