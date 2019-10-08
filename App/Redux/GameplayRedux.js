@@ -78,11 +78,12 @@ export const GameplaySelectors = {
   selectPlayerSubmittedSongs: state => computePlayerSubmittedSongs(state.gameplay.song, state.gameplay.players)
 }
 
-const computePlayerSubmittedSongs = (song, players) =>
-  ([
+const computePlayerSubmittedSongs = (song, players) => (
+  [
     song,
     ...players.filter(p => p.song && p.song !== song).map(p => ({ playerId: p.id, ...p.song }))
-  ])
+  ].filter(s => s)
+  )
 
 /* ------------- Reducers ------------- */
 
