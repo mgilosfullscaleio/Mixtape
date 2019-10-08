@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Container, UserProfileHeader as Header } from '../../../components';
 import PlayCard from './components/PlayCard';
-
+import FacebookList from './components/FacebookList';
 import styles from './styles';
 import { localization, screens } from '../../../constants';
+
 
 const Home = ({ navigation, user }) => {
   const renderHeader = () => <Header navigation={navigation} user={user} />;
@@ -24,6 +25,7 @@ const Home = ({ navigation, user }) => {
         ribbonTitle={localization.oneDollar}
         onPress={() => navigation.navigate(screens.home.lobby)}
       />
+      <FacebookList />
     </Container>
   );
 };

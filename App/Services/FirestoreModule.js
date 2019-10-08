@@ -117,6 +117,46 @@ const createUserFromSpotifyAccount = info => {
     .catch(e => Result.Error(e))
 }
 
+
+/**
+ * Performs user fetch from Firestore having the fbIds being passed in the paramter.
+ * Calls a callable function exposed from Cloud Functions. Expects fbIds key.
+ * @param {*} fbIds - An array of fbIds.
+ * @returns Promise
+ */
+const getUsersWithFbIdsCF = async (fbIds) => {
+  try {
+    const collection = __DEV__ ? "getUserInfoWithFBIdDev" : "getUserInfoWithFBId";
+    const callable = firebase.functions().httpsCallable(collection);
+    const response = await callable({ fbIds, v2:'' });
+    const { data } = response;
+    return Promise.resolve({ data });
+  }
+  catch(e) {
+    return Promise.reject(e);
+  }
+}
+
+/**
+ * Performs Firebase authentication using Facebook token.
+ * @param {*} token - Facebook token.
+ * @returns Promise
+ */
+export const signInWithFacebookCredential = async (token) => {
+  try {
+    // Build Firebase credential with the Facebook access token.
+    const fbCredential = firebase.auth.FacebookAuthProvider.credential(token);
+
+    // Sign in with credential from the Facebook user.
+    const result = await firebase.auth().signInWithCredential(fbCredential);
+    return result;
+  }
+  catch (e) {
+    // Handle Errors here. 
+    return null;
+  }
+}
+
 export default {
   signIn,
   createUserFromSpotifyAccount,

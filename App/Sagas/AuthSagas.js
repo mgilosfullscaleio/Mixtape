@@ -3,7 +3,7 @@ import AuthActions from '../Redux/AuthRedux'
 import UserActions from '../Redux/UserRedux'
 import Result from 'folktale/result'
 import Spotify from 'rn-spotify-sdk'
-
+import { authorizeWithFacebook, getFBToken, getFBUserFriends, getFBUserInfo , logOutFacebook, } from '../Services/Facebook';
 var scopes = [
                 'user-modify-playback-state',
                 'user-read-currently-playing',
@@ -82,6 +82,75 @@ export function * initializeSpotify (api, action) {
   ])
 }
 
+const getFBFriends =async () =>{
+  var fbToken = await getFBToken();
+  try{
+    if(fbToken === null){
+      if(await authorizeWithFacebook() === null){
+          return Promise.resolve(Result.Error("error"));
+      }
+      fbToken = await getFBToken();
+      // Sign to firebase with FB credentialsr
+      console.log("FBToken: ",fbToken);
+      await signInWithFacebookCredential(fbToken);
+    }
+
+    // console.log("fbToken" + fbToken)
+    // const data = await getFBUserFriends(fbToken);
+    // console.log("fbTokendata", data)
+    
+    // if (data !== null) {
+    //     const fbIds = data.data.map(item=>item.id);
+    //     const users = await getUsersWithFbIdsCF(fbIds);
+    //     Promise.resolve(Result.Ok(users))
+    //   }
+  } catch(e) {
+  console.log("GET FB FRIENDS ERROR ---> ", e);
+    return Promise.resolve(Result.Error(e))
+  }
+};
+
+const authFB =async () => {
+  try {
+    var fbToken = await getFBToken();
+    if (fbToken === null) {
+      if (await authorizeWithFacebook() === null) {
+        return dispatch(authFailed(e));
+      }
+      fbToken = await getFBToken();
+    }
+    // Sign to firebase with FB credentials
+    const credentials = await signInWithFacebookCredential(fbToken);
+    var user = credentials.user;
+    var authData = {
+      uid: user.uid,
+      providerData: user.providerData,
+      email: user.email,
+      providerId: user.providerData[0].providerId,
+      photoURL: user.photoURL,
+      phoneNumber: user.phoneNumber,
+    }
+
+    return dispatch(authSuccess(authData));
+  }
+  catch(e) {
+    return dispatch(authFailed(e));
+  }
+}
+
+export function * initializeFb(action){
+  console.log("initializeFB");
+  yield put(AuthActions.loadingRequest());
+
+  const response = yield call(getFBFriends);
+  yield put(
+    response.matchWith({
+      Ok: ({ value }) =>  AuthActions.getFBFriendsSuccess(value),
+      Error: ({ value }) => AuthActions.getFBFriendsFailed(value)
+    })
+  );
+}
+
 export function * redirectToHome (action) {
   const { isLoggedIn } = action
   yield put(AuthActions.loadingRequest())
@@ -96,7 +165,6 @@ export function * redirectToHome (action) {
   )
 }
 
-
 export function * loginSpotify () {
   yield put(AuthActions.loadingRequest())
   
@@ -108,4 +176,18 @@ export function * loginSpotify () {
       Error: ({ value }) => AuthActions.spotifyAuthFailure(value)
     })
   )
+}
+
+export function * loginFb(){
+  console.log("loginFB");
+
+  yield put(AuthActions.loadingRequest());
+
+  const response = call(authFB);
+  yield put(
+    response.matchWith({
+      Ok: ({ value }) =>  AuthActions.loginSuccess(value),
+      Error: ({ value }) => AuthActions.loginFailed(value)
+    })
+  );
 }
