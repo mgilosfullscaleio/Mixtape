@@ -16,7 +16,8 @@ const SongSelectionContainer = (props) => {
 
   useEffect(() => {
     props.subscribeGameplayUpdates()
-    
+    props.resetGameplayRound()
+
     return props.unsubscribeGameplayUpdates
   }, [])
 
@@ -94,6 +95,7 @@ const mapDispatchToProps = (dispatch) => ({
   pauseSong: () => dispatch(GameplayActions.pauseSong()),
   resumeSong: () => dispatch(GameplayActions.resumeSong()),
   subscribeGameplayUpdates: () => dispatch(GameplayActions.subscribeGameplayUpdates()),
+  resetGameplayRound: () => dispatch(GameplayActions.resetGameplayRound()),
   unsubscribeGameplayUpdates: () => dispatch(GameplayActions.unsubscribeGameplayUpdates()),
   saveSongSelection: song => dispatch(GameplayActions.saveSongSelection(song))
 })

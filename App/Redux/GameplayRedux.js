@@ -15,6 +15,8 @@ const { Types, Creators } = createActions({
   saveGameUpdate: ['gameUpdate'],
   updateRoundWinner: ['roundWinner'],
   setTimerTick: ['timerTick'],
+  resetGameplayRound: null,
+
   //saga trigger
   subscribeGameplay: null,
   saveSongSelection: ['song'],
@@ -119,6 +121,9 @@ export const updateRoundWinner = (state, { roundWinner }) =>
 export const setTimerTick = (state, { timerTick }) =>
   state.merge({ timerTick })
 
+export const resetGameplayRound = state =>
+  state.merge({ songVote, song })
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -131,4 +136,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SAVE_GAME_UPDATE]: saveGameUpdate,
   [Types.SET_TIMER_TICK]: setTimerTick,
   [Types.UPDATE_ROUND_WINNER]: updateRoundWinner,
+  [Types.RESET_GAMEPLAY_ROUND]: resetGameplayRound,
 })
