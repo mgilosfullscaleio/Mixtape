@@ -147,6 +147,15 @@ const voteRoundWinner = (gameId, currentRound, playerId) =>
     }, { merge: true })
     .then(() => Promise.resolve(Result.Ok()))
 
+const updateGameNextRound = gameId =>
+  firestore
+    .collection(`card_games/${gameId}/gameplay`)
+    .doc('info')
+    .set({
+      currentRound: FieldValue.increment(1)
+    }, { merge: true })
+    .then(() => Promise.resolve(Result.Ok()))
+
 export default {
   signIn,
   createUserFromSpotifyAccount,
@@ -160,6 +169,7 @@ export default {
   gameplayObserver,
   updateSongSelection,
   voteRoundWinner,
+  updateGameNextRound,
 
   userObserver
 }

@@ -102,7 +102,7 @@ export function * subscribeVotingRound(firestore, action) {
 
   const timerChannel = yield call(onTimerTickChannel, voteRoundStart)
   yield takeEvery(timerChannel, function* (tick) {
-    if (tick <= 0)
+    if (tick <= 0) //yield put(GameplayActions.updateGameNextRound())
       console.tron.log('Voting round end')
     
     const defaultTick = tick < 0 ? 0 : tick
@@ -203,4 +203,17 @@ export function * pauseSong() {
 
 export function * resumeSong() {
   Spotify.setPlaying(true);
+}
+
+export function * updateNextRound(firestore, action) {
+  const gameId = yield select(GameplaySelectors.selectGameId)
+
+  const response = yield call(firestore.updateGameNextRound, gameId)
+
+  // yield put(
+  //   response.matchWith({
+  //     Ok: ({ value }) => console.tron.log(value), //subscribe for next round
+  //     Error: ({ value }) => GameplayActions.gameplayFailure(value)
+  //   })
+  // )
 }

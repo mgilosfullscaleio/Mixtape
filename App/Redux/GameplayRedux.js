@@ -25,7 +25,8 @@ const { Types, Creators } = createActions({
   resumeSong: null,
   subscribeGameplayUpdates: null,
   subscribeVotingRoundUpdates: null,
-  unsubscribeGameplayUpdates: null
+  unsubscribeGameplayUpdates: null,
+  updateGameNextRound: null
 })
 
 export const GameplayTypes = Types
@@ -54,7 +55,7 @@ export const INITIAL_STATE = Immutable({
   card: { title: '', content: '' },
   loading: false,
   error: null,
-  gameId: null,
+  gameId: null, //'oKCbihLIHyTLnM0A2Z1y',
   gameStart: null,  //date ISOString
   searchedSongs: [],
   timerTick: 0,
