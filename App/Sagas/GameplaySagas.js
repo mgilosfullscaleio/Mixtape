@@ -79,6 +79,7 @@ export function * subscribeGameplay(firestore, action) {
     yield take(GameplayTypes.UNSUBSCRIBE_GAMEPLAY_UPDATES)
     gameplayChannel.close()
     timerChannel.close()
+    yield put(GameplayActions.pauseSong())
   }
 }
 
@@ -132,6 +133,7 @@ export function * subscribeVotingRound(firestore, action) {
   yield take(GameplayTypes.UNSUBSCRIBE_GAMEPLAY_UPDATES)
   gameplayChannel.close()
   timerChannel.close()
+  yield put(GameplayActions.pauseSong())
 }
 
 export function * playRoundWinnerSong(action) {
