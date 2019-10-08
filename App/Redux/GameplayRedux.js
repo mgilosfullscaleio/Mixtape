@@ -1,5 +1,6 @@
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
+import { UserSelectors } from './UserRedux'
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -28,7 +29,8 @@ const { Types, Creators } = createActions({
   subscribeGameplayUpdates: null,
   subscribeVotingRoundUpdates: null,
   unsubscribeGameplayUpdates: null,
-  updateGameNextRound: null
+  updateGameNextRound: null,
+  playRoundWinnerSong: null
 })
 
 export const GameplayTypes = Types
@@ -57,7 +59,7 @@ export const INITIAL_STATE = Immutable({
   card: { title: '', content: '' },
   loading: false,
   error: null,
-  gameId: null, //'H1y9XCSqbIkmRHT299Sr',
+  gameId: null,
   gameStart: null,  //date ISOString
   searchedSongs: [],
   timerTick: 0,
@@ -81,7 +83,14 @@ export const GameplaySelectors = {
   selectPlayerVotedSong: state => state.gameplay.songVote,
   selectPlayerSubmittedSong: state => state.gameplay.song,
   selectPlayerSubmittedSongs: state => computePlayerSubmittedSongs(state.gameplay.song, state.gameplay.players),
+  selectIsUserTheRoundWinner: state => getRoundWinner(state.gameplay) === UserSelectors.selectUserId(state),
+  selectWinningSong: state => collectRoundWinningSong(state.gameplay)
 }
+
+const getRoundWinner = gameplay => gameplay.roundWinner[`round${gameplay.round}`]
+
+const collectRoundWinningSong = gameplay =>
+  gameplay.players.find(player => player.id === getRoundWinner(gameplay))
 
 const computePlayerSubmittedSongs = (song, players) => (
   [

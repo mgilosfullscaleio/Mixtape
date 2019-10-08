@@ -109,7 +109,6 @@ export function * subscribeVotingRound(firestore, action) {
     if (tick <= 0) {
       console.tron.log('Voting round end')
       yield delay(1000)
-      yield put(GameplayActions.updateGameNextRound())
       yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinner }))
     }
 
@@ -133,6 +132,30 @@ export function * subscribeVotingRound(firestore, action) {
   yield take(GameplayTypes.UNSUBSCRIBE_GAMEPLAY_UPDATES)
   gameplayChannel.close()
   timerChannel.close()
+}
+
+export function * playRoundWinnerSong(action) {
+  const isUserWinner = yield select(GameplaySelectors.selectIsUserTheRoundWinner)
+  const winningSong = yield select(GameplaySelectors.selectWinningSong)
+  const gameStart = yield select(GameplaySelectors.selectGameStart)
+  const gameStartDate = new Date(gameStart).getTime()
+  const celebrationDuration = new Date(gameStartDate + 35000).toISOString()  // add 35 sec
+
+  console.tron.log('playRoundWinnerSong', isUserWinner, winningSong)
+
+  yield put(GameplayActions.playSong(winningSong))
+
+  const timerChannel = yield call(onTimerTickChannel, celebrationDuration)
+  yield takeEvery(timerChannel, function* (tick) {
+    if (tick <= 0) {
+      if (isUserWinner) yield put(GameplayActions.updateGameNextRound())
+      yield delay(3000)
+      yield put(NavigationActions.navigate({ routeName: screens.gamePlay.playerSongSelection }))
+    }
+
+    const defaultTick = tick < 0 ? 0 : tick
+    yield put(GameplayActions.setTimerTick(defaultTick))
+  })
 }
 
 export function * saveSongSelection(api, action) {
