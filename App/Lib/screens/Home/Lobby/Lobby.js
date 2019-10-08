@@ -19,10 +19,10 @@ const Lobby = props => {
   const renderHeader = () => <Header title={localization.loadingGame} />;
 
   useEffect(() => {
-    props.subscribePlayerJoin()
-    props.requestMessagingPermission()
-    props.subscribeGameStart()
-    props.addPlayerForMatch()
+    // props.subscribePlayerJoin()
+    // props.requestMessagingPermission()
+    props.subscribeOpenMatch()
+    // props.addPlayerForMatch()
     
     return props.unsubscribeOpenMatchUpdates
   }, [])
@@ -97,12 +97,13 @@ const mapStateToProps = (state) => ({
 })
  
 const mapDispatchToProps = (dispatch) => ({
-  addPlayerForMatch: () => dispatch(LobbyActions.addPlayerForMatch()),
+  // addPlayerForMatch: () => dispatch(LobbyActions.addPlayerForMatch()),
   quitLobby: () => dispatch(LobbyActions.quitOpenMatch()),
-  subscribePlayerJoin: () => dispatch(LobbyActions.subscribePlayerJoin()),
+  // subscribePlayerJoin: () => dispatch(LobbyActions.subscribePlayerJoin()),
+  // requestMessagingPermission: () => dispatch(MessagingActions.requestAndroidPermission()),
+  // subscribeGameStart: () =>  dispatch(MessagingActions.subscribeGameStartMessage()),
+  subscribeOpenMatch: () =>  dispatch(LobbyActions.subscribeOpenMatch()),
   unsubscribeOpenMatchUpdates: () => dispatch(LobbyActions.unsubscribeOpenMatchUpdates()),
-  requestMessagingPermission: () => dispatch(MessagingActions.requestAndroidPermission()),
-  subscribeGameStart: () =>  dispatch(MessagingActions.subscribeGameStartMessage()),
 })
  
 export default connect(mapStateToProps, mapDispatchToProps)(Lobby)

@@ -12,7 +12,8 @@ const { Types, Creators } = createActions({
   
   //saga triggers
   userRequest: ['spotifyAcc'],
-  createUser: ['spotifyAcc']
+  createUser: ['spotifyAcc'],
+  subscribeGameStartMessage: null
 })
 
 export const UserTypes = Types

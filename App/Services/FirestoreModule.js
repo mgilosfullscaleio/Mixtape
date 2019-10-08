@@ -27,9 +27,10 @@ const playerJoinObserver = emitter =>
       emitter(docSnapshot.data().players)
     })
 
+// TODO not currently working
 const removePlayerFromOpenMatch = user => {//Promise.resolve(Result.Ok(true))
   console.tron.log('removePlayerFromOpenMatch', user)
-  firestore
+  return firestore
     .collection(`openmatch`)
     .doc('lobby')
     .set({ 
@@ -39,36 +40,29 @@ const removePlayerFromOpenMatch = user => {//Promise.resolve(Result.Ok(true))
     .catch(e => Promise.resolve(Result.Error(e)))
 }
 
+// TODO this is not returning a Result
 const getGameplayInfo = gameId =>
   firestore
     .collection(`card_games/${gameId}/gameplay`)
     .doc('info')
     .get()
     .then(docs => 
-      ({
+      Result.Ok({
         ...docs.data(),
         created: docs.data().created.toDate().toISOString() //convert it to a normal date object
       })
     )
     .catch(error => Result.Error(`Error with gameId ${gameId}\n${error}`))
 
-const gameplayObserver = async (emitter, gameId, userId, currentRound) => {
-  const roundRef = firestore
+const gameplayObserver = async (emitter, gameId, userId, currentRound) =>
+  firestore
     .collection(`card_games/${gameId}/gameplay`)
     .doc(`round${currentRound}`)
-
-  //update round by adding ourself to the players
-  await roundRef.set({
-    players: {
-      [`${userId}`]: {}
-    }
-  }, {merge: true})
-
-  return roundRef
     .onSnapshot(snapshot  => {
       emitter(snapshot.data())
+    }, err => {
+      console.tron.log(`Encountered error: ${err}`);
     })
-}
 
 const updateSongSelection = (gameId, currentRound, userId, song) =>
   firestore
@@ -76,7 +70,7 @@ const updateSongSelection = (gameId, currentRound, userId, song) =>
     .doc(`round${currentRound}`)
     .set({
       players: {
-        [`${userId}`]: song
+        [`${userId}`]: { song }
       }
     }, {merge: true})
     .then(() => Result.Ok(song))
@@ -103,7 +97,7 @@ const createUserFromSpotifyAccount = info => {
     name: info.display_name,
     coins: 10,
     points: 10,
-    avatar: info.images && info.images[0].url,
+    avatar: info.images && info.images[0] && info.images[0].url,
     social: {
       spotify: {
         id: info.id
@@ -156,6 +150,41 @@ export const signInWithFacebookCredential = async (token) => {
     return null;
   }
 }
+const userObserver = (emitter, userId) =>
+  firestore
+    .collection(USER)
+    .doc(userId)
+    .onSnapshot(docSnapshot => {
+      if (docSnapshot.exists) {
+        const gameId = docSnapshot.data().gameId
+        if (gameId) {
+          emitter(gameId)
+
+          //remove gameId after
+          removeGameIdFromUser(userId)
+        }  
+
+      }
+    })
+
+const removeGameIdFromUser = userId =>
+  firestore
+    .collection(USER)
+    .doc(userId)
+    .set({
+      gameId: FieldValue.delete()
+    }, { merge:true })
+
+const voteRoundWinner = (gameId, currentRound, playerId) =>
+  firestore
+    .collection(`card_games/${gameId}/gameplay`)
+    .doc(`round${currentRound}`)
+    .set({
+      voteCount: {
+        [`${playerId}`]: FieldValue.increment(1)
+      } 
+    }, { merge: true })
+    .then(() => Promise.resolve(Result.Ok()))
 
 export default {
   signIn,
@@ -168,5 +197,8 @@ export default {
 
   getGameplayInfo,
   gameplayObserver,
-  updateSongSelection
+  updateSongSelection,
+  voteRoundWinner,
+
+  userObserver
 }

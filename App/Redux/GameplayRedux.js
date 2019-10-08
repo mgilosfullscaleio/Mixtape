@@ -16,9 +16,12 @@ const { Types, Creators } = createActions({
   setTimerTick: ['timerTick'],
   //saga trigger
   subscribeGameplay: null,
-  saveSongSelection: ['playerId', 'song'],
+  saveSongSelection: ['song'],
   voteRoundWinner: ['playerId'],
   searchSong: ['keyword', 'limit'],
+  playSong: ['song'],
+  pauseSong: null,
+  resumeSong: null,
   subscribeGameplayUpdates: null,
   unsubscribeGameplayUpdates: null
 })
@@ -38,27 +41,36 @@ players [
 */
 export const INITIAL_STATE = Immutable({
   round: 1,
+  roundWinner: null, //playerId
   players: [],
-  card: null,
+  card: { title: '', content: '' },
   loading: false,
   error: null,
-  gameId: 'ymuEdpZCpQTFLjWUbj5h',
+  gameId: 'oKCbihLIHyTLnM0A2Z1y',
   gameStart: null,  //date ISOString
   searchedSongs: [],
-  timerTick: 0
+  timerTick: 0,
+  song: null
 })
 
 /* ------------- Selectors ------------- */
 
 export const GameplaySelectors = {
-  getRound: state => state.gameplay.round,
   searchedSongs: state => state.gameplay.searchedSongs,
   isLoading: state => state.gameplay.loading,
   selectGameId: state => state.gameplay.gameId,
   selectCardContent: state => state.gameplay.card.content,
   selectCardTitle: state => state.gameplay.card.title,
-  selectTimerTick: state => state.gameplay.timerTick
+  selectTimerTick: state => state.gameplay.timerTick,
+  selectRound: state => state.gameplay.round,
+  selectPlayers: state => state.gameplay.players,
+  selectPlayersAsMutable: state => state.gameplay.players,
+  selectPlayerSubmittedSong: state => state.gameplay.song,
+  selectPlayerSubmittedSongs: state => computePlayerSubmittedSongs(state.gameplay.players)
 }
+
+const computePlayerSubmittedSongs = players =>
+  players.filter(p => p.song).map(p => ({ playerId: p.id, ...p.song }))
 
 /* ------------- Reducers ------------- */
 
@@ -85,7 +97,7 @@ export const saveGameInfo = (state, { gameInfo }) =>
   })
 
 export const saveGameUpdate = (state, { gameUpdate }) =>
-  state.merge({ card: gameUpdate.card, })
+  state.merge({ card: gameUpdate.card, players: gameUpdate.players, roundWinner: gameUpdate.roundWinner })
 
 export const setTimerTick = (state, { timerTick }) =>
   state.merge({ timerTick })

@@ -4,23 +4,26 @@ import Spotify from 'rn-spotify-sdk'
 import Result from 'folktale/result'
 import { UserSelectors } from '../Redux/UserRedux'
 import { eventChannel } from 'redux-saga'
+import { screens } from '../Lib/constants'
+import { NavigationActions } from 'react-navigation'
 
 const onGameplayChannel = (firestore, gameId, userId, currentRound) =>
   eventChannel(emitter => {
     const unsubscribe = firestore.gameplayObserver(emitter, gameId, userId, currentRound)
 
-    return () => unsubscribe()
+    return () => unsubscribe
   })
 
 const onTimerTickChannel = startTime =>
   eventChannel(emitter => {
-    const elapse = Math.floor((Date.now() - new Date(startTime).getTime()) / 1000)
-    let tick = 60 - elapse
+    
 
     const timerId = setInterval(() => {
-      tick = tick - 1
+      const elapse = Math.floor((Date.now() - new Date(startTime).getTime()) / 1000)
+      let tick = 60 - elapse
+
+      emitter(tick)
       if (tick < 0) clearInterval(timerId)
-      else emitter(tick)
 
     }, 1000)
 
@@ -32,23 +35,42 @@ export function * subscribeGameplay(firestore, action) {
   const userId = yield select(UserSelectors.selectUserId)
 
   //check currentRound of the game
-  const gameplayInfo = yield call(firestore.getGameplayInfo, gameId)
-  console.tron.log('subscribeGameplay', gameplayInfo)
+  const result = yield call(firestore.getGameplayInfo, gameId)
+  const gameplayInfo = result.getOrElse(null)
+  console.tron.log('subscribeGameplay', gameId, gameplayInfo)
 
   //subscribe to gameplay of round
-  if (gameplayInfo.currentRound <= 5) {
+  if (gameplayInfo && gameplayInfo.currentRound <= 5) {
 
     yield put(GameplayActions.saveGameInfo(gameplayInfo))
     
     const timerChannel = yield call(onTimerTickChannel, gameplayInfo.created)
     yield takeEvery(timerChannel, function* (tick) {
-      yield put(GameplayActions.setTimerTick(tick))
+      if (tick <= 0)
+        yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinnerSelection }))
+      
+      const defaultTick = tick < 0 ? 0 : tick
+      yield put(GameplayActions.setTimerTick(defaultTick))
     })
 
     const gameplayChannel = yield call(onGameplayChannel, firestore, gameId, userId, gameplayInfo.currentRound)
     yield takeEvery(gameplayChannel, function* (docUpdate) {
-      yield put(GameplayActions.saveGameUpdate(docUpdate))
+      console.tron.log('docUpdate: ', docUpdate)
+      const card = docUpdate.card || {title: '', content: ''}
+      const mutablePlayers = yield select(GameplaySelectors.selectPlayersAsMutable)
+      const players = mutablePlayers.map(player => {
+        // player id exist, then merge changes
+        const playerUpdate = docUpdate.players && docUpdate.players[player.id]
+        return playerUpdate ? {...player, ...playerUpdate} : player
+      })
+
+      // determine vote round winner
+      const roundWinner = computeRoundWinner(docUpdate.voteCount)
+
+      yield put(GameplayActions.saveGameUpdate({card, players, roundWinner}))
     })
+
+    // yield put(GameplayActions.voteRoundWinner('vMpgxp3UPGzEI5ctqTjx'))
 
     yield take(GameplayTypes.UNSUBSCRIBE_GAMEPLAY_UPDATES)
     gameplayChannel.close()
@@ -56,10 +78,27 @@ export function * subscribeGameplay(firestore, action) {
   }
 }
 
-export function * saveSongSelection(api, action) {
-  const { playerId, song } = action
+const computeRoundWinner = (voteCount = {}) => {
+  const winner = Object.entries(voteCount)
+                      .map(([key, value]) =>
+                        ({
+                          playerId: key,
+                          vote: value
+                        })
+                      )
+                      .sort((a, b) => a.vote - b.vote)
+                      .pop()
 
-  const response = yield call(api.updateSongSelection, playerId, song)
+  return winner ? winner.playerId : null
+}
+
+export function * saveSongSelection(api, action) {
+  const { song } = action
+  const gameId = yield select(GameplaySelectors.selectGameId)
+  const userId = yield select(UserSelectors.selectUserId)
+  const currentRound = yield select(GameplaySelectors.selectRound)
+
+  const response = yield call(api.updateSongSelection, gameId, currentRound, userId, song)
 
   yield put(
     response.matchWith({
@@ -69,14 +108,14 @@ export function * saveSongSelection(api, action) {
   )
 }
 
-export function * voteRoundWinner(api, action) {
-  const { playerId } = action
-
-  const response = yield call(api.voteRoundWinner, playerId)
+export function * voteRoundWinner(api, { playerId }) {
+  const gameId = yield select(GameplaySelectors.selectGameId)
+  const currentRound = yield select(GameplaySelectors.selectRound)
+  const response = yield call(api.voteRoundWinner, gameId, currentRound, playerId)
 
   yield put(
     response.matchWith({
-      Ok: ({ value }) => GameplayActions.saveSongSelectionSuccess(value), 
+      Ok: ({ value }) => GameplayActions.voteRoundWinnerSuccess(), 
       Error: ({ value }) => GameplayActions.gameplayFailure(value)
     })
   )
@@ -92,7 +131,7 @@ const getSongTacksByKeywords = async (keyword, limit, offset=0) => {
       const albumImages = album.images || []
       return {
         id,
-        //uri: uri, 
+        uri, 
         title: name,
         singer: !!artists[0] ? artists[0].name : '',
         albumCover: !!albumImages[0] ? albumImages[0].url : '',
@@ -121,4 +160,15 @@ export function * searchSong(action) {
   )
 }
 
+export function * playSong(action) {
+  const { song, startPosition = 0 } = action
+  Spotify.playURI(song.uri, 0, startPosition);
+}
 
+export function * pauseSong() {
+  Spotify.setPlaying(false);
+}
+
+export function * resumeSong() {
+  Spotify.setPlaying(true);
+}
