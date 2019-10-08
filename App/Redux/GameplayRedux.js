@@ -55,7 +55,7 @@ export const INITIAL_STATE = Immutable({
   card: { title: '', content: '' },
   loading: false,
   error: null,
-  gameId: null, //'oKCbihLIHyTLnM0A2Z1y',
+  gameId: null,
   gameStart: null,  //date ISOString
   searchedSongs: [],
   timerTick: 0,
@@ -107,7 +107,7 @@ export const saveGameInfo = (state, { gameInfo }) =>
   state.merge({ 
     round: gameInfo.currentRound, 
     players: gameInfo.players,
-    gameStart: gameInfo.created
+    gameStart: gameInfo.gameStart
   })
 
 export const saveGameUpdate = (state, { gameUpdate }) =>
