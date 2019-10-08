@@ -42,7 +42,7 @@ export function * subscribeGameplay(firestore, action) {
 
     yield put(GameplayActions.saveGameInfo(gameplayInfo))
     
-    const timerChannel = yield call(onTimerTickChannel, gameplayInfo.created)
+    const timerChannel = yield call(onTimerTickChannel, gameplayInfo.gameStart)
     yield takeEvery(timerChannel, function* (tick) {
       if (tick <= 0)
         yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinnerSelection }))
@@ -106,12 +106,13 @@ export function * subscribeVotingRound(firestore, action) {
 
   const timerChannel = yield call(onTimerTickChannel, voteRoundStart)
   yield takeEvery(timerChannel, function* (tick) {
-    if (tick <= 0) {//yield put(GameplayActions.updateGameNextRound())
+    if (tick <= 0) {
       console.tron.log('Voting round end')
       yield delay(1000)
+      yield put(GameplayActions.updateGameNextRound())
       yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinner }))
     }
-    
+
     const defaultTick = tick < 0 ? 0 : tick
 
     yield put(GameplayActions.setTimerTick(defaultTick))

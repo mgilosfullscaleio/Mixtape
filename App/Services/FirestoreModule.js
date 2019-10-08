@@ -49,7 +49,7 @@ const getGameplayInfo = gameId =>
     .then(docs => 
       Result.Ok({
         ...docs.data(),
-        created: docs.data().created.toDate().toISOString() //convert it to a normal date object
+        gameStart: docs.data().gameStart.toDate().toISOString() //convert it to a normal date object
       })
     )
     .catch(error => Result.Error(`Error with gameId ${gameId}\n${error}`))
@@ -155,7 +155,8 @@ const updateGameNextRound = gameId =>
     .collection(`card_games/${gameId}/gameplay`)
     .doc('info')
     .set({
-      currentRound: FieldValue.increment(1)
+      currentRound: FieldValue.increment(1),
+      gameStart: Timestamp.now()
     }, { merge: true })
     .then(() => Promise.resolve(Result.Ok()))
 
