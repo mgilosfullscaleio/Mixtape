@@ -1,4 +1,4 @@
-import { call, put, select, takeEvery, take } from 'redux-saga/effects'
+import { call, put, select, takeEvery, take, delay } from 'redux-saga/effects'
 import GameplayActions, { GameplaySelectors, GameplayTypes } from '../Redux/GameplayRedux'
 import Spotify from 'rn-spotify-sdk'
 import Result from 'folktale/result'
@@ -42,7 +42,7 @@ export function * subscribeGameplay(firestore, action) {
 
     yield put(GameplayActions.saveGameInfo(gameplayInfo))
     
-    const timerChannel = yield call(onTimerTickChannel, gameplayInfo.created)
+    const timerChannel = yield call(onTimerTickChannel, gameplayInfo.gameStart)
     yield takeEvery(timerChannel, function* (tick) {
       if (tick <= 0)
         yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinnerSelection }))
@@ -102,9 +102,12 @@ export function * subscribeVotingRound(firestore, action) {
 
   const timerChannel = yield call(onTimerTickChannel, voteRoundStart)
   yield takeEvery(timerChannel, function* (tick) {
-    if (tick <= 0) //yield put(GameplayActions.updateGameNextRound())
-      console.tron.log('Voting round end')
-    
+    // if (tick <= 0) {
+    //   yield put(GameplayActions.updateGameNextRound())
+    //   yield delay(5000)
+    //   yield put(NavigationActions.navigate({ routeName: screens.root.gamePlay }))
+    // }
+
     const defaultTick = tick < 0 ? 0 : tick
     yield put(GameplayActions.setTimerTick(defaultTick))
   })
