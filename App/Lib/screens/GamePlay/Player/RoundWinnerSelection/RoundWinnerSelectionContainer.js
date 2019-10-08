@@ -9,7 +9,7 @@ const RoundWinnerSelectionContainer = (props) => {
   const [selectedWinner, setSelectedWinner] = useState();
 
   useEffect(() => {
-    props.subscribeGameplayUpdates()
+    props.subscribeVotingRoundUpdates()
     
     return props.unsubscribeGameplayUpdates
   }, [])
@@ -48,7 +48,7 @@ const mapStateToProps = (state) => ({
  
 const mapDispatchToProps = (dispatch) => ({
   //isUserInMatch: playerId => dispatch(LobbyActions.fetchUserInOpenMatch(playerId))
-  subscribeGameplayUpdates: () => dispatch(GameplayActions.subscribeGameplayUpdates()),
+  subscribeVotingRoundUpdates: () => dispatch(GameplayActions.subscribeVotingRoundUpdates()),
   unsubscribeGameplayUpdates: () => dispatch(GameplayActions.unsubscribeGameplayUpdates()),
 })
  
