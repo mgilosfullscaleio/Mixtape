@@ -141,7 +141,7 @@ export function * playRoundWinnerSong(action) {
   const gameStartDate = new Date(gameStart).getTime()
   const celebrationDuration = new Date(gameStartDate + 35000).toISOString()  // add 35 sec
   const currentRound = yield select(GameplaySelectors.selectRound)
-  
+
   console.tron.log('playRoundWinnerSong', isUserWinner, winningSong)
 
   yield put(GameplayActions.playSong(winningSong))
@@ -153,7 +153,6 @@ export function * playRoundWinnerSong(action) {
 
       yield delay(3000)
 
-      
       if (currentRound === 5)
         yield put(NavigationActions.navigate({ routeName: screens.gamePlay.gameWinner }))
       else
