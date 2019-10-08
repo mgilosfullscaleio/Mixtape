@@ -140,7 +140,8 @@ export function * playRoundWinnerSong(action) {
   const gameStart = yield select(GameplaySelectors.selectGameStart)
   const gameStartDate = new Date(gameStart).getTime()
   const celebrationDuration = new Date(gameStartDate + 35000).toISOString()  // add 35 sec
-
+  const currentRound = yield select(GameplaySelectors.selectRound)
+  
   console.tron.log('playRoundWinnerSong', isUserWinner, winningSong)
 
   yield put(GameplayActions.playSong(winningSong))
@@ -149,8 +150,14 @@ export function * playRoundWinnerSong(action) {
   yield takeEvery(timerChannel, function* (tick) {
     if (tick <= 0) {
       if (isUserWinner) yield put(GameplayActions.updateGameNextRound())
+
       yield delay(3000)
-      yield put(NavigationActions.navigate({ routeName: screens.gamePlay.playerSongSelection }))
+
+      
+      if (currentRound === 5)
+        yield put(NavigationActions.navigate({ routeName: screens.gamePlay.gameWinner }))
+      else
+        yield put(NavigationActions.navigate({ routeName: screens.gamePlay.playerSongSelection }))
     }
 
     const defaultTick = tick < 0 ? 0 : tick
