@@ -25,7 +25,8 @@ const RoundWinnerSelection = ({
   onQuitGame,
   onPlaySong,
   onSelectWinner,
-  onSubmitWinner
+  onSubmitWinner,
+  disableSubmission
 }) => {
   const renderHeader = () => (
     <RoundHeader title={localization.chooseWinner} timeLeft={timeLeft} />
@@ -57,15 +58,18 @@ const RoundWinnerSelection = ({
         ListHeaderComponent={<Text style={styles.scenario}>{scenario}</Text>}
         ListHeaderComponentStyle={styles.scenarioContainer}
         renderItem={renderSongBarItem}
+        keyExtractor={item => item.id}
       />
 
-      <View style={styles.submitButtonContainer}>
-        <TouchableImage
-          source={images.submitButton}
-          style={styles.submitButton}
-          onPress={() => onSubmitWinner(selectedWinner)}
-        />
-      </View>
+      {!disableSubmission && 
+        <View style={styles.submitButtonContainer}>
+          <TouchableImage
+            source={images.submitButton}
+            style={styles.submitButton}
+            onPress={() => onSubmitWinner(selectedWinner)}
+          />
+        </View>
+      }
 
       <View style={styles.playerQueueContainer}>
         <PlayerQueue
@@ -113,7 +117,8 @@ RoundWinnerSelection.propTypes = {
   onQuitGame: PropTypes.func,
   onPlaySong: PropTypes.func,
   onSelectWinner: PropTypes.func,
-  onSubmitWinner: PropTypes.func
+  onSubmitWinner: PropTypes.func,
+  disableSubmission: PropTypes.bool
 };
 
 RoundWinnerSelection.defaultProps = {
@@ -123,7 +128,8 @@ RoundWinnerSelection.defaultProps = {
   onQuitGame: () => null,
   onPlaySong: () => null,
   onSelectWinner: () => null,
-  onSubmitWinner: () => null
+  onSubmitWinner: () => null,
+  disableSubmission: false
 };
 
 export default RoundWinnerSelection;

@@ -136,13 +136,16 @@ const removeGameIdFromUser = userId =>
       gameId: FieldValue.delete()
     }, { merge:true })
 
-const voteRoundWinner = (gameId, currentRound, playerId) =>
+const voteRoundWinner = (gameId, currentRound, playerId, votePlayerId) =>
   firestore
     .collection(`card_games/${gameId}/gameplay`)
     .doc(`round${currentRound}`)
     .set({
+      players: {
+        [`${playerId}`]: { vote: votePlayerId }
+      },
       voteCount: {
-        [`${playerId}`]: FieldValue.increment(1)
+        [`${votePlayerId}`]: FieldValue.increment(1)
       } 
     }, { merge: true })
     .then(() => Promise.resolve(Result.Ok()))

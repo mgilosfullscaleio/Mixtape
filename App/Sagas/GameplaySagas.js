@@ -1,4 +1,4 @@
-import { call, put, select, takeEvery, take } from 'redux-saga/effects'
+import { call, put, select, takeEvery, take, delay } from 'redux-saga/effects'
 import GameplayActions, { GameplaySelectors, GameplayTypes } from '../Redux/GameplayRedux'
 import Spotify from 'rn-spotify-sdk'
 import Result from 'folktale/result'
@@ -66,6 +66,10 @@ export function * subscribeGameplay(firestore, action) {
       const userPlayer = players.find(p => p.id === userId)
       if (userPlayer && userPlayer.song)
         yield put(GameplayActions.saveSongSelectionSuccess(userPlayer.song))
+
+      const votedUserPlayer = players.find(p => p.id === userPlayer.vote)
+      if (votedUserPlayer && votedUserPlayer.song)
+         yield put(GameplayActions.saveSongVoteSuccess(votedUserPlayer.song))
       
       yield put(GameplayActions.saveGameUpdate({card, players}))
     })
@@ -102,17 +106,23 @@ export function * subscribeVotingRound(firestore, action) {
 
   const timerChannel = yield call(onTimerTickChannel, voteRoundStart)
   yield takeEvery(timerChannel, function* (tick) {
-    if (tick <= 0) //yield put(GameplayActions.updateGameNextRound())
+    if (tick <= 0) {//yield put(GameplayActions.updateGameNextRound())
       console.tron.log('Voting round end')
+      yield delay(1000)
+      yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinner }))
+    }
     
     const defaultTick = tick < 0 ? 0 : tick
+
     yield put(GameplayActions.setTimerTick(defaultTick))
+
   })
 
   const gameplayChannel = yield call(onGameplayChannel, firestore, gameId, userId, currentRound)
   yield takeEvery(gameplayChannel, function* (docUpdate) {
     if (docUpdate.voteCount) {
       const roundWinner = yield select(GameplaySelectors.selectRoundWinnerAsMutable)
+      console.tron.log('roundWinner', docUpdate.voteCount)
       roundWinner[`round${currentRound}`] = computeRoundWinner(docUpdate.voteCount)
 
       yield put(GameplayActions.updateRoundWinner(roundWinner))
@@ -141,13 +151,17 @@ export function * saveSongSelection(api, action) {
 }
 
 export function * voteRoundWinner(api, { playerId }) {
+  const mutablePlayers = yield select(GameplaySelectors.selectPlayers)
+  const votedUserPlayer = mutablePlayers.find(p => p.id === playerId)
+  const voteSong = votedUserPlayer && votedUserPlayer.song
   const gameId = yield select(GameplaySelectors.selectGameId)
+  const userId = yield select(UserSelectors.selectUserId)
   const currentRound = yield select(GameplaySelectors.selectRound)
-  const response = yield call(api.voteRoundWinner, gameId, currentRound, playerId)
+  const response = yield call(api.voteRoundWinner, gameId, currentRound, userId, playerId)
 
   yield put(
     response.matchWith({
-      Ok: ({ value }) => GameplayActions.voteRoundWinnerSuccess(), 
+      Ok: ({ value }) => GameplayActions.saveSongVoteSuccess({ value: voteSong }), 
       Error: ({ value }) => GameplayActions.gameplayFailure(value)
     })
   )

@@ -9,7 +9,7 @@ const { Types, Creators } = createActions({
   gameplayFailure: null,
   saveGameId: ['gameId'],
   saveSongSelectionSuccess: ['song'],
-  voteRoundWinnerSuccess: null,
+  saveSongVoteSuccess: ['song'],
   searchedSongsSuccess: ['searchedSongs'],
   saveGameInfo: ['gameInfo'],
   saveGameUpdate: ['gameUpdate'],
@@ -55,11 +55,12 @@ export const INITIAL_STATE = Immutable({
   card: { title: '', content: '' },
   loading: false,
   error: null,
-  gameId: null, //'oKCbihLIHyTLnM0A2Z1y',
+  gameId: null, //'H1y9XCSqbIkmRHT299Sr',
   gameStart: null,  //date ISOString
   searchedSongs: [],
   timerTick: 0,
-  song: null
+  song: null,
+  songVote: null
 })
 
 /* ------------- Selectors ------------- */
@@ -75,8 +76,9 @@ export const GameplaySelectors = {
   selectGameStart: state => state.gameplay.gameStart,
   selectRoundWinnerAsMutable: state => Immutable.asMutable(state.gameplay.roundWinner),
   selectPlayers: state => state.gameplay.players,
+  selectPlayerVotedSong: state => state.gameplay.songVote,
   selectPlayerSubmittedSong: state => state.gameplay.song,
-  selectPlayerSubmittedSongs: state => computePlayerSubmittedSongs(state.gameplay.song, state.gameplay.players)
+  selectPlayerSubmittedSongs: state => computePlayerSubmittedSongs(state.gameplay.song, state.gameplay.players),
 }
 
 const computePlayerSubmittedSongs = (song, players) => (
@@ -94,8 +96,8 @@ export const failure = (state, { error }) =>
 export const saveSongSelectionSuccess = (state, { song }) =>
   state.merge({ loading: false, song })
 
-export const voteRoundWinnerSuccess = state =>
-  state.merge({ loading: false, error: false, payload: null })
+export const saveSongVoteSuccess = (state, { song }) =>
+  state.merge({ loading: false, songVote: song })
 
 export const searchedSongsSuccess = (state, { searchedSongs }) =>
   state.merge({ loading: false, error: null, searchedSongs })
@@ -124,7 +126,7 @@ export const setTimerTick = (state, { timerTick }) =>
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.GAMEPLAY_FAILURE]: failure,
   [Types.SAVE_SONG_SELECTION_SUCCESS]: saveSongSelectionSuccess,
-  [Types.VOTE_ROUND_WINNER_SUCCESS]: voteRoundWinnerSuccess,
+  [Types.SAVE_SONG_VOTE_SUCCESS]: saveSongVoteSuccess,
   [Types.SEARCHED_SONGS_SUCCESS]: searchedSongsSuccess,
   [Types.SAVE_GAME_ID]: saveGameId,
   [Types.SAVE_GAME_INFO]: saveGameInfo,
