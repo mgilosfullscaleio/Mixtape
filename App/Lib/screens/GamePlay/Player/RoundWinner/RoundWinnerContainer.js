@@ -12,6 +12,8 @@ const RoundWinnerContainer = props => {
 
   useEffect(() => {
     props.playRoundWinnerSong()
+
+    return props.stopPlayingSong
   }, [])
 
   return (
@@ -36,6 +38,7 @@ const mapStateToProps = (state) => ({
  
 const mapDispatchToProps = (dispatch) => ({
   playRoundWinnerSong: () => dispatch(GameplayActions.playRoundWinnerSong()),
+  stopPlayingSong: () => dispatch(GameplayActions.pauseSong())
 })
  
 export default connect(mapStateToProps, mapDispatchToProps)(RoundWinnerContainer)
