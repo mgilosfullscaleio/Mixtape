@@ -109,7 +109,6 @@ export function * subscribeVotingRound(firestore, action) {
   const timerChannel = yield call(onTimerTickChannel, voteRoundStart)
   yield takeEvery(timerChannel, function* (tick) {
     if (tick <= 0) {
-      console.tron.log('Voting round end')
       yield delay(1000)
       yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinner }))
     }
