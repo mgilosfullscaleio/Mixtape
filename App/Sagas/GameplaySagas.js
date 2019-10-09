@@ -141,7 +141,7 @@ export function * playRoundWinnerSong(action) {
   const winningSong = yield select(GameplaySelectors.selectWinningSong)
   const gameStart = yield select(GameplaySelectors.selectGameStart)
   const gameStartDate = new Date(gameStart).getTime()
-  const celebrationDuration = new Date(gameStartDate + 35000).toISOString()  // add 35 sec
+  const celebrationDuration = new Date(gameStartDate + 95000).toISOString()  // add 35 sec
   const currentRound = yield select(GameplaySelectors.selectRound)
 
   console.tron.log('playRoundWinnerSong', isUserWinner, winningSong)
@@ -193,7 +193,7 @@ export function * voteRoundWinner(api, { playerId }) {
 
   yield put(
     response.matchWith({
-      Ok: ({ value }) => GameplayActions.saveSongVoteSuccess({ value: voteSong }), 
+      Ok: ({ value }) => GameplayActions.saveSongVoteSuccess(voteSong), 
       Error: ({ value }) => GameplayActions.gameplayFailure(value)
     })
   )
