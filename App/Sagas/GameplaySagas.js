@@ -16,8 +16,9 @@ const onGameplayChannel = (firestore, gameId, userId, currentRound) =>
 
 const onTimerTickChannel = startTime =>
   eventChannel(emitter => {
+    const startDate = new Date(startTime).getTime()
     const timerId = setInterval(() => {
-      const elapse = Math.floor((Date.now() - new Date(startTime).getTime()) / 1000)
+      const elapse = Math.floor((Date.now() - startDate) / 1000)
       let tick = 60 - elapse
 
       emitter(tick)
@@ -141,7 +142,7 @@ export function * playRoundWinnerSong(action) {
   const winningSong = yield select(GameplaySelectors.selectWinningSong)
   const gameStart = yield select(GameplaySelectors.selectGameStart)
   const gameStartDate = new Date(gameStart).getTime()
-  const celebrationDuration = new Date(gameStartDate + 35000).toISOString()  // add 35 sec
+  const celebrationDuration = new Date(gameStartDate + 95000).toISOString()  // add 35 sec
   const currentRound = yield select(GameplaySelectors.selectRound)
 
   console.tron.log('playRoundWinnerSong', isUserWinner, winningSong)
