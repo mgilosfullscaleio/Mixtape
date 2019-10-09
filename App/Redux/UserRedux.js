@@ -66,7 +66,7 @@ export const UserSelectors = {
 const createMatchData = userData => ({
   id: userData.id,
   name: userData.name,
-  profileImage: userData.avatar,
+  profileImage: (userData.avatar) ? userData.avatar : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png',
   tapes: userData.tapes
 })
 

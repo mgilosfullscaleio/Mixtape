@@ -21,6 +21,7 @@ const SongSelection = ({
   selectedSong,
   searchedSongs,
   songIsPlaying,
+  songPlayingURI,
   onQuitGame,
   onPlaySong,
   onSelectSong,
@@ -47,6 +48,7 @@ const SongSelection = ({
             containerStyle={styles.songBar}
             song={submittedSong}
             onPlay={onPlaySong}
+            isPlaying={songPlayingURI === submittedSong.uri}
           />
         </View>
       )}
@@ -122,6 +124,7 @@ SongSelection.propTypes = {
     })
   ),
   songIsPlaying: PropTypes.bool,
+  songPlayingURI: PropTypes.string,
   onQuitGame: PropTypes.func,
   onPlaySong: PropTypes.func,
   onSelectSong: PropTypes.func,
@@ -134,6 +137,7 @@ SongSelection.defaultProps = {
   submittedSong: undefined,
   searchedSongs: [],
   songIsPlaying: false,
+  songPlayingURI: '',
   onQuitGame: () => null,
   onPlaySong: () => null,
   onSelectSong: () => null,

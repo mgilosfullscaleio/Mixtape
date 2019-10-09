@@ -54,7 +54,13 @@ roundWinner {
 */
 export const INITIAL_STATE = Immutable({
   round: 1,
-  roundWinner: {}, //playerId
+  roundWinner: {
+    round1: 'vMpgxp3UPGzEI5ctqTjx',
+    round2: 'j550hRuaXIPGXxbl8wMU',
+    round3: 'vMpgxp3UPGzEI5ctqTjx',
+    round4: 'vMpgxp3UPGzEI5ctqTjx',
+    round5: 'j550hRuaXIPGXxbl8wMU',
+  }, //playerId
   players: [],
   card: { title: '', content: '' },
   loading: false,
@@ -84,22 +90,26 @@ export const GameplaySelectors = {
   selectPlayerSubmittedSong: state => state.gameplay.song,
   selectPlayerSubmittedSongs: state => computePlayerSubmittedSongs(state.gameplay.song, state.gameplay.players),
   selectIsUserTheRoundWinner: state => getRoundWinner(state.gameplay) === UserSelectors.selectUserId(state),
-  selectWinnerPlayer: state => selectWinnerPlayer(state.gameplay),
   selectWinningSong: state => collectRoundWinningSong(state.gameplay),
+  selectRoundWinnerPlayer: state => getRoundWinnerPlayer(state.gameplay),
+  selectGameWinnerPlayer: state => getGameWinnerPlayer(state.gameplay),
 }
 
 const getRoundWinner = gameplay => gameplay.roundWinner[`round${gameplay.round}`]
 
-const selectWinnerPlayer = gameplay =>
+const collectRoundWinningSong = gameplay =>
+  getRoundWinnerPlayer(gameplay).song || { }
+
+const getRoundWinnerPlayer = gameplay =>
   gameplay.players.find(player => player.id === getRoundWinner(gameplay))
 
-const collectRoundWinningSong = gameplay =>
-   selectWinnerPlayer(gameplay).song || { }
+const getGameWinnerPlayer = gameplay => 
+  gameplay.players.find(player => player.id === getRoundWinner(gameplay))
 
 const computePlayerSubmittedSongs = (song, players) => (
   [
     song,
-    ...players.filter(p => p.song && p.song !== song).map(p => ({ playerId: p.id, ...p.song }))
+    ...players.filter(p => p.song && p.song.id !== song.id).map(p => ({ playerId: p.id, ...p.song }))
   ].filter(s => s)
   )
 
@@ -137,7 +147,7 @@ export const setTimerTick = (state, { timerTick }) =>
   state.merge({ timerTick })
 
 export const resetGameplayRound = state =>
-  state.merge({ songVote: null, song: null, roundWinner: { } })
+  state.merge({ songVote: null, song: null,  })
 
 /* ------------- Hookup Reducers To Types ------------- */
 

@@ -34,6 +34,7 @@ const SongSelectionContainer = (props) => {
       }
     } else {
       setSongIsPlaying(false);
+      setcurrentSongURI('');
       props.pauseSong();
     }
     
@@ -64,6 +65,7 @@ const SongSelectionContainer = (props) => {
       selectedSong={selectedSong}
       searchedSongs={props.searchedSongs}
       songIsPlaying={songIsPlaying}
+      songPlayingURI={currentSongURI}
       onPlaySong={handlePlaySong}
       onSelectSong={handleSelectSong}
       onSubmitSong={handleSubmitSong}

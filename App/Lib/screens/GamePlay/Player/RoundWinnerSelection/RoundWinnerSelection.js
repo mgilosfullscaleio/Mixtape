@@ -26,6 +26,8 @@ const RoundWinnerSelection = ({
   onPlaySong,
   onSelectWinner,
   onSubmitWinner,
+  songIsPlaying,
+  songPlayingURI,
   disableSubmission
 }) => {
   const renderHeader = () => (
@@ -41,6 +43,7 @@ const RoundWinnerSelection = ({
         song={item}
         highlighted={selectedWinner && item.id === selectedWinner.id}
         onPlay={onPlaySong}
+        isPlaying={songPlayingURI === item.uri}
         onPress={isUserEntry ? undefined : onSelectWinner}
       />
     );
@@ -118,6 +121,8 @@ RoundWinnerSelection.propTypes = {
   onPlaySong: PropTypes.func,
   onSelectWinner: PropTypes.func,
   onSubmitWinner: PropTypes.func,
+  songIsPlaying: PropTypes.bool,
+  songPlayingURI: PropTypes.string,
   disableSubmission: PropTypes.bool
 };
 
@@ -125,6 +130,8 @@ RoundWinnerSelection.defaultProps = {
   songs: [],
   selectedWinner: undefined,
   userSongEntry: undefined,
+  songIsPlaying: false,
+  songPlayingURI: '',
   onQuitGame: () => null,
   onPlaySong: () => null,
   onSelectWinner: () => null,
