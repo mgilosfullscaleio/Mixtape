@@ -84,13 +84,17 @@ export const GameplaySelectors = {
   selectPlayerSubmittedSong: state => state.gameplay.song,
   selectPlayerSubmittedSongs: state => computePlayerSubmittedSongs(state.gameplay.song, state.gameplay.players),
   selectIsUserTheRoundWinner: state => getRoundWinner(state.gameplay) === UserSelectors.selectUserId(state),
-  selectWinningSong: state => collectRoundWinningSong(state.gameplay)
+  selectWinnerPlayer: state => selectWinnerPlayer(state.gameplay),
+  selectWinningSong: state => collectRoundWinningSong(state.gameplay),
 }
 
 const getRoundWinner = gameplay => gameplay.roundWinner[`round${gameplay.round}`]
 
-const collectRoundWinningSong = gameplay =>
+const selectWinnerPlayer = gameplay =>
   gameplay.players.find(player => player.id === getRoundWinner(gameplay))
+
+const collectRoundWinningSong = gameplay =>
+   selectWinnerPlayer(gameplay).song || { }
 
 const computePlayerSubmittedSongs = (song, players) => (
   [
@@ -133,7 +137,7 @@ export const setTimerTick = (state, { timerTick }) =>
   state.merge({ timerTick })
 
 export const resetGameplayRound = state =>
-  state.merge({ songVote: null, song: null })
+  state.merge({ songVote: null, song: null, roundWinner: { } })
 
 /* ------------- Hookup Reducers To Types ------------- */
 

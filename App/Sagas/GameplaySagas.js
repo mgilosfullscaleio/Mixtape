@@ -194,7 +194,7 @@ export function * voteRoundWinner(api, { playerId }) {
 
   yield put(
     response.matchWith({
-      Ok: ({ value }) => GameplayActions.saveSongVoteSuccess({ value: voteSong }), 
+      Ok: ({ value }) => GameplayActions.saveSongVoteSuccess(voteSong), 
       Error: ({ value }) => GameplayActions.gameplayFailure(value)
     })
   )

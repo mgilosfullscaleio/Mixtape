@@ -14,7 +14,7 @@ const RoundWinner = ({
   round,
   timeLeft,
   scenario,
-  topVotedSong,
+  winner,
   onQuitGame,
   onPlaySong
 }) => {
@@ -42,10 +42,10 @@ const RoundWinner = ({
           containerStyle={styles.winnerAvatar}
           titleStyle={styles.winnerAvatarName}
           size={50}
-          player={topVotedSong.user}
+          player={winner}
         />
 
-        <PlayableSongBar song={topVotedSong} highlighted onPlay={onPlaySong} />
+        <PlayableSongBar song={winner.song} highlighted onPlay={onPlaySong} />
       </Container>
 
       <View style={styles.playerQueueContainer}>
@@ -70,15 +70,15 @@ RoundWinner.propTypes = {
   round: PropTypes.number.isRequired,
   timeLeft: PropTypes.number.isRequired,
   scenario: PropTypes.string.isRequired,
-  topVotedSong: PropTypes.shape({
+  winner: PropTypes.shape({
     id: PropTypes.string,
-    title: PropTypes.string,
-    singer: PropTypes.string,
-    albumCover: PropTypes.string,
-    user: PropTypes.shape({
-      name: PropTypes.string,
-      tapes: PropTypes.number,
-      profileImage: PropTypes.string
+    name: PropTypes.string,
+    tapes: PropTypes.number,
+    profileImage: PropTypes.string,
+    song: PropTypes.shape({
+      id: PropTypes.string,
+      title: PropTypes.string,
+      singer: PropTypes.string
     })
   }).isRequired,
   onQuitGame: PropTypes.func,

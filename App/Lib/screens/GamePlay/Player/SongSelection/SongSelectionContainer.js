@@ -57,7 +57,7 @@ const SongSelectionContainer = (props) => {
   return (
     <SongSelection
       players={mockData.playersInGame}
-      round={1}
+      round={props.selectRound}
       timeLeft={props.selectTimerTick}
       scenario={props.selectCardContent}
       submittedSong={submittedSong}
@@ -83,6 +83,7 @@ SongSelectionContainer.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
+  selectRound: GameplaySelectors.selectRound(state),
   searchedSongs: GameplaySelectors.searchedSongs(state),
   selectCardContent: GameplaySelectors.selectCardContent(state),
   selectTimerTick: GameplaySelectors.selectTimerTick(state),
