@@ -1,37 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import RoundWinnerRandomizer from './RoundWinnerRandomizer';
 import { connect } from 'react-redux'
 import GameplayActions, { GameplaySelectors } from '../../../../../Redux/GameplayRedux';
-import { mockData, screens } from '../../../../constants';
-import { NavigationActions } from 'react-navigation'
+import { mockData } from '../../../../constants';
 
 const RoundWinnerRandomizerContainer = props => {
-  const [winnerSongTitle, setWinnerSongTitle] = useState(null)
 
   useEffect(() => {
-    const songs = props.songsForTiebreak
-    const rand = Math.floor(Math.random() * songs.length);
-    setWinnerSongTitle(songs[rand].playerId)
+    props.subscribeTiebreakerRound()
 
-setTimeout(() => {
-  console.tron.log('winnerSongTitle', winnerSongTitle)
-}, 1000)    
-
-    setTimeout(() => {
-      props.navigateToRoundWinner()
-    }, 8000)  
-
-    return () => {
-      const currentRound = GameplaySelectors.selectRound
-      const roundWinner = GameplaySelectors.selectRoundWinnerAsMutable
-      roundWinner[`round${currentRound}`] = [winner]
-      props.updateRoundWinner(winner)
-    }
+    return props.unsubscribeTiebreakerRound
   }, [])
 
   return (
     <RoundWinnerRandomizer
-      winnerSongTitle={winnerSongTitle}
+      winnerSongTitle={props.winnerSongTitle}
       songs={props.songsForTiebreak}
       players={mockData.playersInGame}
       scenario={props.selectCardContent}
@@ -40,14 +23,16 @@ setTimeout(() => {
 };
 
 const mapStateToProps = (state) => ({
-  currentRound: GameplaySelectors.selectRound(state),
   selectCardContent: GameplaySelectors.selectCardContent(state),
   songsForTiebreak: GameplaySelectors.selectSongsForTiebreak(state),
+  winnerSongTitle: GameplaySelectors.selectWinnerSongTitleFromTiebreak(state),
 })
- 
+
 const mapDispatchToProps = (dispatch) => ({
-  updateRoundWinner: (roundWinner) => dispatch(GameplayActions.updateRoundWinner(roundWinner)),
-  navigateToRoundWinner: () => dispatch(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinner })),
+  // updateRoundWinner: (roundWinner) => dispatch(GameplayActions.updateRoundWinner(roundWinner)),
+  // navigateToRoundWinner: () => dispatch(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinner })),
+  subscribeTiebreakerRound: () => dispatch(GameplayActions.subscribeTiebreakerRound()),
+  unsubscribeTiebreakerRound: () => dispatch(GameplayActions.unsubscribeTiebreakerRound()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(RoundWinnerRandomizerContainer)

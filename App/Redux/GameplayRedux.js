@@ -30,7 +30,10 @@ const { Types, Creators } = createActions({
   subscribeVotingRoundUpdates: null,
   unsubscribeGameplayUpdates: null,
   updateGameNextRound: null,
-  playRoundWinnerSong: null
+  playRoundWinnerSong: null,
+  subscribeTiebreakerRound: null,
+  unsubscribeTiebreakerRound: null,
+  updateRoundTiebreakWinner: ['playerId']
 })
 
 export const GameplayTypes = Types
@@ -64,7 +67,8 @@ export const INITIAL_STATE = Immutable({
   searchedSongs: [],
   timerTick: 0,
   song: null,
-  songVote: null
+  songVote: null,
+  tiebreakWinner: null
 })
 
 /* ------------- Selectors ------------- */
@@ -88,7 +92,17 @@ export const GameplaySelectors = {
   selectWinningSong: state => collectRoundWinningSong(state.gameplay),
   selectSongsForTiebreak: state => collectTiebreakSongs(state.gameplay),
   selectIsTiebreakNeeded: state => getRoundWinner(state.gameplay).length > 1,
-  selectAllPlayerIdForTiebreak: state => state.gameplay.players.map(player => ({ id: player.id }))
+  selectAllPlayerIdForTiebreak: state => state.gameplay.players.map(player => ({ id: player.id })),
+  selectWinnerSongTitleFromTiebreak: state => collectWinnerSongTitle(state.gameplay)
+}
+
+const collectWinnerSongTitle = gameplay => {
+  if (!gameplay.tiebreakWinner) return ''
+  
+  return gameplay.players
+    .filter(p => p.id === gameplay.tiebreakWinner)
+    .filter(p => p.song)
+    .map(p => p.song.title)[0]
 }
 
 const collectTiebreakSongs = gameplay =>
@@ -148,6 +162,9 @@ export const setTimerTick = (state, { timerTick }) =>
 export const resetGameplayRound = state =>
   state.merge({ songVote: null, song: null, roundWinner: { } })
 
+export const updateRoundTiebreakWinner = (state, { playerId }) =>
+  state.merge({ tiebreakWinner: playerId })
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -161,4 +178,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SET_TIMER_TICK]: setTimerTick,
   [Types.UPDATE_ROUND_WINNER]: updateRoundWinner,
   [Types.RESET_GAMEPLAY_ROUND]: resetGameplayRound,
+  [Types.UPDATE_ROUND_TIEBREAK_WINNER]: updateRoundTiebreakWinner,
 })

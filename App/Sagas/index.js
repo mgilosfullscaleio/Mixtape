@@ -34,7 +34,8 @@ import {
   resumeSong, 
   subscribeVotingRound,
   updateNextRound,
-  playRoundWinnerSong
+  playRoundWinnerSong,
+  subscribeTiebreakerRound
  } from './GameplaySagas'
 
 /* ------------- API ------------- */
@@ -78,6 +79,7 @@ export default function * root () {
     takeLatest(GameplayTypes.SUBSCRIBE_VOTING_ROUND_UPDATES, subscribeVotingRound, firestore),
     takeLatest(GameplayTypes.UPDATE_GAME_NEXT_ROUND, updateNextRound, firestore),
     takeLatest(GameplayTypes.PLAY_ROUND_WINNER_SONG, playRoundWinnerSong),
+    takeLatest(GameplayTypes.SUBSCRIBE_TIEBREAKER_ROUND, subscribeTiebreakerRound, firestore),
     
     takeLatest(GameplayTypes.SEARCH_SONG, searchSong),
     takeLatest(GameplayTypes.PLAY_SONG, playSong),
