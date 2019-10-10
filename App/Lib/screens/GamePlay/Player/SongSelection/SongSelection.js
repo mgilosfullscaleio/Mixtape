@@ -29,6 +29,10 @@ const SongSelection = ({
   onSearchTextChange
 }) => {
   const renderHeader = () => <RoundHeader round={round} timeLeft={timeLeft} />;
+  const showBadgeSubmittedSongByPlayer = player => {
+    const playerSong = player.song || { }
+    return playerSong.id 
+  }
 
   return (
     <Container
@@ -85,7 +89,9 @@ const SongSelection = ({
         <PlayerQueue
           joinedPlayers={players}
           maxPlayers={5}
-          renderItem={player => <PlayerAvatar player={player} />}
+          renderItem={player => 
+            <PlayerAvatar type="checkmark" showBadge={showBadgeSubmittedSongByPlayer(player)} player={player} />
+          }
         />
       </View>
     </Container>

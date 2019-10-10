@@ -54,13 +54,14 @@ roundWinner {
 */
 export const INITIAL_STATE = Immutable({
   round: 1,
-  roundWinner: {
-    round1: 'vMpgxp3UPGzEI5ctqTjx',
-    round2: 'j550hRuaXIPGXxbl8wMU',
-    round3: 'vMpgxp3UPGzEI5ctqTjx',
-    round4: 'vMpgxp3UPGzEI5ctqTjx',
-    round5: 'j550hRuaXIPGXxbl8wMU',
-  }, //playerId
+  // roundWinner: {
+  //   round1: 'vMpgxp3UPGzEI5ctqTjx',
+  //   round2: 'j550hRuaXIPGXxbl8wMU',
+  //   round3: 'vMpgxp3UPGzEI5ctqTjx',
+  //   round4: 'vMpgxp3UPGzEI5ctqTjx',
+  //   round5: 'j550hRuaXIPGXxbl8wMU',
+  // }, //playerId
+  roundWinner: {},
   players: [],
   card: { title: '', content: '' },
   loading: false,
@@ -85,7 +86,7 @@ export const GameplaySelectors = {
   selectRound: state => state.gameplay.round,
   selectGameStart: state => state.gameplay.gameStart,
   selectRoundWinnerAsMutable: state => Immutable.asMutable(state.gameplay.roundWinner),
-  selectPlayers: state => state.gameplay.players,
+  selectPlayers: state => getPlayers(state.gameplay),
   selectPlayerVotedSong: state => state.gameplay.songVote,
   selectPlayerSubmittedSong: state => state.gameplay.song,
   selectPlayerSubmittedSongs: state => computePlayerSubmittedSongs(state.gameplay.song, state.gameplay.players),
@@ -94,6 +95,17 @@ export const GameplaySelectors = {
   selectRoundWinnerPlayer: state => getRoundWinnerPlayer(state.gameplay),
   selectGameWinnerPlayer: state => getGameWinnerPlayer(state.gameplay),
 }
+
+const getPlayers = gameplay => 
+  gameplay.players.map(player => {
+    var score = 0
+    Object.entries(gameplay.roundWinner).map(([roundTitle, playerId]) => {
+      if (player.id === playerId) 
+        score = score + 1
+    })
+    return { ...player, score }
+  })
+
 
 const getRoundWinner = gameplay => gameplay.roundWinner[`round${gameplay.round}`]
 
@@ -109,9 +121,15 @@ const getGameWinnerPlayer = gameplay =>
 const computePlayerSubmittedSongs = (song, players) => (
   [
     song,
-    ...players.filter(p => p.song && p.song.id !== song.id).map(p => ({ playerId: p.id, ...p.song }))
-  ].filter(s => s)
-  )
+    ...players.filter(p => {
+      const submittedSong = song || { }
+      const playerSong = p.song || { }
+      return playerSong && playerSong.id !== submittedSong.id
+    })
+    .map(p => ({ playerId: p.id, ...p.song }))
+  ]
+  .filter(s => s)
+)
 
 /* ------------- Reducers ------------- */
 

@@ -12,7 +12,7 @@ const GameWinnerContainer = props => {
 
   return (
     <GameWinner
-      players={mockData.playersInGame}
+      players={props.selectPlayers}
       winner={props.selectGameWinnerPlayer}
       onQuitGame={handleQuitGame}
     />
@@ -20,6 +20,7 @@ const GameWinnerContainer = props => {
 };
 
 const mapStateToProps = (state) => ({
+  selectPlayers: GameplaySelectors.selectPlayers(state),
   selectGameWinnerPlayer: GameplaySelectors.selectGameWinnerPlayer(state),
 })
  

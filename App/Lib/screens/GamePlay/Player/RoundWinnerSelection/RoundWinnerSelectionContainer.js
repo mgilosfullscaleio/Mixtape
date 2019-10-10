@@ -38,7 +38,6 @@ const RoundWinnerSelectionContainer = (props) => {
       props.pauseSong();
     }
     
-    //props.navigation.navigate(screens.gamePlay.roundWinnerSelection);
   };
 
   const handleSubmitWinner = ({ playerId }) => props.voteRoundWinner(playerId);
@@ -47,7 +46,7 @@ const RoundWinnerSelectionContainer = (props) => {
   return (
     <RoundWinnerSelection
       songs={props.selectPlayerSubmittedSongs}
-      players={mockData.playersInGame}
+      players={props.selectPlayers}
       timeLeft={props.selectTimerTick}
       scenario={props.selectCardContent}
       userSongEntry={props.selectPlayerSubmittedSong}
@@ -65,6 +64,7 @@ const RoundWinnerSelectionContainer = (props) => {
 const mapStateToProps = (state) => ({
   selectTimerTick: GameplaySelectors.selectTimerTick(state),
   selectCardContent: GameplaySelectors.selectCardContent(state),
+  selectPlayers: GameplaySelectors.selectPlayers(state),
   selectPlayerSubmittedSong: GameplaySelectors.selectPlayerSubmittedSong(state),
   selectPlayerSubmittedSongs: GameplaySelectors.selectPlayerSubmittedSongs(state),
   selectPlayerVotedSong: GameplaySelectors.selectPlayerVotedSong(state),

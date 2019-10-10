@@ -33,6 +33,10 @@ const RoundWinnerSelection = ({
   const renderHeader = () => (
     <RoundHeader title={localization.chooseWinner} timeLeft={timeLeft} />
   );
+  const showBadgeSubmittedVoteByPlayer = player => {
+    const playerVote = player.vote
+    return playerVote 
+  }
 
   const renderSongBarItem = ({ item }) => {
     const isUserEntry = userSongEntry && item.id === userSongEntry.id;
@@ -79,7 +83,7 @@ const RoundWinnerSelection = ({
           joinedPlayers={players}
           maxPlayers={5}
           renderItem={player => (
-            <PlayerAvatar player={player} type="checkmark" showBadge />
+            <PlayerAvatar player={player} type="checkmark" showBadge={showBadgeSubmittedVoteByPlayer(player)} />
           )}
         />
       </View>
