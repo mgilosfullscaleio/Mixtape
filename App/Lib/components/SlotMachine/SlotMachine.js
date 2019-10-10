@@ -62,11 +62,11 @@ export default class SlotMachine extends Component {
   }
 
   getAlignedValues(props) {
+    const title = props.text[0];
     const repeatedObjs = this.getRepeatedObjs(props);
-
     const values = repeatedObjs.map(() => {
-      // const index = repeatedObjs.indexOf(props.text);
-      const animationValue = this.getPosition(0, props);
+      const index = repeatedObjs.indexOf(title);
+      const animationValue = this.getPosition(index, props);
       return animationValue;
     });
 
