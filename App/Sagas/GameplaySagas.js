@@ -45,11 +45,11 @@ export function * subscribeGameplay(firestore, action) {
     
     const timerChannel = yield call(onTimerTickChannel, gameplayInfo.gameStart)
     yield takeEvery(timerChannel, function* (tick) {
-      if (tick <= 0)
-        yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinnerSelection }))
-      
       const defaultTick = tick < 0 ? 0 : tick
       yield put(GameplayActions.setTimerTick(defaultTick))
+
+      if (tick <= 0)
+        yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinnerSelection }))
     })
 
     const gameplayChannel = yield call(onGameplayChannel, firestore, gameId, userId, gameplayInfo.currentRound)
@@ -108,16 +108,13 @@ export function * subscribeVotingRound(firestore, action) {
 
   const timerChannel = yield call(onTimerTickChannel, voteRoundStart)
   yield takeEvery(timerChannel, function* (tick) {
+    const defaultTick = tick < 0 ? 0 : tick
+    yield put(GameplayActions.setTimerTick(defaultTick))
+
     if (tick <= 0) {
-      console.tron.log('Voting round end')
       yield delay(1000)
       yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinner }))
     }
-
-    const defaultTick = tick < 0 ? 0 : tick
-
-    yield put(GameplayActions.setTimerTick(defaultTick))
-
   })
 
   const gameplayChannel = yield call(onGameplayChannel, firestore, gameId, userId, currentRound)
@@ -151,6 +148,9 @@ export function * playRoundWinnerSong(action) {
 
   const timerChannel = yield call(onTimerTickChannel, celebrationDuration)
   yield takeEvery(timerChannel, function* (tick) {
+    const defaultTick = tick < 0 ? 0 : tick
+    yield put(GameplayActions.setTimerTick(defaultTick))
+
     if (tick <= 0) {
       if (isUserWinner) yield put(GameplayActions.updateGameNextRound())
 
@@ -161,9 +161,6 @@ export function * playRoundWinnerSong(action) {
       else
         yield put(NavigationActions.navigate({ routeName: screens.gamePlay.playerSongSelection }))
     }
-
-    const defaultTick = tick < 0 ? 0 : tick
-    yield put(GameplayActions.setTimerTick(defaultTick))
   })
 }
 
