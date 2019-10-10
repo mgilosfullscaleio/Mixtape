@@ -180,31 +180,29 @@ export function * subscribeTiebreakerRound(firestore, action) {
   const songs = yield select(GameplaySelectors.selectSongsForTiebreak)
   const rand = Math.floor(Math.random() * songs.length)
   const playerWinner = songs[rand].playerId
-  console.tron.log('subscribeTiebreakerRound', songs, playerWinner, songs[1].playerId)
+  
   //the first player in the song is the one to right to firestore
   if (songs[1].playerId === userId) {
     firestore.updateRoundTiebreakWinner(gameId, currentRound, playerWinner)
   }
 
-
-  const duration = new Date(Date.now() + 8000).toISOString()
+  const gameStart = yield select(GameplaySelectors.selectGameStart)
+  const gameStartDate = new Date(gameStart).getTime()
+  const duration = new Date(gameStartDate + 76000).toISOString()
   const timerChannel = yield call(onTimerTickChannel, duration)
-  // yield takeEvery(timerChannel, function* (tick) {
-    // const defaultTick = tick < 0 ? 0 : tick
-    // yield put(GameplayActions.setTimerTick(defaultTick))
+  yield takeEvery(timerChannel, function* (tick) {
+    const defaultTick = tick < 0 ? 0 : tick
+    yield put(GameplayActions.setTimerTick(defaultTick))
 
-    // if (tick < 0) {
-    //   yield put(NavigationActions.navigate({ routeName: screens.gamePlay.playerSongSelection }))
-    // }
-  // })
+    if (tick < 0) {
+      yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinner }))
+    }
+  })
 
   const gameplayChannel = yield call(onGameplayChannel, firestore, gameId, userId, currentRound)
   yield takeEvery(gameplayChannel, function* (docUpdate) {
     if (docUpdate.tiebreakWinner) {
       yield put(GameplayActions.updateRoundTiebreakWinner(docUpdate.tiebreakWinner))
-
-      const songWinnerTitle = yield select(GameplaySelectors.selectWinnerSongTitleFromTiebreak)
-      console.tron.log('songWinnerTitle', songWinnerTitle)
     }
   })
 
