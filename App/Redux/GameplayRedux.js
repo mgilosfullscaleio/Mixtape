@@ -59,7 +59,7 @@ export const INITIAL_STATE = Immutable({
   card: { title: '', content: '' },
   loading: false,
   error: null,
-  gameId: 'JsQVmdBTGvwIid2CUi4K',
+  gameId: null,
   gameStart: null,  //date ISOString
   searchedSongs: [],
   timerTick: 0,
