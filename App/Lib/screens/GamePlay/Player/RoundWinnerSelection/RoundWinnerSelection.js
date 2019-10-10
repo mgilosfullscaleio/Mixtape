@@ -26,11 +26,17 @@ const RoundWinnerSelection = ({
   onPlaySong,
   onSelectWinner,
   onSubmitWinner,
+  songIsPlaying,
+  songPlayingURI,
   disableSubmission
 }) => {
   const renderHeader = () => (
     <RoundHeader title={localization.chooseWinner} timeLeft={timeLeft} />
   );
+  const showBadgeSubmittedVoteByPlayer = player => {
+    const playerVote = player.vote
+    return playerVote 
+  }
 
   const renderSongBarItem = ({ item }) => {
     const isUserEntry = userSongEntry && item.id === userSongEntry.id;
@@ -41,6 +47,7 @@ const RoundWinnerSelection = ({
         song={item}
         highlighted={selectedWinner && item.id === selectedWinner.id}
         onPlay={onPlaySong}
+        isPlaying={songPlayingURI === item.uri}
         onPress={isUserEntry ? undefined : onSelectWinner}
       />
     );
@@ -76,7 +83,7 @@ const RoundWinnerSelection = ({
           joinedPlayers={players}
           maxPlayers={5}
           renderItem={player => (
-            <PlayerAvatar player={player} type="checkmark" showBadge />
+            <PlayerAvatar player={player} type="checkmark" showBadge={showBadgeSubmittedVoteByPlayer(player)} />
           )}
         />
       </View>
@@ -118,6 +125,8 @@ RoundWinnerSelection.propTypes = {
   onPlaySong: PropTypes.func,
   onSelectWinner: PropTypes.func,
   onSubmitWinner: PropTypes.func,
+  songIsPlaying: PropTypes.bool,
+  songPlayingURI: PropTypes.string,
   disableSubmission: PropTypes.bool
 };
 
@@ -125,6 +134,8 @@ RoundWinnerSelection.defaultProps = {
   songs: [],
   selectedWinner: undefined,
   userSongEntry: undefined,
+  songIsPlaying: false,
+  songPlayingURI: '',
   onQuitGame: () => null,
   onPlaySong: () => null,
   onSelectWinner: () => null,

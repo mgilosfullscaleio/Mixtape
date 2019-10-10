@@ -21,6 +21,7 @@ const SongSelection = ({
   selectedSong,
   searchedSongs,
   songIsPlaying,
+  songPlayingURI,
   onQuitGame,
   onPlaySong,
   onSelectSong,
@@ -28,6 +29,10 @@ const SongSelection = ({
   onSearchTextChange
 }) => {
   const renderHeader = () => <RoundHeader round={round} timeLeft={timeLeft} />;
+  const showBadgeSubmittedSongByPlayer = player => {
+    const playerSong = player.song || { }
+    return playerSong.id 
+  }
 
   return (
     <Container
@@ -47,6 +52,7 @@ const SongSelection = ({
             containerStyle={styles.songBar}
             song={submittedSong}
             onPlay={onPlaySong}
+            isPlaying={songPlayingURI === submittedSong.uri}
           />
         </View>
       )}
@@ -83,7 +89,9 @@ const SongSelection = ({
         <PlayerQueue
           joinedPlayers={players}
           maxPlayers={5}
-          renderItem={player => <PlayerAvatar player={player} />}
+          renderItem={player => 
+            <PlayerAvatar type="checkmark" showBadge={showBadgeSubmittedSongByPlayer(player)} player={player} />
+          }
         />
       </View>
     </Container>
@@ -122,6 +130,7 @@ SongSelection.propTypes = {
     })
   ),
   songIsPlaying: PropTypes.bool,
+  songPlayingURI: PropTypes.string,
   onQuitGame: PropTypes.func,
   onPlaySong: PropTypes.func,
   onSelectSong: PropTypes.func,
@@ -134,6 +143,7 @@ SongSelection.defaultProps = {
   submittedSong: undefined,
   searchedSongs: [],
   songIsPlaying: false,
+  songPlayingURI: '',
   onQuitGame: () => null,
   onPlaySong: () => null,
   onSelectSong: () => null,

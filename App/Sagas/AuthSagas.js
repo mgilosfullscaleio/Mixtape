@@ -3,6 +3,7 @@ import AuthActions from '../Redux/AuthRedux'
 import UserActions from '../Redux/UserRedux'
 import Result from 'folktale/result'
 import Spotify from 'rn-spotify-sdk'
+import { Alert } from "react-native"
 
 var scopes = [
                 'user-modify-playback-state',
@@ -62,7 +63,16 @@ const doLogin = async (shouldRedirect) => {
 }
 
 const loginSpotifyWithOptions = async () => {
-  const isLogin = await Spotify.login(spotifyOptions)
+  let isLogin = false
+  try {
+    isLogin = await Spotify.login(spotifyOptions)
+  } catch (error) {
+    isLogin = false
+    //TODO change this to custom popup
+    Alert.alert("You need a premium Spotify subscription in order to play.")
+    await Spotify.logout()
+  }
+  
   return doLogin(isLogin) 
 }
 

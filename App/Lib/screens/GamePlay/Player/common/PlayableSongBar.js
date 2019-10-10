@@ -15,11 +15,11 @@ const styles = ScaledSheet.create({
   }
 });
 
-const PlayableSongBar = ({ containerStyle, song, onPlay, ...props }) => (
+const PlayableSongBar = ({ containerStyle, song, onPlay, isPlaying, ...props }) => (
   <SongBar
     containerStyle={[styles.container, containerStyle]}
     song={song}
-    leftIcon={images.songBarPlay}
+    leftIcon={isPlaying ? images.songBarPause: images.songBarPlay}
     onLeftIconPress={() => onPlay(song)}
     {...props}
   />
@@ -33,12 +33,14 @@ PlayableSongBar.propTypes = {
     singer: PropTypes.string,
     albumCover: PropTypes.string
   }).isRequired,
-  onPlay: PropTypes.func
+  onPlay: PropTypes.func,
+  isPlaying: PropTypes.bool
 };
 
 PlayableSongBar.defaultProps = {
   containerStyle: null,
-  onPlay: () => null
+  onPlay: () => null,
+  isPlaying: false
 };
 
 export default PlayableSongBar;

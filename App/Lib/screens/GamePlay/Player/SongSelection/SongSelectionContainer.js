@@ -18,7 +18,7 @@ const SongSelectionContainer = (props) => {
     props.subscribeGameplayUpdates()
     props.resetGameplayRound()
 
-    return props.unsubscribeGameplayUpdates
+    return props.stopPlayingSong
   }, [])
 
   const handlePlaySong = song => {
@@ -34,6 +34,7 @@ const SongSelectionContainer = (props) => {
       }
     } else {
       setSongIsPlaying(false);
+      setcurrentSongURI('');
       props.pauseSong();
     }
     
@@ -56,7 +57,7 @@ const SongSelectionContainer = (props) => {
 
   return (
     <SongSelection
-      players={mockData.playersInGame}
+      players={props.selectPlayers}
       round={props.selectRound}
       timeLeft={props.selectTimerTick}
       scenario={props.selectCardContent}
@@ -64,6 +65,7 @@ const SongSelectionContainer = (props) => {
       selectedSong={selectedSong}
       searchedSongs={props.searchedSongs}
       songIsPlaying={songIsPlaying}
+      songPlayingURI={currentSongURI}
       onPlaySong={handlePlaySong}
       onSelectSong={handleSelectSong}
       onSubmitSong={handleSubmitSong}
@@ -84,9 +86,11 @@ SongSelectionContainer.defaultProps = {
 
 const mapStateToProps = (state) => ({
   selectRound: GameplaySelectors.selectRound(state),
-  searchedSongs: GameplaySelectors.searchedSongs(state),
   selectCardContent: GameplaySelectors.selectCardContent(state),
   selectTimerTick: GameplaySelectors.selectTimerTick(state),
+  selectPlayers: GameplaySelectors.selectPlayers(state),
+  searchedSongs: GameplaySelectors.searchedSongs(state),
+  selectPlayerSubmittedSong: GameplaySelectors.selectPlayerSubmittedSong(state),
 })
  
 const mapDispatchToProps = (dispatch) => ({
@@ -97,8 +101,8 @@ const mapDispatchToProps = (dispatch) => ({
   resumeSong: () => dispatch(GameplayActions.resumeSong()),
   subscribeGameplayUpdates: () => dispatch(GameplayActions.subscribeGameplayUpdates()),
   resetGameplayRound: () => dispatch(GameplayActions.resetGameplayRound()),
-  unsubscribeGameplayUpdates: () => dispatch(GameplayActions.unsubscribeGameplayUpdates()),
-  saveSongSelection: song => dispatch(GameplayActions.saveSongSelection(song))
+  saveSongSelection: song => dispatch(GameplayActions.saveSongSelection(song)),
+  stopPlayingSong: () => dispatch(GameplayActions.pauseSong())
 })
  
 export default connect(mapStateToProps, mapDispatchToProps)(SongSelectionContainer)

@@ -57,12 +57,12 @@ roundWinner {
 */
 export const INITIAL_STATE = Immutable({
   round: 1,
-  roundWinner: {}, //playerId
+  roundWinner: {},
   players: [],
   card: { title: '', content: '' },
   loading: false,
   error: null,
-  gameId: 'JsQVmdBTGvwIid2CUi4K',
+  gameId: null,
   gameStart: null,  //date ISOString
   searchedSongs: [],
   timerTick: 0,
@@ -83,17 +83,18 @@ export const GameplaySelectors = {
   selectRound: state => state.gameplay.round,
   selectGameStart: state => state.gameplay.gameStart,
   selectRoundWinnerAsMutable: state => Immutable.asMutable(state.gameplay.roundWinner),
-  selectPlayers: state => state.gameplay.players,
+  selectPlayers: state => getPlayers(state.gameplay),
   selectPlayerVotedSong: state => state.gameplay.songVote,
   selectPlayerSubmittedSong: state => state.gameplay.song,
   selectPlayerSubmittedSongs: state => computePlayerSubmittedSongs(state.gameplay.song, state.gameplay.players),
   selectIsUserTheRoundWinner: state => getRoundWinner(state.gameplay)[0] === UserSelectors.selectUserId(state),
-  selectWinnerPlayer: state => findWinnerPlayer(state.gameplay),
+  selectRoundWinnerPlayer: state => findWinnerPlayer(state.gameplay),
   selectWinningSong: state => collectRoundWinningSong(state.gameplay),
   selectSongsForTiebreak: state => collectTiebreakSongs(state.gameplay),
   selectIsTiebreakNeeded: state => getRoundWinner(state.gameplay).length > 1,
   selectAllPlayerIdForTiebreak: state => state.gameplay.players.map(player => ({ id: player.id })),
-  selectWinnerSongTitleFromTiebreak: state => collectWinnerSongTitle(state.gameplay)
+  selectWinnerSongTitleFromTiebreak: state => collectWinnerSongTitle(state.gameplay),
+  selectGameWinnerPlayer: state => findGameWinnerPlayer(state.gameplay),
 }
 
 const collectWinnerSongTitle = gameplay => {
@@ -103,7 +104,19 @@ const collectWinnerSongTitle = gameplay => {
     .filter(p => p.id === gameplay.tiebreakWinner)
     .filter(p => p.song)
     .map(p => p.song.title)[0]
-}
+  }
+
+const getPlayers = gameplay => 
+  gameplay.players.map(player => {
+    var score = 0
+    Object.entries(gameplay.roundWinner).map(([roundTitle, playerData]) => {
+      console.tron.log('playerData', playerData)
+      if (playerData.find(playerId => playerId === player.id))
+            score = score + 1
+    })
+    return { ...player, score }
+})
+
 
 const collectTiebreakSongs = gameplay =>
   gameplay.players
@@ -116,15 +129,24 @@ const getRoundWinner = gameplay => gameplay.roundWinner[`round${gameplay.round}`
 const findWinnerPlayer = gameplay =>
   gameplay.players.find(player => getRoundWinner(gameplay).includes(player.id))
 
+const findGameWinnerPlayer = gameplay => 
+  gameplay.players.find(player => getRoundWinner(gameplay).includes(player.id))
+
 const collectRoundWinningSong = gameplay =>
   findWinnerPlayer(gameplay).song || {}
 
 const computePlayerSubmittedSongs = (song, players) => (
   [
     song,
-    ...players.filter(p => p.song && p.song !== song).map(p => ({ playerId: p.id, ...p.song }))
-  ].filter(s => s)
-  )
+    ...players.filter(p => {
+      const submittedSong = song || { }
+      const playerSong = p.song || { }
+      return playerSong && playerSong.id !== submittedSong.id
+    })
+    .map(p => ({ playerId: p.id, ...p.song }))
+  ]
+  .filter(s => s)
+)
 
 /* ------------- Reducers ------------- */
 
@@ -160,7 +182,7 @@ export const setTimerTick = (state, { timerTick }) =>
   state.merge({ timerTick })
 
 export const resetGameplayRound = state =>
-  state.merge({ songVote: null, song: null, roundWinner: { } })
+  state.merge({ songVote: null, song: null,  })
 
 export const updateRoundTiebreakWinner = (state, { playerId }) =>
   state.merge({ tiebreakWinner: playerId })

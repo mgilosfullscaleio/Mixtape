@@ -18,11 +18,11 @@ const RoundWinnerContainer = props => {
 
   return (
     <RoundWinner
-      players={mockData.playersInGame}
+      players={props.selectPlayers}
       round={props.selectRound}
       timeLeft={props.selectTimerTick}
       scenario={props.selectCardContent}
-      winner={props.selectWinnerPlayer}
+      winner={props.selectRoundWinnerPlayer}
       //onPlaySong={handlePlaySong}
     />
   );
@@ -32,7 +32,8 @@ const mapStateToProps = (state) => ({
   selectRound: GameplaySelectors.selectRound(state),
   selectCardContent: GameplaySelectors.selectCardContent(state),
   selectTimerTick: GameplaySelectors.selectTimerTick(state),
-  selectWinnerPlayer: GameplaySelectors.selectWinnerPlayer(state),
+  selectPlayers: GameplaySelectors.selectPlayers(state),
+  selectRoundWinnerPlayer: GameplaySelectors.selectRoundWinnerPlayer(state),
   selectWinningSong: GameplaySelectors.selectWinningSong(state),
 })
  

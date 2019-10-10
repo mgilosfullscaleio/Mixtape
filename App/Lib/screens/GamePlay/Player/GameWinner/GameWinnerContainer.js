@@ -1,20 +1,30 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import GameWinner from './GameWinner';
 
 import { mockData, screens } from '../../../../constants';
+import { GameplaySelectors } from '../../../../../Redux/GameplayRedux';
 
-const GameWinnerContainer = ({ navigation }) => {
+const GameWinnerContainer = props => {
   const handleQuitGame = () => {
     console.log('quit game');
   };
 
   return (
     <GameWinner
-      players={mockData.playersInGame}
-      winner={mockData.playersInGame[0]}
+      players={props.selectPlayers}
+      winner={props.selectGameWinnerPlayer}
       onQuitGame={handleQuitGame}
     />
   );
 };
 
-export default GameWinnerContainer;
+const mapStateToProps = (state) => ({
+  selectPlayers: GameplaySelectors.selectPlayers(state),
+  selectGameWinnerPlayer: GameplaySelectors.selectGameWinnerPlayer(state),
+})
+ 
+const mapDispatchToProps = (dispatch) => ({
+})
+ 
+export default connect(mapStateToProps, mapDispatchToProps)(GameWinnerContainer)
