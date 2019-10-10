@@ -47,26 +47,19 @@ players [
 ]
 
 roundWinner {
-  round1: playerId,
-  round2: playerId,
+  round1: [playerId],
+  round2: [playerId],
   ...
 }
 */
 export const INITIAL_STATE = Immutable({
   round: 1,
-  // roundWinner: {
-  //   round1: 'vMpgxp3UPGzEI5ctqTjx',
-  //   round2: 'j550hRuaXIPGXxbl8wMU',
-  //   round3: 'vMpgxp3UPGzEI5ctqTjx',
-  //   round4: 'vMpgxp3UPGzEI5ctqTjx',
-  //   round5: 'j550hRuaXIPGXxbl8wMU',
-  // }, //playerId
   roundWinner: {},
   players: [],
   card: { title: '', content: '' },
   loading: false,
   error: null,
-  gameId: null,
+  gameId: 'JsQVmdBTGvwIid2CUi4K',
   gameStart: null,  //date ISOString
   searchedSongs: [],
   timerTick: 0,
@@ -90,33 +83,43 @@ export const GameplaySelectors = {
   selectPlayerVotedSong: state => state.gameplay.songVote,
   selectPlayerSubmittedSong: state => state.gameplay.song,
   selectPlayerSubmittedSongs: state => computePlayerSubmittedSongs(state.gameplay.song, state.gameplay.players),
-  selectIsUserTheRoundWinner: state => getRoundWinner(state.gameplay) === UserSelectors.selectUserId(state),
+  selectIsUserTheRoundWinner: state => getRoundWinner(state.gameplay)[0] === UserSelectors.selectUserId(state),
+  selectRoundWinnerPlayer: state => findWinnerPlayer(state.gameplay),
   selectWinningSong: state => collectRoundWinningSong(state.gameplay),
-  selectRoundWinnerPlayer: state => getRoundWinnerPlayer(state.gameplay),
-  selectGameWinnerPlayer: state => getGameWinnerPlayer(state.gameplay),
+  selectSongsForTiebreak: state => collectTiebreakSongs(state.gameplay),
+  selectIsTiebreakNeeded: state => getRoundWinner(state.gameplay).length > 1,
+  selectAllPlayerIdForTiebreak: state => state.gameplay.players.map(player => ({ id: player.id })),
+  selectGameWinnerPlayer: state => findGameWinnerPlayer(state.gameplay),
 }
 
 const getPlayers = gameplay => 
   gameplay.players.map(player => {
     var score = 0
-    Object.entries(gameplay.roundWinner).map(([roundTitle, playerId]) => {
-      if (player.id === playerId) 
-        score = score + 1
+    Object.entries(gameplay.roundWinner).map(([roundTitle, playerData]) => {
+      console.tron.log('playerData', playerData)
+      if (playerData.find(playerId => playerId === player.id))
+            score = score + 1
     })
     return { ...player, score }
-  })
+})
 
+
+const collectTiebreakSongs = gameplay =>
+  players
+    .filter(p => getRoundWinner(gameplay).includes(p.id))
+    .filter(p => p.song)
+    .map(p => ({ playerId: p.id, ...p.song }))
 
 const getRoundWinner = gameplay => gameplay.roundWinner[`round${gameplay.round}`]
 
+const findWinnerPlayer = gameplay =>
+  gameplay.players.find(player => getRoundWinner(gameplay).includes(player.id))
+
+const findGameWinnerPlayer = gameplay => 
+  gameplay.players.find(player => getRoundWinner(gameplay).includes(player.id))
+
 const collectRoundWinningSong = gameplay =>
-  getRoundWinnerPlayer(gameplay).song || { }
-
-const getRoundWinnerPlayer = gameplay =>
-  gameplay.players.find(player => player.id === getRoundWinner(gameplay))
-
-const getGameWinnerPlayer = gameplay => 
-  gameplay.players.find(player => player.id === getRoundWinner(gameplay))
+  findWinnerPlayer(gameplay).song || {}
 
 const computePlayerSubmittedSongs = (song, players) => (
   [

@@ -48,7 +48,7 @@ export function * subscribeGameplay(firestore, action) {
       const defaultTick = tick < 0 ? 0 : tick
       yield put(GameplayActions.setTimerTick(defaultTick))
 
-      if (tick <= 0)
+      if (tick < 0)
         yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinnerSelection }))
     })
 
@@ -84,49 +84,61 @@ export function * subscribeGameplay(firestore, action) {
   }
 }
 
-const computeRoundWinner = (voteCount = {}) => {
-  const winner = Object.entries(voteCount)
-                      .map(([key, value]) =>
-                        ({
-                          playerId: key,
-                          vote: value
-                        })
-                      )
-                      .sort((a, b) => a.vote - b.vote)
-                      .pop()
+const collectRoundWinner = (voteCount = {}) => {
+  const highestVoteCount = Object.values(voteCount).reduce((max, val) => Math.max(max,val), 0)
+  const winners = 
+    Object.entries(voteCount)
+      .map(
+        ([key, value]) => ({
+          playerId: key,
+          vote: value
+        })
+      )
+      .filter(item => item.vote === highestVoteCount)
+      .map(item => item.playerId.trim())
 
-  return winner ? winner.playerId : null
+  return winners.length > 0 ? winners : playerIds
 }
 
 export function * subscribeVotingRound(firestore, action) {
-  const userId = yield select(UserSelectors.selectUserId)
-  const gameId = yield select(GameplaySelectors.selectGameId)
-  const gameStart = yield select(GameplaySelectors.selectGameStart)
   const currentRound = yield select(GameplaySelectors.selectRound)
+  const playerIds = yield select(GameplaySelectors.selectAllPlayerIdForTiebreak)
+  const roundWinner = yield select(GameplaySelectors.selectRoundWinnerAsMutable)
+  // Start the voting round by adding all player ids as round winners
+  roundWinner[`round${currentRound}`] = playerIds
+  yield put(GameplayActions.updateRoundWinner(roundWinner))
+
+  // start vote timer
+  const gameStart = yield select(GameplaySelectors.selectGameStart)
   const gameStartDate = new Date(gameStart).getTime()
   const voteRoundStart = new Date(gameStartDate + 60000).toISOString()  // add 1 minute
-
   const timerChannel = yield call(onTimerTickChannel, voteRoundStart)
   yield takeEvery(timerChannel, function* (tick) {
     const defaultTick = tick < 0 ? 0 : tick
     yield put(GameplayActions.setTimerTick(defaultTick))
-
-    if (tick <= 0) {
+    
+    if (tick < 0) {
       yield delay(1000)
-      yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinner }))
+
+      const isTiebreakNeeded = yield select(GameplaySelectors.selectIsTiebreakNeeded)
+      if (isTiebreakNeeded)
+        yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinnerRandomizer }))
+      else
+        yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinner }))
     }
   })
 
+  // update round winner
+  const userId = yield select(UserSelectors.selectUserId)
+  const gameId = yield select(GameplaySelectors.selectGameId)
   const gameplayChannel = yield call(onGameplayChannel, firestore, gameId, userId, currentRound)
   yield takeEvery(gameplayChannel, function* (docUpdate) {
     if (docUpdate.voteCount) {
-      const roundWinner = yield select(GameplaySelectors.selectRoundWinnerAsMutable)
-      console.tron.log('roundWinner', docUpdate.voteCount)
-      roundWinner[`round${currentRound}`] = computeRoundWinner(docUpdate.voteCount)
-
+      roundWinner[`round${currentRound}`] = collectRoundWinner(docUpdate.voteCount)
       yield put(GameplayActions.updateRoundWinner(roundWinner))
     }
   })
+
 
   yield take(GameplayTypes.UNSUBSCRIBE_GAMEPLAY_UPDATES)
   gameplayChannel.close()
@@ -135,27 +147,24 @@ export function * subscribeVotingRound(firestore, action) {
 }
 
 export function * playRoundWinnerSong(action) {
-  const isUserWinner = yield select(GameplaySelectors.selectIsUserTheRoundWinner)
   const winningSong = yield select(GameplaySelectors.selectWinningSong)
+  // yield put(GameplayActions.playSong(winningSong))
+  
   const gameStart = yield select(GameplaySelectors.selectGameStart)
   const gameStartDate = new Date(gameStart).getTime()
   const celebrationDuration = new Date(gameStartDate + 95000).toISOString()  // add 35 sec
-  const currentRound = yield select(GameplaySelectors.selectRound)
-
-  console.tron.log('playRoundWinnerSong', isUserWinner, winningSong)
-
-  yield put(GameplayActions.playSong(winningSong))
-
   const timerChannel = yield call(onTimerTickChannel, celebrationDuration)
   yield takeEvery(timerChannel, function* (tick) {
     const defaultTick = tick < 0 ? 0 : tick
     yield put(GameplayActions.setTimerTick(defaultTick))
-
-    if (tick <= 0) {
+    
+    if (tick < 0) {
+      const isUserWinner = yield select(GameplaySelectors.selectIsUserTheRoundWinner)
       if (isUserWinner) yield put(GameplayActions.updateGameNextRound())
 
       yield delay(3000)
 
+      const currentRound = yield select(GameplaySelectors.selectRound)
       if (currentRound === 5)
         yield put(NavigationActions.navigate({ routeName: screens.gamePlay.gameWinner }))
       else
