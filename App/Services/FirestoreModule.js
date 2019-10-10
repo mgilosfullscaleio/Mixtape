@@ -167,7 +167,7 @@ const updateRoundTiebreakWinner = (gameId, currentRound, winnerId) =>
     .set({
       tiebreakWinner: winnerId,
       voteCount: {
-        [`${winnerId}`]: FieldValue.increment(1)
+        [`${winnerId.trim()}`]: FieldValue.increment(1)
       } 
     }, { merge: true })
     .then(() => Promise.resolve(Result.Ok()))
