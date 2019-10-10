@@ -9,7 +9,7 @@ import styles from './styles';
 import { localization } from '../../../../constants';
 import SlotMachine from '../../../../components/SlotMachine/SlotMachine';
 
-const RoundWinnerRandomizer = ({ songs, players, scenario, onQuitGame }) => {
+const RoundWinnerRandomizer = ({ winnerSongTitle, songs, players, scenario, onQuitGame }) => {
   const renderHeader = () => <Header title={localization.winner} />;
 
   return (
@@ -31,8 +31,10 @@ const RoundWinnerRandomizer = ({ songs, players, scenario, onQuitGame }) => {
         }}
       >
         <SlotMachine
-          text={['WHEN A MAN LOVES A WOMAN']}
-          range={['WHEN A MAN LOVES A WOMAN', 'HOW DEEP IS YOUR LOVE']}
+          // text={['WHEN A MAN LOVES A WOMAN']}
+          // range={['WHEN A MAN LOVES A WOMAN', 'HOW DEEP IS YOUR LOVE']}
+          text={[winnerSongTitle]}
+          range={songs.map(song => song.title)}
         />
       </Container>
 
