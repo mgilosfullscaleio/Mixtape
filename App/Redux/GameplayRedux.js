@@ -105,7 +105,7 @@ const getPlayers = gameplay =>
 
 
 const collectTiebreakSongs = gameplay =>
-  players
+  gameplay.players
     .filter(p => getRoundWinner(gameplay).includes(p.id))
     .filter(p => p.song)
     .map(p => ({ playerId: p.id, ...p.song }))
