@@ -47,8 +47,8 @@ players [
 ]
 
 roundWinner {
-  round1: playerId,
-  round2: playerId,
+  round1: [playerId],
+  round2: [playerId],
   ...
 }
 */
@@ -59,7 +59,7 @@ export const INITIAL_STATE = Immutable({
   card: { title: '', content: '' },
   loading: false,
   error: null,
-  gameId: null,
+  gameId: 'JsQVmdBTGvwIid2CUi4K',
   gameStart: null,  //date ISOString
   searchedSongs: [],
   timerTick: 0,
@@ -83,18 +83,27 @@ export const GameplaySelectors = {
   selectPlayerVotedSong: state => state.gameplay.songVote,
   selectPlayerSubmittedSong: state => state.gameplay.song,
   selectPlayerSubmittedSongs: state => computePlayerSubmittedSongs(state.gameplay.song, state.gameplay.players),
-  selectIsUserTheRoundWinner: state => getRoundWinner(state.gameplay) === UserSelectors.selectUserId(state),
-  selectWinnerPlayer: state => selectWinnerPlayer(state.gameplay),
+  selectIsUserTheRoundWinner: state => getRoundWinner(state.gameplay)[0] === UserSelectors.selectUserId(state),
+  selectWinnerPlayer: state => findWinnerPlayer(state.gameplay),
   selectWinningSong: state => collectRoundWinningSong(state.gameplay),
+  selectSongsForTiebreak: state => collectTiebreakSongs(state.gameplay),
+  selectIsTiebreakNeeded: state => getRoundWinner(state.gameplay).length > 1,
+  selectAllPlayerIdForTiebreak: state => state.gameplay.players.map(player => ({ id: player.id }))
 }
+
+const collectTiebreakSongs = gameplay =>
+  players
+    .filter(p => getRoundWinner(gameplay).includes(p.id))
+    .filter(p => p.song)
+    .map(p => ({ playerId: p.id, ...p.song }))
 
 const getRoundWinner = gameplay => gameplay.roundWinner[`round${gameplay.round}`]
 
-const selectWinnerPlayer = gameplay =>
-  gameplay.players.find(player => player.id === getRoundWinner(gameplay))
+const findWinnerPlayer = gameplay =>
+  gameplay.players.find(player => getRoundWinner(gameplay).includes(player.id))
 
 const collectRoundWinningSong = gameplay =>
-   selectWinnerPlayer(gameplay).song || { }
+  findWinnerPlayer(gameplay).song || {}
 
 const computePlayerSubmittedSongs = (song, players) => (
   [
