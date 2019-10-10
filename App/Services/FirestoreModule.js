@@ -138,6 +138,7 @@ const getUsersWithFbIdsCF = async (fbIds) => {
  */
 export const signInWithFacebookCredential = async (token) => {
   try {
+    console.log("signInWithFacebookCredential:", token);
     // Build Firebase credential with the Facebook access token.
     const fbCredential = firebase.auth.FacebookAuthProvider.credential(token);
 

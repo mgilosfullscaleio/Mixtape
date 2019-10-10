@@ -73,7 +73,7 @@ export default function * root () {
     takeLatest(GameplayTypes.RESUME_SONG, resumeSong),
 
     //FB
-    takeLatest(AuthTypes.INITIALIZE_FB, initializeFb),
+    takeLatest(AuthTypes.INITIALIZE_FB, initializeFb,firestore),
     takeLatest(AuthTypes.LOGIN_FB, loginFb),
   ])
 }

@@ -12,6 +12,7 @@ const { Types, Creators } = createActions({
   initializeSpotify: null,
   loginSpotify: null,
   redirectToHome: ['isLoggedIn'],
+
   getFBFriendsSuccess: ['data'],
   getFBFriendsFailed:['error'],
   initializeFb: null,
@@ -77,6 +78,8 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOADING_REQUEST]: loadingRequest,
   [Types.GET_FB_FRIENDS_SUCCESS]: getFBFriendsSuccess,
   [Types.GET_FB_FRIENDS_FAILED]: getFBFriendsFailed,
+  [Types.LOGOUT_SUCCESS]:loginSuccess,
+  [Types.LOGIN_FAILED]:loginFailed
 })
 
 /*[Types.LOGOUT_SUCCESS]:loginSuccess,

@@ -82,8 +82,11 @@ export function * initializeSpotify (api, action) {
   ])
 }
 
-const getFBFriends =async () =>{
+const getFBFriends =async (firestore) =>{
+  console.log("getFBFriendsship");
+  console.log("getFBFriendsship:",firestore);
   var fbToken = await getFBToken();
+  console.log("fbToken:",fbToken);
   try{
     if(fbToken === null){
       if(await authorizeWithFacebook() === null){
@@ -92,35 +95,39 @@ const getFBFriends =async () =>{
       fbToken = await getFBToken();
       // Sign to firebase with FB credentialsr
       console.log("FBToken: ",fbToken);
-      await signInWithFacebookCredential(fbToken);
+      await firestore.signInWithFacebookCredential(fbToken);
     }
 
-    // console.log("fbToken" + fbToken)
-    // const data = await getFBUserFriends(fbToken);
-    // console.log("fbTokendata", data)
+    console.log("fbToken" + fbToken)
+    const data = await getFBUserFriends(fbToken);
+    console.log("fbTokendata", data)
     
-    // if (data !== null) {
-    //     const fbIds = data.data.map(item=>item.id);
-    //     const users = await getUsersWithFbIdsCF(fbIds);
-    //     Promise.resolve(Result.Ok(users))
-    //   }
+    if (data !== null) {
+        const fbIds = data.data.map(item=>item.id);
+        const users = await getUsersWithFbIdsCF(fbIds);
+        Promise.resolve(Result.Ok(users))
+      }
   } catch(e) {
   console.log("GET FB FRIENDS ERROR ---> ", e);
     return Promise.resolve(Result.Error(e))
   }
+
+  return;
 };
 
-const authFB =async () => {
+const authFB =async (firestore) => {
   try {
     var fbToken = await getFBToken();
+
+    console.log("authFB ===FBToken: ",fbToken);
     if (fbToken === null) {
       if (await authorizeWithFacebook() === null) {
-        return dispatch(authFailed(e));
+        return Promise.resolve(Result.Error("error"));
       }
       fbToken = await getFBToken();
     }
     // Sign to firebase with FB credentials
-    const credentials = await signInWithFacebookCredential(fbToken);
+    const credentials = await firestore.signInWithFacebookCredential(fbToken);
     var user = credentials.user;
     var authData = {
       uid: user.uid,
@@ -131,18 +138,19 @@ const authFB =async () => {
       phoneNumber: user.phoneNumber,
     }
 
-    return dispatch(authSuccess(authData));
+    return Promise.resolve(Result.Ok(authData))
   }
   catch(e) {
-    return dispatch(authFailed(e));
+    return Promise.resolve(Result.Error("error"));
   }
 }
 
-export function * initializeFb(action){
+export function * initializeFb(firestore,action){
   console.log("initializeFB");
   yield put(AuthActions.loadingRequest());
 
-  const response = yield call(getFBFriends);
+  const response = yield call(getFBFriends,firestore);
+  //const response = yield call(authFB,firestore);
   yield put(
     response.matchWith({
       Ok: ({ value }) =>  AuthActions.getFBFriendsSuccess(value),

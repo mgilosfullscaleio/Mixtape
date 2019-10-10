@@ -3,6 +3,7 @@ import { LoginManager, AccessToken } from 'react-native-fbsdk';
 const FB_GRAPH_URL = 'https://graph.facebook.com';
 
 export const authorizeWithFacebook = async () => {
+  console.log("authorizeWithFacebook func");
   try {
     const result = await LoginManager.logInWithPermissions(['public_profile','email','user_friends']);
     return !result.isCancelled ? true : null;
@@ -14,6 +15,7 @@ export const authorizeWithFacebook = async () => {
 
 export const getFBToken = async () => {
   try {
+    console.log("getFBToken func");
     const { accessToken } = await AccessToken.getCurrentAccessToken();
     return accessToken;
   }
