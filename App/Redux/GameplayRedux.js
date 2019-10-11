@@ -30,7 +30,7 @@ const { Types, Creators } = createActions({
   subscribeGameplayUpdates: null,
   subscribeVotingRoundUpdates: null,
   unsubscribeGameplayUpdates: null,
-  updateGameNextRound: null,
+  updateGameNextRound: ['delay'], //millis
   playRoundWinnerSong: null,
   subscribeTiebreakerRound: null,
   unsubscribeTiebreakerRound: null,
@@ -173,7 +173,7 @@ export const saveGameInfo = (state, { gameInfo }) =>
     round: gameInfo.currentRound, 
     players: gameInfo.players,
     gameStart: gameInfo.gameStart,
-    gameTimer: Date.now()//new Date(gameInfo.gameStart).getTime()
+    gameTimer: new Date(gameInfo.gameStart).getTime()
   })
 
 export const saveGameUpdate = (state, { gameUpdate }) =>

@@ -107,7 +107,7 @@ export function * subscribeVotingRound(firestore, action) {
   // Start the voting round by adding all player ids as round winners
   roundWinner[`round${currentRound}`] = playerIds
   yield put(GameplayActions.updateRoundWinner(roundWinner))
-  
+
   yield put(GameplayActions.addSecondsToGameTimer(60))
 
   const gameTimer = yield select(GameplaySelectors.selectGameTimer)
@@ -158,10 +158,11 @@ export function * playRoundWinnerSong(action) {
     yield put(GameplayActions.setTimerTick(defaultTick))
     
     if (tick < 0) {
+      const secDelay = 3000
       const isUserWinner = yield select(GameplaySelectors.selectIsUserTheRoundWinner)
-      if (isUserWinner) yield put(GameplayActions.updateGameNextRound())
+      if (isUserWinner) yield put(GameplayActions.updateGameNextRound(secDelay))
 
-      yield delay(3000)
+      yield delay(secDelay)
 
       const currentRound = yield select(GameplaySelectors.selectRound)
       if (currentRound === 5)
@@ -298,10 +299,10 @@ export function * resumeSong() {
   Spotify.setPlaying(true);
 }
 
-export function * updateNextRound(firestore, action) {
+export function * updateNextRound(firestore, { delay }) {
   const gameId = yield select(GameplaySelectors.selectGameId)
 
-  const response = yield call(firestore.updateGameNextRound, gameId)
+  yield call(firestore.updateGameNextRound, gameId, delay)
 
   // yield put(
   //   response.matchWith({
