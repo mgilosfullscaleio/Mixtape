@@ -95,10 +95,15 @@ export const GameplaySelectors = {
   selectWinningSong: state => collectRoundWinningSong(state.gameplay),
   selectSongsForTiebreak: state => collectTiebreakSongs(state.gameplay),
   selectIsTiebreakNeeded: state => getRoundWinner(state.gameplay).length > 1,
-  selectAllPlayerIdForTiebreak: state => state.gameplay.players.map(player => ({ id: player.id })),
+  selectAllPlayerIdForTiebreak: state => collectPlayerIdsWhoSubmittedASong(state.gameplay),
   selectWinnerSongTitleFromTiebreak: state => collectWinnerSongTitle(state.gameplay),
   selectGameWinnerPlayer: state => findGameWinnerPlayer(state.gameplay),
 }
+
+const collectPlayerIdsWhoSubmittedASong = gameplay =>
+  gameplay.players
+    .filter(player => player.song)
+    .map(player => ({ id: player.id }))
 
 const collectWinnerSongTitle = gameplay => {
   if (!gameplay.tiebreakWinner) return ''

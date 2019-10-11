@@ -86,8 +86,7 @@ export function * subscribeGameplay(firestore, action) {
 
 const collectRoundWinner = (voteCount = {}) => {
   const highestVoteCount = Object.values(voteCount).reduce((max, val) => Math.max(max,val), 0)
-  const winners = 
-    Object.entries(voteCount)
+  return Object.entries(voteCount)
       .map(
         ([key, value]) => ({
           playerId: key,
@@ -96,8 +95,6 @@ const collectRoundWinner = (voteCount = {}) => {
       )
       .filter(item => item.vote === highestVoteCount)
       .map(item => item.playerId.trim())
-
-  return winners.length > 0 ? winners : playerIds
 }
 
 export function * subscribeVotingRound(firestore, action) {
