@@ -150,13 +150,13 @@ const voteRoundWinner = (gameId, currentRound, playerId, votePlayerId) =>
     }, { merge: true })
     .then(() => Promise.resolve(Result.Ok()))
 
-const updateGameNextRound = gameId =>
+const updateGameNextRound = (gameId, delay) =>
   firestore
     .collection(`card_games/${gameId}/gameplay`)
     .doc('info')
     .set({
       currentRound: FieldValue.increment(1),
-      gameStart: Timestamp.now()
+      gameStart: Timestamp.fromMillis(Date.now() + delay)
     }, { merge: true })
     .then(() => Promise.resolve(Result.Ok()))
 
