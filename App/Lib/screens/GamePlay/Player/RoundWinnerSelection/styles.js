@@ -35,7 +35,9 @@ const styles = ScaledSheet.create({
   },
 
   playerQueueContainer: {
-    paddingVertical: '15@s',
+    // paddingVertical: '15@s',
+    height: '90@s',
+    justifyContent: 'center',
     backgroundColor: colors.black
   }
 });

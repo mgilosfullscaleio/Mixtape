@@ -13,6 +13,11 @@ import { ScaledSheet } from '../../../../../utils';
 import scale, { heightPercentage } from '../../../../../utils/scaleUtil';
 import { colors } from '../../../../../styles';
 import { localization } from '../../../../../constants';
+import {
+  getBottomSpace,
+  getStatusBarHeight
+} from 'react-native-iphone-x-helper';
+import songSelectionStyles from '../styles';
 
 const styles = ScaledSheet.create({
   draggable: {
@@ -47,7 +52,15 @@ const styles = ScaledSheet.create({
   }
 });
 
-const height = heightPercentage(76.1);
+const bottomSpace = getBottomSpace();
+const statusBarHeight =
+  bottomSpace !== 0 ? getStatusBarHeight() + scale(10) : 0;
+
+const roundHeaderHeight = scale(83);
+
+const height =
+  heightPercentage(100) - songSelectionStyles.playerQueueContainer.height - roundHeaderHeight - bottomSpace - statusBarHeight;
+
 const basePosition = {
   x: 0,
   y: height - styles.headerContainer.height

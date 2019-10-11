@@ -96,7 +96,6 @@ const getPlayers = gameplay =>
   gameplay.players.map(player => {
     var score = 0
     Object.entries(gameplay.roundWinner).map(([roundTitle, playerData]) => {
-      console.tron.log('playerData', playerData)
       if (playerData.find(playerId => playerId === player.id))
             score = score + 1
     })
@@ -126,7 +125,7 @@ const computePlayerSubmittedSongs = (song, players) => (
     song,
     ...players.filter(p => {
       const submittedSong = song || { }
-      const playerSong = p.song || { }
+      const playerSong = p.song || null
       return playerSong && playerSong.id !== submittedSong.id
     })
     .map(p => ({ playerId: p.id, ...p.song }))

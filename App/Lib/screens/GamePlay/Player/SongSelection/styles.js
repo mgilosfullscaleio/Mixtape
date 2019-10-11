@@ -29,7 +29,9 @@ const styles = ScaledSheet.create({
 
   playerQueueContainer: {
     marginTop: '57@s', // should be the same as SongSearchBar's headerContainer.height
-    paddingVertical: '15@s',
+    // paddingVertical: '15@s',
+    height: '90@s',
+    justifyContent: 'center',
     backgroundColor: colors.black
   },
 

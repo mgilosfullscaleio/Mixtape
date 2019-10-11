@@ -8,7 +8,8 @@ import { localization } from '../../../../constants';
 
 const styles = ScaledSheet.create({
   header: {
-    paddingHorizontal: '20@s'
+    paddingHorizontal: '20@s',
+    height: '83@s'
   },
 
   sideContainer: {
