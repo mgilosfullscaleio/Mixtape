@@ -148,7 +148,7 @@ export function * subscribeVotingRound(firestore, action) {
 
 export function * playRoundWinnerSong(action) {
   const winningSong = yield select(GameplaySelectors.selectWinningSong)
-  // yield put(GameplayActions.playSong(winningSong))
+  yield put(GameplayActions.playSong(winningSong))
   
   const gameStart = yield select(GameplaySelectors.selectGameStart)
   const gameStartDate = new Date(gameStart).getTime()
@@ -171,6 +171,44 @@ export function * playRoundWinnerSong(action) {
         yield put(NavigationActions.navigate({ routeName: screens.gamePlay.playerSongSelection }))
     }
   })
+}
+
+export function * subscribeTiebreakerRound(firestore, action) {
+  const gameId = yield select(GameplaySelectors.selectGameId)
+  const currentRound = yield select(GameplaySelectors.selectRound)
+  const userId = yield select(UserSelectors.selectUserId)
+  const songs = yield select(GameplaySelectors.selectSongsForTiebreak)
+  const rand = Math.floor(Math.random() * songs.length)
+  const playerWinner = songs[rand].playerId
+  
+  //the first player in the song is the one to right to firestore
+  if (songs[1].playerId === userId) {
+    firestore.updateRoundTiebreakWinner(gameId, currentRound, playerWinner)
+  }
+
+  const gameStart = yield select(GameplaySelectors.selectGameStart)
+  const gameStartDate = new Date(gameStart).getTime()
+  const duration = new Date(gameStartDate + 76000).toISOString()
+  const timerChannel = yield call(onTimerTickChannel, duration)
+  yield takeEvery(timerChannel, function* (tick) {
+    const defaultTick = tick < 0 ? 0 : tick
+    yield put(GameplayActions.setTimerTick(defaultTick))
+
+    if (tick < 0) {
+      yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinner }))
+    }
+  })
+
+  const gameplayChannel = yield call(onGameplayChannel, firestore, gameId, userId, currentRound)
+  yield takeEvery(gameplayChannel, function* (docUpdate) {
+    if (docUpdate.tiebreakWinner) {
+      yield put(GameplayActions.updateRoundTiebreakWinner(docUpdate.tiebreakWinner))
+    }
+  })
+
+  yield take(GameplayTypes.UNSUBSCRIBE_TIEBREAKER_ROUND)
+  gameplayChannel.close()
+  timerChannel.close()
 }
 
 export function * saveSongSelection(api, action) {

@@ -12,7 +12,7 @@ export default class SlotMachine extends Component {
       width: 300,
       height: 100,
       duration: 6000,
-      delay: 0,
+      delay: 5000,
       times: 20,
       range: ['Song 1', 'Song 2'],
       initialAnimation: true,
