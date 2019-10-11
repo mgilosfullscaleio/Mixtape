@@ -32,8 +32,15 @@ const styles = ScaledSheet.create({
 
   button: {
     alignSelf: 'center',
-    width: '70%',
+    width: '70%'
+  },
+
+  helpButton: {
     marginTop: '110@s'
+  },
+
+  logoutButton: {
+    marginTop: '20@s'
   }
 });
 

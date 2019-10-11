@@ -16,7 +16,7 @@ const styles = ScaledSheet.create({
   },
 
   scenario: {
-    fontSize: '28@s'
+    fontSize: 28
   },
 
   bottomContainer: {
@@ -30,9 +30,9 @@ const styles = ScaledSheet.create({
   playerQueueContainer: {
     marginTop: '57@s', // should be the same as SongSearchBar's headerContainer.height
     // paddingVertical: '15@s',
-    height: '90@s',
-    justifyContent: 'center',
-    backgroundColor: colors.black
+    height: '98@s',
+    backgroundColor: colors.black,
+    justifyContent: 'center'
   },
 
   noTopMargin: {

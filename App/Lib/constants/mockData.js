@@ -1,3 +1,5 @@
+import { arrayUtils } from '../utils';
+
 const user = {
   id: '1111',
   name: 'Storm Spirit',
@@ -107,74 +109,65 @@ const playersInGame = [
   }
 ];
 
-const contacts = [
-  {
-    title: 'A',
-    data: [
-      {
-        id: '2111',
-        name: 'Abaddon',
-        number: '+639123456789'
-      },
-      {
-        id: '2112',
-        name: 'Anti Mage',
-        number: '+639123456789'
-      }
-    ]
-  },
+const contacts = {
+  a: [
+    {
+      id: '2111',
+      name: 'Abaddon',
+      number: '+639123456789'
+    },
+    {
+      id: '2112',
+      name: 'Anti Mage',
+      number: '+639123456789'
+    }
+  ],
 
-  {
-    title: 'B',
-    data: [
-      {
-        id: '2113',
-        name: 'Batrider',
-        number: '+639123456789'
-      },
-      {
-        id: '2114',
-        name: 'Beastmaster',
-        number: '+639123456789'
-      },
-      {
-        id: '2115',
-        name: 'Bloodseeker',
-        number: '+639123456789'
-      },
-      {
-        id: '2116',
-        name: 'Bounty Hunter',
-        number: '+639123456789'
-      }
-    ]
-  },
+  b: [
+    {
+      id: '2113',
+      name: 'Batrider',
+      number: '+639123456789'
+    },
+    {
+      id: '2114',
+      name: 'Beastmaster',
+      number: '+639123456789'
+    },
+    {
+      id: '2115',
+      name: 'Bloodseeker',
+      number: '+639123456789'
+    },
+    {
+      id: '2116',
+      name: 'Bounty Hunter',
+      number: '+639123456789'
+    }
+  ],
 
-  {
-    title: 'C',
-    data: [
-      {
-        id: '2117',
-        name: 'Centaur Warrunner',
-        number: '+639123456789'
-      },
-      {
-        id: '2118',
-        name: 'Chaos Knight',
-        number: '+639123456789'
-      },
-      {
-        id: '2119',
-        name: 'Chen',
-        number: '+639123456789'
-      }
-    ]
-  }
-];
+  c: [
+    {
+      id: '2117',
+      name: 'Centaur Warrunner',
+      number: '+639123456789'
+    },
+    {
+      id: '2118',
+      name: 'Chaos Knight',
+      number: '+639123456789'
+    },
+    {
+      id: '2119',
+      name: 'Chen',
+      number: '+639123456789'
+    }
+  ]
+};
 
 const friends = [
   ...players,
-  ...contacts.reduce((array, current) => array.concat(current.data), [])
+  ...arrayUtils.mergeArrays(Object.values(contacts))
 ];
 
 const scenario =

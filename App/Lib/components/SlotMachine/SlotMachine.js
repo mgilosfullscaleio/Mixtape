@@ -12,7 +12,7 @@ export default class SlotMachine extends Component {
       width: 300,
       height: 100,
       duration: 6000,
-      delay: 5000,
+      delay: 0,
       times: 20,
       range: ['Song 1', 'Song 2'],
       initialAnimation: true,
@@ -62,11 +62,11 @@ export default class SlotMachine extends Component {
   }
 
   getAlignedValues(props) {
-    const title = props.text[0];
     const repeatedObjs = this.getRepeatedObjs(props);
+
     const values = repeatedObjs.map(() => {
-      const index = repeatedObjs.indexOf(title);
-      const animationValue = this.getPosition(index, props);
+      // const index = repeatedObjs.indexOf(props.text);
+      const animationValue = this.getPosition(0, props);
       return animationValue;
     });
 

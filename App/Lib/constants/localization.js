@@ -31,7 +31,14 @@ const localization = {
   email: 'EMAIL ADDRESS',
   search: 'Search',
   sendInvites: (num = 0) => `SEND INVITES (${num})`,
-  tieBreaker: 'TIE BREAKER'
+  tieBreaker: 'TIE BREAKER',
+  letsGo: "LET'S GO",
+  wantToPlayWithYou: 'WANTS TO PLAY MIXTAPE WITH YOU!',
+  help: 'HELP',
+  enableFacebook: 'Enable Facebook',
+  enableContacts: 'Enable Contacts',
+  pleaseSelectSong: 'Please select a song',
+  okay: 'Okay'
 };
 
 export default localization;

@@ -9,6 +9,16 @@ const styles = ScaledSheet.create({
     marginVertical: '20@s'
   },
 
+  middleContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+
+  enableButton: {
+    width: '70%'
+  },
+
   separator: {
     height: '21@s'
   }

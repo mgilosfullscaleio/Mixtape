@@ -45,7 +45,12 @@ const RoundWinner = ({
           player={winner}
         />
 
-        <PlayableSongBar song={winner.song} highlighted onPlay={onPlaySong} />
+        <PlayableSongBar
+          song={winner.song}
+          highlighted
+          onPlay={onPlaySong}
+          pausable={false}
+        />
       </Container>
 
       <View style={styles.playerQueueContainer}>

@@ -2,25 +2,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, SectionList } from 'react-native';
-import { Container, Text } from '../../../components';
+import { Container, Text, Button } from '../../../components';
 import SearchBar from '../common/SearchBar';
 import ContactListItem from '../common/FriendListItem';
 import InviteButton from '../common/InviteButton';
 
 import styles from './styles';
+import { localization } from '../../../constants';
 
 const Contacts = ({
   contacts,
+  markedContacts,
+  isEnabled,
   onMarkContact,
   onChangeSearchText,
-  onSendInvite
+  onSendInvite,
+  onEnable
 }) => {
-  const renderItem = ({ item, index }) => (
+  const renderItem = ({ item, index, section }) => (
     <ContactListItem
       title={item.name}
       subtitle={item.number}
       marked={item.marked}
-      onCheckBoxPress={() => onMarkContact(item, index)}
+      onCheckBoxPress={() => onMarkContact(item, index, section.title)}
     />
   );
 
@@ -30,21 +34,33 @@ const Contacts = ({
 
   return (
     <Container contentContainerStyle={styles.container}>
-      <SearchBar
-        containerStyle={styles.searchBar}
-        onChangeSearchText={onChangeSearchText}
-      />
+      {isEnabled ? (
+        <>
+          <SearchBar
+            containerStyle={styles.searchBar}
+            onChangeSearchText={onChangeSearchText}
+          />
 
-      <SectionList
-        style={styles.list}
-        sections={contacts}
-        renderItem={renderItem}
-        renderSectionHeader={renderSectionHeader}
-        keyExtractor={item => item.id}
-        showsVerticalScrollIndicator={false}
-      />
+          <SectionList
+            style={styles.list}
+            sections={contacts}
+            renderItem={renderItem}
+            renderSectionHeader={renderSectionHeader}
+            keyExtractor={item => item.id}
+            showsVerticalScrollIndicator={false}
+          />
 
-      <InviteButton onPress={onSendInvite} />
+          <InviteButton invitesCount={markedContacts} onPress={onSendInvite} />
+        </>
+      ) : (
+        <View style={styles.middleContainer}>
+          <Button
+            style={styles.enableButton}
+            title={localization.enableContacts}
+            onPress={onEnable}
+          />
+        </View>
+      )}
     </Container>
   );
 };
@@ -59,16 +75,22 @@ Contacts.propTypes = {
       marked: PropTypes.bool
     })
   ),
+  markedContacts: PropTypes.number,
+  isEnabled: PropTypes.bool,
   onMarkContact: PropTypes.func,
   onChangeSearchText: PropTypes.func,
-  onSendInvite: PropTypes.func
+  onSendInvite: PropTypes.func,
+  onEnable: PropTypes.func
 };
 
 Contacts.defaultProps = {
   contacts: [],
+  markedContacts: 0,
+  isEnabled: false,
   onMarkContact: () => null,
   onChangeSearchText: () => null,
-  onSendInvite: () => null
+  onSendInvite: () => null,
+  onEnable: () => null
 };
 
 export default Contacts;

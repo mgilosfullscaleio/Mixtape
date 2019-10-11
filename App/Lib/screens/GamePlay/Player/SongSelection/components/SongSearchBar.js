@@ -5,14 +5,15 @@ import {
   Animated,
   FlatList,
   PanResponder,
-  TextInput
+  Image
 } from 'react-native';
+import { TextInput } from '../../../../../components';
 import SongItem from './SongItem';
 
 import { ScaledSheet } from '../../../../../utils';
 import scale, { heightPercentage } from '../../../../../utils/scaleUtil';
 import { colors } from '../../../../../styles';
-import { localization } from '../../../../../constants';
+import { localization, images } from '../../../../../constants';
 import {
   getBottomSpace,
   getStatusBarHeight
@@ -37,13 +38,30 @@ const styles = ScaledSheet.create({
 
   dragHandle: {},
 
+  inputContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: '10@s',
+    borderRadius: 5,
+    backgroundColor: colors.white
+  },
+
+  searchIcon: {
+    width: '22@s',
+    height: undefined,
+    aspectRatio: 1
+  },
+
   input: {
     flex: 1,
     backgroundColor: colors.white,
     fontFamily: 'AkzidenzGroteskBE-Cn',
     fontSize: scale(22),
+    color: colors.darkGray,
+    borderBottomWidth: 0,
     paddingVertical: 0,
-    borderRadius: 5
+    paddingLeft: '5@s'
   },
 
   list: {
@@ -129,7 +147,7 @@ class SongSearchBar extends React.Component {
     });
 
     this.parentResponder = parentResponder;
-    this.state = { position, toTop: false, editable: true };
+    this.state = { position, toTop: false, editable: true, };
   }
 
   componentDidUpdate({ initialPositionOffset: prevInitialOffset }) {
@@ -152,7 +170,10 @@ class SongSearchBar extends React.Component {
       toValue: { x: 0, y: 0 },
       duration: 300
     }).start(() => {});
-    this.refs.searchInput.focus();
+
+    if (this.searchInput) {
+      this.searchInput.focus();
+    }
 
     this.setState({ toTop: true });
   };
@@ -189,14 +210,20 @@ class SongSearchBar extends React.Component {
         style={[styles.draggable, draggableViewSizeStyle, position.getLayout()]}
       >
         <View style={styles.headerContainer} {...this.parentResponder.panHandlers}>
-          <TextInput
-            style={styles.input}
-            placeholder={localization.searchSpotify}
-            placeholderTextColor={colors.darkGray}
-            onChangeText={onSearchTextChange}
-            editable={this.state.editable}
-            ref='searchInput'
-          />
+            <View style={styles.inputContainer}>
+                <Image source={images.search} style={styles.searchIcon} />
+                <TextInput
+                    containerStyle={{flex: 1}}
+                    inputStyle={styles.input}
+                    placeholder={localization.searchSpotify}
+                    placeholderTextColor={colors.mediumGray}
+                    onChangeText={onSearchTextChange}
+                    editable={this.state.editable}
+                    setRef={ref => {
+                      this.searchInput = ref
+                    }}
+                />
+            </View>
         </View>
         <FlatList
           bounces

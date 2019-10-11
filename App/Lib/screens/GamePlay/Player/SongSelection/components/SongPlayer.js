@@ -28,7 +28,6 @@ const SongPlayer = ({ song, onSubmit, ...props }) => (
     singerStyle={styles.text}
     song={song}
     rightIcon={images.addToPlaylist}
-    //leftIcon={images.songBarPlay}
     onRightIconPress={() => onSubmit(song)}
     {...props}
   />

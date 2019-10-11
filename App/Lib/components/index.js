@@ -4,6 +4,8 @@ import UserProfileHeader from './UserProfileHeader';
 import BottomTabBar from './BottomTabBar';
 import Card from './Card';
 
+import Alert from './Alert';
+
 import Text from './Text';
 import TextInput from './TextInput';
 
@@ -22,6 +24,7 @@ export {
   UserProfileHeader,
   BottomTabBar,
   Card,
+  Alert,
   Text,
   TextInput,
   TouchableImage,

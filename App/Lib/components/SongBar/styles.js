@@ -11,7 +11,7 @@ const styles = ScaledSheet.create({
   },
 
   sideIcon: {
-    width: 36,
+    width: '50',
     height: undefined,
     aspectRatio: 1
   },

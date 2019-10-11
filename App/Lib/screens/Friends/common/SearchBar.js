@@ -46,8 +46,6 @@ const SearchBar = ({ containerStyle, onChangeSearchText }) => (
       placeholderTextColor={colors.gray}
       onChangeText={onChangeSearchText}
     />
-
-    <Image source={images.search} style={styles.icon} />
   </View>
 );
 

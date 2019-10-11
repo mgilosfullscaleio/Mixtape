@@ -3,9 +3,12 @@ import Friends from './Friends';
 
 import normalizeScreenTitle from '../common/normalizeScreenTitle';
 import { mockData } from '../../../constants';
+import { friendsUtils } from '../../../utils';
+
+const playersClone = mockData.friends.map(player => ({ ...player }));
 
 const FriendsContainer = () => {
-  const [friends, setFriends] = useState(mockData.friends);
+  const [friends, setFriends] = useState(playersClone);
 
   const handleMarkFriend = ({ marked = false }, index) => {
     const newFriends = [...friends];
@@ -14,7 +17,15 @@ const FriendsContainer = () => {
     setFriends(newFriends);
   };
 
-  return <Friends friends={friends} onMarkFriend={handleMarkFriend} />;
+  const markedFriends = friendsUtils.countMarked(friends);
+
+  return (
+    <Friends
+      friends={friends}
+      markedFriends={markedFriends}
+      onMarkFriend={handleMarkFriend}
+    />
+  );
 };
 
 FriendsContainer.navigationOptions = ({ navigation }) => ({

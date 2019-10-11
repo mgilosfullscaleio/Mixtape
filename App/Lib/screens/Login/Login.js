@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Image, ActivityIndicator } from 'react-native';
-import { Container, Text, TouchableImage } from '../../../components';
+import { Container, Text, TouchableImage } from '../../components';
 import { connect } from 'react-redux'
 
 import styles from './styles';
-import { colors } from '../../../styles';
-import { images, localization } from '../../../constants';
-import AuthActions, { AuthSelectors } from '../../../../Redux/AuthRedux';
+import { colors } from '../../styles';
+import { images, localization } from '../../constants';
+import AuthActions, { AuthSelectors } from '../../../Redux/AuthRedux';
 
 const Login = (props) => (
   <Container style={styles.container}>

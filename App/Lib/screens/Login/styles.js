@@ -1,5 +1,5 @@
-import { ScaledSheet, scaleUtils } from '../../../utils';
-import { colors } from '../../../styles';
+import { ScaledSheet, scaleUtils } from '../../utils';
+import { colors } from '../../styles';
 
 const styles = ScaledSheet.create({
   container: {

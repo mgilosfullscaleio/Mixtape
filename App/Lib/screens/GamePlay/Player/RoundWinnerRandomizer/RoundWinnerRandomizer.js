@@ -31,8 +31,6 @@ const RoundWinnerRandomizer = ({ winnerSongTitle, songs, players, scenario, onQu
         }}
       >
         <SlotMachine
-          // text={['WHEN A MAN LOVES A WOMAN']}
-          // range={['WHEN A MAN LOVES A WOMAN', 'HOW DEEP IS YOUR LOVE']}
           text={[winnerSongTitle]}
           range={songs.map(song => song.title)}
         />

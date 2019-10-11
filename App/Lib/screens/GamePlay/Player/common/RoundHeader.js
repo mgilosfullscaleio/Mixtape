@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { ActivityIndicator } from 'react-native';
 import { Header, Text } from '../../../../components';
 
 import { ScaledSheet } from '../../../../utils';
@@ -24,25 +25,36 @@ const styles = ScaledSheet.create({
   }
 });
 
-const RoundHeader = ({ title, round, timeLeft }) => (
-  <Header
-    title={title || localization[`round${round}`]}
-    style={styles.header}
-    leftContainerStyle={styles.sideContainer}
-    rightContainerStyle={styles.sideContainer}
-    right={<Text style={styles.timeLeft}>{timeLeft}</Text>}
-  />
-);
+const RoundHeader = ({ title, round, timeLeft, rightElementType }) => {
+  const rightElement =
+    rightElementType === 'loading' ? (
+      <ActivityIndicator size="large" color={colors.white} />
+    ) : (
+      <Text style={styles.timeLeft}>{timeLeft}</Text>
+    );
+
+  return (
+    <Header
+      title={title || localization[`round${round}`]}
+      style={styles.header}
+      leftContainerStyle={styles.sideContainer}
+      rightContainerStyle={styles.sideContainer}
+      right={rightElement}
+    />
+  );
+};
 
 RoundHeader.propTypes = {
   title: PropTypes.string,
   round: PropTypes.number,
-  timeLeft: PropTypes.number.isRequired
+  timeLeft: PropTypes.number.isRequired,
+  rightElementType: PropTypes.oneOf(['timer', 'loading'])
 };
 
 RoundHeader.defaultProps = {
   title: null,
-  round: null
+  round: null,
+  rightElementType: 'timer'
 };
 
 export default RoundHeader;

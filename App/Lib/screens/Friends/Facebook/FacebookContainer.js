@@ -3,9 +3,13 @@ import Facebook from './Facebook';
 
 import normalizeScreenTitle from '../common/normalizeScreenTitle';
 import { mockData } from '../../../constants';
+import { friendsUtils } from '../../../utils';
+
+const playersClone = mockData.players.map(player => ({ ...player }));
 
 const FacebookContainer = () => {
-  const [friends, setFriends] = useState(mockData.players);
+  const [friends, setFriends] = useState(playersClone);
+  const [isEnabled, setEnabled] = useState(false);
 
   const handleMarkFriend = ({ marked = false }, index) => {
     const newFriends = [...friends];
@@ -14,7 +18,19 @@ const FacebookContainer = () => {
     setFriends(newFriends);
   };
 
-  return <Facebook friends={friends} onMarkFriend={handleMarkFriend} />;
+  const handleEnable = () => setEnabled(true);
+
+  const markedFriends = friendsUtils.countMarked(friends);
+
+  return (
+    <Facebook
+      friends={friends}
+      markedFriends={markedFriends}
+      isEnabled={isEnabled}
+      onMarkFriend={handleMarkFriend}
+      onEnable={handleEnable}
+    />
+  );
 };
 
 FacebookContainer.navigationOptions = ({ navigation }) => ({

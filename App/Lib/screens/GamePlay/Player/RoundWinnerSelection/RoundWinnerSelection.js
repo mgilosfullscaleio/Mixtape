@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, FlatList } from 'react-native';
+import { View, FlatList } from 'react-native';
 import {
   Container,
   Text,
   PlayerQueue,
-  TouchableImage
+  TouchableImage,
+  Alert
 } from '../../../../components';
 import RoundHeader from '../common/RoundHeader';
 import PlayerAvatar from '../common/PlayerAvatar';
@@ -14,6 +15,7 @@ import PlayableSongBar from '../common/PlayableSongBar';
 
 import styles from './styles';
 import { images, localization } from '../../../../constants';
+import { useAlertVisible } from '../../../../utils/hooks';
 
 const RoundWinnerSelection = ({
   songs,
@@ -30,6 +32,16 @@ const RoundWinnerSelection = ({
   songPlayingURI,
   disableSubmission
 }) => {
+  const { isVisible, showAlert, hideAlert } = useAlertVisible();
+
+  const handleSubmitWinner = () => {
+    if (selectedWinner) {
+      onSubmitWinner(selectedWinner);
+    } else {
+      showAlert();
+    }
+  };
+
   const renderHeader = () => (
     <RoundHeader title={localization.chooseWinner} timeLeft={timeLeft} />
   );
@@ -54,40 +66,55 @@ const RoundWinnerSelection = ({
   };
 
   return (
-    <Container
-      contentContainerStyle={styles.container}
-      renderHeader={renderHeader}
-    >
-      <FlatList
-        style={styles.listContainer}
-        data={songs}
-        extraData={{ songs, selectedWinner }}
-        ListHeaderComponent={<Text style={styles.scenario}>{scenario}</Text>}
-        ListHeaderComponentStyle={styles.scenarioContainer}
-        renderItem={renderSongBarItem}
-        keyExtractor={item => item.id}
-      />
+    <>
+      <Alert
+        isVisible={isVisible}
+        onClose={hideAlert}
+        options={[
+          {
+            title: localization.okay,
+            onPress: hideAlert
+          }
+        ]}
+      >
+        <Text style={styles.alertMessage}>{localization.pleaseSelectSong}</Text>
+      </Alert>
 
-      {!disableSubmission && 
-        <View style={styles.submitButtonContainer}>
-          <TouchableImage
-            source={images.submitButton}
-            style={styles.submitButton}
-            onPress={() => onSubmitWinner(selectedWinner)}
+      <Container
+        contentContainerStyle={styles.container}
+        renderHeader={renderHeader}
+      >
+        <FlatList
+          style={styles.listContainer}
+          data={songs}
+          extraData={{ songs, selectedWinner }}
+          ListHeaderComponent={<Text style={styles.scenario}>{scenario}</Text>}
+          ListHeaderComponentStyle={styles.scenarioContainer}
+          renderItem={renderSongBarItem}
+          keyExtractor={item => item.id}
+        />
+
+        {!disableSubmission && 
+          <View style={styles.submitButtonContainer}>
+            <TouchableImage
+              source={images.submitButton}
+              style={styles.submitButton}
+              onPress={() => onSubmitWinner(selectedWinner)}
+            />
+          </View>
+        }
+
+        <View style={styles.playerQueueContainer}>
+          <PlayerQueue
+            joinedPlayers={players}
+            maxPlayers={5}
+            renderItem={player => (
+              <PlayerAvatar player={player} type="checkmark" showBadge={showBadgeSubmittedVoteByPlayer(player)} />
+            )}
           />
         </View>
-      }
-
-      <View style={styles.playerQueueContainer}>
-        <PlayerQueue
-          joinedPlayers={players}
-          maxPlayers={5}
-          renderItem={player => (
-            <PlayerAvatar player={player} type="checkmark" showBadge={showBadgeSubmittedVoteByPlayer(player)} />
-          )}
-        />
-      </View>
-    </Container>
+      </Container>
+    </>
   );
 };
 

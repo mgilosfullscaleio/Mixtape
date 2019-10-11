@@ -32,12 +32,13 @@ const TextInput = ({
   inputStyle,
   labelStyle,
   label,
+  setRef,
   ...props
 }) => (
   <View style={containerStyle}>
     {label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
 
-    <BaseInput style={[styles.input, inputStyle]} {...props} />
+    <BaseInput style={[styles.input, inputStyle]} ref={setRef} {...props} />
   </View>
 );
 
@@ -45,14 +46,16 @@ TextInput.propTypes = {
   containerStyle: ViewPropTypes.style,
   inputStyle: BaseInput.propTypes.style,
   labelStyle: BaseText.propTypes.style,
-  label: PropTypes.string
+  label: PropTypes.string,
+  setRef: PropTypes.func
 };
 
 TextInput.defaultProps = {
   containerStyle: null,
   inputStyle: null,
   labelStyle: null,
-  label: null
+  label: null,
+  setRef: () => null
 };
 
 export default TextInput;

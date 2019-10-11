@@ -3,7 +3,6 @@ const images = {
   logo: require('../assets/images/mixtape-logo.png'),
   facebookButton: require('../assets/images/facebook-button.png'),
   phoneButton: require('../assets/images/phone-button.png'),
-  spotify: require('../assets/images/spotify.png'),
   spotifyButton: require('../assets/images/spotify-button.png'),
   home: require('../assets/images/home.png'),
   friends: require('../assets/images/friends.png'),
@@ -29,7 +28,16 @@ const images = {
   addToPlaylist: require('../assets/images/add-to-playlist.png'),
   highlightedSongBar: require('../assets/images/highlighted-song-bar.png'),
   check: require('../assets/images/check.png'),
-  search: require('../assets/images/search.png')
+  search: require('../assets/images/search.png'),
+  playFriends: require('../assets/images/playFriends.png'),
+  playOthers: require('../assets/images/playOthers.png'),
+  gamePlay: require('../assets/images/gamePlay.png'),
+  lobbyHostFriends: require('../assets/images/lobbyHostFriends.png'),
+  facebookFriends: require('../assets/images/facebookFriends.png'),
+  contactFriends: require('../assets/images/contactFriends.png'),
+  lobbyOthers: require('../assets/images/lobbyOthers.png'),
+  x: require('../assets/images/x.png'),
+  equalizer: require('../assets/images/equalizer.gif')
 };
 
 export default images;

@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, FlatList } from 'react-native';
+import { FlatList } from 'react-native';
 import { Container } from '../../../components';
 import SearchBar from '../common/SearchBar';
 import FriendListItem from '../common/FriendListItem';
@@ -9,17 +9,13 @@ import InviteButton from '../common/InviteButton';
 
 import styles from './styles';
 
-const markedFriendSum = (total, current) =>
-  current.marked ? total + 1 : total;
-
 const Friends = ({
   friends,
+  markedFriends,
   onMarkFriend,
   onChangeSearchText,
   onSendInvite
 }) => {
-  const markedFriends = friends.reduce(markedFriendSum, 0);
-
   const renderItem = ({ item, index }) => (
     <FriendListItem
       title={item.name}
@@ -58,6 +54,7 @@ Friends.propTypes = {
       marked: PropTypes.bool
     })
   ),
+  markedFriends: PropTypes.number,
   onMarkFriend: PropTypes.func,
   onChangeSearchText: PropTypes.func,
   onSendInvite: PropTypes.func
@@ -65,6 +62,7 @@ Friends.propTypes = {
 
 Friends.defaultProps = {
   friends: [],
+  markedFriends: 0,
   onMarkFriend: () => null,
   onChangeSearchText: () => null,
   onSendInvite: () => null

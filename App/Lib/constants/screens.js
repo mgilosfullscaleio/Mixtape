@@ -1,20 +1,15 @@
-const auth = {
-  login: 'AUTH_LOGIN',
-  spotifyLogin: 'AUTH_SPOTIFY_LOGIN'
-};
-
 const home = {
   root: 'HOME_ROOT',
   lobby: 'HOME_LOBBY'
 };
 
 const gamePlay = {
-  playerSongSelection: 'PLAYER_SONG_SELECTION',
-  roundWinnerSelection: 'ROUND_WINNER_SELECTION',
-  roundWinner: 'ROUND_WINNER',
-  gameWinner: 'GAME_WINNER',
-  roundTieBreaker: 'ROUND_TIE_BREAKER',
-  roundWinnerRandomizer: 'ROUND_WINNER_RANDOMIZER'
+  playerSongSelection: 'GAMEPLAY_PLAYER_SONG_SELECTION',
+  roundWinnerSelection: 'GAMEPLAY_ROUND_WINNER_SELECTION',
+  roundWinner: 'GAMEPLAY_ROUND_WINNER',
+  gameWinner: 'GAMEPLAY_GAME_WINNER',
+  roundTieBreaker: 'GAMEPLAY_ROUND_TIE_BREAKER',
+  roundWinnerRandomizer: 'GAMEPLAY_ROUND_WINNER_RANDOMIZER'
 };
 
 const friends = {
@@ -31,8 +26,10 @@ const main = {
 };
 
 const root = {
+  login: 'LOGIN',
+  onBoarding: 'ONBOARDING',
   main: 'MAIN',
   gamePlay: 'GAMEPLAY'
 };
 
-export { auth, home, gamePlay, friends, main, root };
+export { home, gamePlay, friends, main, root };

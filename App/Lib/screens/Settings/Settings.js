@@ -13,7 +13,7 @@ import {
 import styles from './styles';
 import { localization } from '../../constants';
 
-const Settings = ({ user, onLogout }) => {
+const Settings = ({ user, onHelp, onLogout }) => {
   const renderHeader = () => <Header title={localization.profile} />;
 
   return (
@@ -38,7 +38,13 @@ const Settings = ({ user, onLogout }) => {
       </View>
 
       <Button
-        style={styles.button}
+        style={[styles.button, styles.helpButton]}
+        title={localization.help}
+        onPress={onHelp}
+      />
+
+      <Button
+        style={[styles.button, styles.logoutButton]}
         title={localization.logout}
         onPress={onLogout}
       />
@@ -53,10 +59,12 @@ Settings.propTypes = {
     tapes: PropTypes.number,
     profileImage: PropTypes.string
   }).isRequired,
+  onHelp: PropTypes.func,
   onLogout: PropTypes.func
 };
 
 Settings.defaultProps = {
+  onHelp: () => null,
   onLogout: () => null
 };
 
