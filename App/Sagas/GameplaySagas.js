@@ -16,9 +16,8 @@ const onGameplayChannel = (firestore, gameId, userId, currentRound) =>
 
 const onTimerTickChannel = startTime =>
   eventChannel(emitter => {
-    const startDate = new Date(startTime).getTime()
     const timerId = setInterval(() => {
-      const elapse = Math.floor((Date.now() - startDate) / 1000)
+      const elapse = Math.floor((Date.now() - startTime) / 1000)
       let tick = 60 - elapse
 
       emitter(tick)
@@ -43,7 +42,8 @@ export function * subscribeGameplay(firestore, action) {
 
     yield put(GameplayActions.saveGameInfo(gameplayInfo))
     
-    const timerChannel = yield call(onTimerTickChannel, gameplayInfo.gameStart)
+    const gameTimer = yield select(GameplaySelectors.selectGameTimer)
+    const timerChannel = yield call(onTimerTickChannel, gameTimer)
     yield takeEvery(timerChannel, function* (tick) {
       const defaultTick = tick < 0 ? 0 : tick
       yield put(GameplayActions.setTimerTick(defaultTick))
@@ -107,12 +107,11 @@ export function * subscribeVotingRound(firestore, action) {
   // Start the voting round by adding all player ids as round winners
   roundWinner[`round${currentRound}`] = playerIds
   yield put(GameplayActions.updateRoundWinner(roundWinner))
+  
+  yield put(GameplayActions.addSecondsToGameTimer(60))
 
-  // start vote timer
-  const gameStart = yield select(GameplaySelectors.selectGameStart)
-  const gameStartDate = new Date(gameStart).getTime()
-  const voteRoundStart = new Date(gameStartDate + 60000).toISOString()  // add 1 minute
-  const timerChannel = yield call(onTimerTickChannel, voteRoundStart)
+  const gameTimer = yield select(GameplaySelectors.selectGameTimer)
+  const timerChannel = yield call(onTimerTickChannel, gameTimer)
   yield takeEvery(timerChannel, function* (tick) {
     const defaultTick = tick < 0 ? 0 : tick
     yield put(GameplayActions.setTimerTick(defaultTick))
@@ -150,10 +149,10 @@ export function * playRoundWinnerSong(action) {
   const winningSong = yield select(GameplaySelectors.selectWinningSong)
   yield put(GameplayActions.playSong(winningSong))
   
-  const gameStart = yield select(GameplaySelectors.selectGameStart)
-  const gameStartDate = new Date(gameStart).getTime()
-  const celebrationDuration = new Date(gameStartDate + 95000).toISOString()  // add 35 sec
-  const timerChannel = yield call(onTimerTickChannel, celebrationDuration)
+  yield put(GameplayActions.addSecondsToGameTimer(35))
+
+  const gameTimer = yield select(GameplaySelectors.selectGameTimer)
+  const timerChannel = yield call(onTimerTickChannel, gameTimer)
   yield takeEvery(timerChannel, function* (tick) {
     const defaultTick = tick < 0 ? 0 : tick
     yield put(GameplayActions.setTimerTick(defaultTick))
@@ -186,10 +185,13 @@ export function * subscribeTiebreakerRound(firestore, action) {
     firestore.updateRoundTiebreakWinner(gameId, currentRound, playerWinner)
   }
 
-  const gameStart = yield select(GameplaySelectors.selectGameStart)
-  const gameStartDate = new Date(gameStart).getTime()
-  const duration = new Date(gameStartDate + 76000).toISOString()
-  const timerChannel = yield call(onTimerTickChannel, duration)
+  yield put(GameplayActions.addSecondsToGameTimer(10))
+
+  // const gameStart = yield select(GameplaySelectors.selectGameStart)
+  // const gameStartDate = new Date(gameStart).getTime()
+  // const duration = new Date(gameStartDate + 76000).toISOString()
+  const gameTimer = yield select(GameplaySelectors.selectGameTimer)
+  const timerChannel = yield call(onTimerTickChannel, gameTimer)
   yield takeEvery(timerChannel, function* (tick) {
     const defaultTick = tick < 0 ? 0 : tick
     yield put(GameplayActions.setTimerTick(defaultTick))

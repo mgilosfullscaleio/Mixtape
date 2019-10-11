@@ -17,6 +17,7 @@ const { Types, Creators } = createActions({
   updateRoundWinner: ['roundWinner'],
   setTimerTick: ['timerTick'],
   resetGameplayRound: null,
+  addSecondsToGameTimer: ['seconds'],
 
   //saga trigger
   subscribeGameplay: null,
@@ -62,8 +63,9 @@ export const INITIAL_STATE = Immutable({
   card: { title: '', content: '' },
   loading: false,
   error: null,
-  gameId: null,
+  gameId: 'JsQVmdBTGvwIid2CUi4K',
   gameStart: null,  //date ISOString
+  gameTimer: 0, //millis
   searchedSongs: [],
   timerTick: 0,
   song: null,
@@ -74,6 +76,7 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Selectors ------------- */
 
 export const GameplaySelectors = {
+  selectGameTimer: state => state.gameplay.gameTimer,
   searchedSongs: state => state.gameplay.searchedSongs,
   isLoading: state => state.gameplay.loading,
   selectGameId: state => state.gameplay.gameId,
@@ -169,7 +172,8 @@ export const saveGameInfo = (state, { gameInfo }) =>
   state.merge({ 
     round: gameInfo.currentRound, 
     players: gameInfo.players,
-    gameStart: gameInfo.gameStart
+    gameStart: gameInfo.gameStart,
+    gameTimer: Date.now()//new Date(gameInfo.gameStart).getTime()
   })
 
 export const saveGameUpdate = (state, { gameUpdate }) =>
@@ -182,10 +186,15 @@ export const setTimerTick = (state, { timerTick }) =>
   state.merge({ timerTick })
 
 export const resetGameplayRound = state =>
-  state.merge({ songVote: null, song: null,  })
+  state.merge({ songVote: null, song: null, timerTick: 0, gameTimer: 0 })
 
 export const updateRoundTiebreakWinner = (state, { playerId }) =>
   state.merge({ tiebreakWinner: playerId })
+
+export const addSecondsToGameTimer = (state, { seconds }) => {
+  const gameTimer = state.gameTimer + (seconds * 1000)
+  return state.merge({ gameTimer })
+}
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -201,4 +210,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.UPDATE_ROUND_WINNER]: updateRoundWinner,
   [Types.RESET_GAMEPLAY_ROUND]: resetGameplayRound,
   [Types.UPDATE_ROUND_TIEBREAK_WINNER]: updateRoundTiebreakWinner,
+  [Types.ADD_SECONDS_TO_GAME_TIMER]: addSecondsToGameTimer,
 })
