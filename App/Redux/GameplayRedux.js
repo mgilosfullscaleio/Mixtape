@@ -103,7 +103,7 @@ export const GameplaySelectors = {
 const collectPlayerIdsWhoSubmittedASong = gameplay =>
   gameplay.players
     .filter(player => player.song)
-    .map(player => ({ id: player.id }))
+    .map(player => player.id)
 
 const collectWinnerSongTitle = gameplay => {
   if (!gameplay.tiebreakWinner) return ''
