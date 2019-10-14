@@ -8,13 +8,15 @@ const { Types, Creators } = createActions({
   lobbySuccess: ['payload'],
   playerJoinMatch: ['players'],
   lobbyFailure: ['error'],
+  getMaximumPlayersSuccess: ['maxPlayers'],
   
   // Saga Trigger
   quitOpenMatch: null,
   subscribePlayerJoin: null,
   subscribeOpenMatch: null,
   unsubscribeOpenMatchUpdates: null,
-  addPlayerForMatch: null
+  addPlayerForMatch: null,
+  getMaximumPlayersByPlayWithOthers: null,
 })
 
 export const LobbyTypes = Types
@@ -57,6 +59,8 @@ export const failure = state =>
 
 export const playerJoinMatch = (state, { players }) => state.merge({ players })
 
+export const getMaximumPlayersSuccess = (state, { maxPlayers }) => state.merge({ maxPlayers })
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -64,4 +68,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOBBY_SUCCESS]: success,
   [Types.LOBBY_FAILURE]: failure,
   [Types.PLAYER_JOIN_MATCH]: playerJoinMatch,
+  [Types.GET_MAXIMUM_PLAYERS_SUCCESS]: getMaximumPlayersSuccess,
 })
