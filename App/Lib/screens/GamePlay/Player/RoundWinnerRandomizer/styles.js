@@ -35,10 +35,17 @@ const styles = ScaledSheet.create({
   },
 
   playerQueueContainer: {
-    // paddingVertical: '15@s',
+    //paddingVertical: '15@s',
     height: '90@s',
     justifyContent: 'center',
     backgroundColor: colors.black
+  },
+
+  slotmachine: {
+    width: '175@s',
+    height: undefined,
+    aspectRatio: 1.96,
+    marginBottom: '10@s'
   }
 });
 

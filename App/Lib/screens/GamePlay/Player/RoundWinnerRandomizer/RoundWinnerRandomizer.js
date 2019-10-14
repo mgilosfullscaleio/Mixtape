@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Image } from 'react-native';
 import { Container, Text, PlayerQueue, Header } from '../../../../components';
 import PlayerAvatar from '../common/PlayerAvatar';
 
 import styles from './styles';
-import { localization } from '../../../../constants';
+import { localization, images } from '../../../../constants';
 import SlotMachine from '../../../../components/SlotMachine/SlotMachine';
 
 const RoundWinnerRandomizer = ({ winnerSongTitle, songs, players, scenario, onQuitGame }) => {
@@ -30,6 +30,7 @@ const RoundWinnerRandomizer = ({ winnerSongTitle, songs, players, scenario, onQu
           justifyContent: 'center'
         }}
       >
+        <Image source={images.slotachine} style={styles.slotmachine} />
         <SlotMachine
           text={[winnerSongTitle]}
           range={songs.map(song => song.title)}
