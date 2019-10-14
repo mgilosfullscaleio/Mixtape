@@ -7,7 +7,7 @@
     "test": "jest",
     "lint": "standard --verbose | snazzy",
     "clean": "rm -rf $TMPDIR/react-* && watchman watch-del-all && npm cache clean --force",
-    "clean:android": "cd android/ && ./gradlew clean && cd .. && react-native run-android",
+    "clean:android": "cd android/ && ./gradlew clean && cd ..",
     "newclear": "rm -rf $TMPDIR/react-* && watchman watch-del-all && rm -rf ios/build && rm -rf node_modules/ && npm cache clean --force && npm i",
     "test:watch": "jest --watch",
     "updateSnapshot": "jest --updateSnapshot",
@@ -24,7 +24,10 @@
     "git-hook": "npm run lint -s && npm run test -s",
     "reactotron": "adb reverse tcp:9090 tcp:9090",
     "android": "react-native run-android",
-    "reload": "adb shell input text \"R\"R"
+    "reload": "adb shell input text \"R\"R",
+    "android:release": "cd android && ./gradlew assembleRelease && npm run post-build",
+    "android:installRelease": "react-native run-android --variant=release",
+    "post-build": "start ./android\\app\\build\\outputs\\apk\\release"
   },
   "dependencies": {
     "apisauce": "^1.0.2",
