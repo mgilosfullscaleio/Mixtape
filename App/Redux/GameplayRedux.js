@@ -1,6 +1,7 @@
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
 import { UserSelectors } from './UserRedux'
+import { pipe, reduce, defaultTo, toPairs, head, inc, max } from 'ramda'
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -142,8 +143,27 @@ const getRoundWinner = gameplay => gameplay.roundWinner[`round${gameplay.round}`
 const findWinnerPlayer = gameplay =>
   gameplay.players.find(player => getRoundWinner(gameplay).includes(player.id))
 
-const findGameWinnerPlayer = gameplay => 
-  gameplay.players.find(player => getRoundWinner(gameplay).includes(player.id))
+const findGameWinnerPlayer = gameplay => {
+  const roundWinners = Object.values(gameplay.roundWinner).flat(1)
+  console.tron.log('findGameWinnerPlayer', roundWinners)
+
+  const occurences = reduce((acc, x) => ({
+    ...acc,
+    [x]: pipe(defaultTo(0), inc)(acc[x])
+  }), Object.create(null));
+  
+  const largestPair = reduce(([k0, v0], [k1, v1]) => {
+    const maxVal = max(v0, v1);
+    const keyOfLargest = maxVal > v0 ? k1 : k0;
+    return [keyOfLargest, maxVal];
+  }, [null, -Infinity]);
+  
+  const mode = pipe(occurences, toPairs, largestPair, head);
+  const winner = mode(roundWinners)
+  console.tron.log('mode', winner)
+
+  return gameplay.players.find(player => player.id === winner)
+}
 
 const collectRoundWinningSong = gameplay =>
   findWinnerPlayer(gameplay).song || {}
