@@ -48,8 +48,29 @@ export function * subscribeGameplay(firestore, action) {
       const defaultTick = tick < 0 ? 0 : tick
       yield put(GameplayActions.setTimerTick(defaultTick))
 
-      if (tick < 0)
-        yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinnerSelection }))
+      if (tick < 0) {
+        const hasSubmittedSong = yield select(GameplaySelectors.selectHasAnyPlayerSubmittedSong)
+        // a player has submitted a song
+        if (hasSubmittedSong) {
+          yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinnerSelection }))
+        } else {
+          // not player submitted a song
+          const players = yield select(GameplaySelectors.selectPlayers)
+          if (players[1].id === userId) yield put(GameplayActions.updateGameNextRound(5000))
+
+          yield delay(5000)
+
+          // we didn't submit a song an were now in round 5
+          const currentRound = yield select(GameplaySelectors.selectRound)
+          if (currentRound === 5) {
+            yield put(NavigationActions.navigate({ routeName: screens.gamePlay.gameWinner }))
+          } else {
+            yield put(GameplayActions.resetGameplayRound())
+            yield put(GameplayActions.unsubscribeGameplayUpdates())
+            yield put(GameplayActions.subscribeGameplayUpdates())
+          }
+        }
+      }
     })
 
     const gameplayChannel = yield call(onGameplayChannel, firestore, gameId, userId, gameplayInfo.currentRound)
@@ -179,7 +200,7 @@ export function * subscribeTiebreakerRound(firestore, action) {
   const playerWinner = songs[rand].playerId
   
   //the first player in the song is the one to right to firestore
-  if (songs[1].playerId === userId) {
+  if (songs[0].playerId === userId) {
     firestore.updateRoundTiebreakWinner(gameId, currentRound, playerWinner)
   }
 
