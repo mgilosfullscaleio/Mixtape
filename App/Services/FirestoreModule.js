@@ -118,16 +118,21 @@ const createUserFromSpotifyAccount = info => {
  * @param {*} fbIds - An array of fbIds.
  * @returns Promise
  */
-const getUsersWithFbIdsCF = async (fbIds) => {
+export const getUsersWithFbIdsCF = async (fbIds) => {
+  console.log("getUsersWithFbIdsCF b4:");
   try {
     const collection = __DEV__ ? "getUserInfoWithFBIdDev" : "getUserInfoWithFBId";
     const callable = firebase.functions().httpsCallable(collection);
     const response = await callable({ fbIds, v2:'' });
     const { data } = response;
-    return Promise.resolve({ data });
+    //return Promise.resolve({ data });
+    console.log("getUsersWithFbIdsCF:", data);
+    return data;
   }
   catch(e) {
-    return Promise.reject(e);
+    //return Promise.reject(e);
+    console.log("getUsersWithFbIdsCF errror:",e);
+    return e;
   }
 }
 
@@ -201,5 +206,6 @@ export default {
   updateSongSelection,
   voteRoundWinner,
 
-  userObserver
+  userObserver,
+  getUsersWithFbIdsCF,
 }

@@ -83,52 +83,43 @@ export function * initializeSpotify (api, action) {
 }
 
 const getFBFriends =async (firestore) =>{
-  console.log("getFBFriendsship");
-  console.log("getFBFriendsship:",firestore);
   var fbToken = await getFBToken();
-  console.log("fbToken:",fbToken);
   try{
     if(fbToken === null){
       if(await authorizeWithFacebook() === null){
-          return Promise.resolve(Result.Error("error"));
+          return Promise.resolve(Result.Error(e));
       }
       fbToken = await getFBToken();
       // Sign to firebase with FB credentialsr
-      console.log("FBToken: ",fbToken);
       await firestore.signInWithFacebookCredential(fbToken);
     }
-
-    console.log("fbToken" + fbToken)
     const data = await getFBUserFriends(fbToken);
-    console.log("fbTokendata", data)
     
     if (data !== null) {
         const fbIds = data.data.map(item=>item.id);
-        const users = await getUsersWithFbIdsCF(fbIds);
-        Promise.resolve(Result.Ok(users))
-      }
+        const users = await firestore.getUsersWithFbIdsCF(fbIds);
+        console.log("users : ",users);
+        return Promise.resolve(Result.Ok(users));
+    }    
   } catch(e) {
   console.log("GET FB FRIENDS ERROR ---> ", e);
     return Promise.resolve(Result.Error(e))
   }
-
-  return;
 };
 
 const authFB =async (firestore) => {
   try {
     var fbToken = await getFBToken();
-
-    console.log("authFB ===FBToken: ",fbToken);
     if (fbToken === null) {
       if (await authorizeWithFacebook() === null) {
-        return Promise.resolve(Result.Error("error"));
+        return Promise.resolve(Result.Error(e));
       }
       fbToken = await getFBToken();
     }
     // Sign to firebase with FB credentials
     const credentials = await firestore.signInWithFacebookCredential(fbToken);
     var user = credentials.user;
+    
     var authData = {
       uid: user.uid,
       providerData: user.providerData,
@@ -137,23 +128,20 @@ const authFB =async (firestore) => {
       photoURL: user.photoURL,
       phoneNumber: user.phoneNumber,
     }
-
     return Promise.resolve(Result.Ok(authData))
   }
   catch(e) {
-    return Promise.resolve(Result.Error("error"));
+    return Promise.resolve(Result.Error(e));
   }
 }
 
 export function * initializeFb(firestore,action){
-  console.log("initializeFB");
   yield put(AuthActions.loadingRequest());
 
   const response = yield call(getFBFriends,firestore);
-  //const response = yield call(authFB,firestore);
   yield put(
     response.matchWith({
-      Ok: ({ value }) =>  AuthActions.getFBFriendsSuccess(value),
+      Ok: ({ value }) => AuthActions.getFBFriendsSuccess(value),
       Error: ({ value }) => AuthActions.getFBFriendsFailed(value)
     })
   );
@@ -186,12 +174,11 @@ export function * loginSpotify () {
   )
 }
 
-export function * loginFb(){
-  console.log("loginFB");
+export function * loginFb(firestore,action){
 
   yield put(AuthActions.loadingRequest());
 
-  const response = call(authFB);
+  const response = call(authFB,firestore);
   yield put(
     response.matchWith({
       Ok: ({ value }) =>  AuthActions.loginSuccess(value),

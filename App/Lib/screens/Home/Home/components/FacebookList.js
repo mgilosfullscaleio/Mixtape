@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, View, Text } from 'react-native';
+import { Image, View, Text, Button } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import AuthActions, { AuthSelectors } from '../../../../../Redux/AuthRedux';
@@ -7,9 +7,11 @@ import AuthActions, { AuthSelectors } from '../../../../../Redux/AuthRedux';
 
 const FacebookList = props => (
   <View>
-      <Text
+      {/* <Text
         onPress={props.initializeFb}
-      >Hurah</Text>
+      >Hurah</Text> */}
+  <Button onPress={props.initializeFb} title="Hurahh" />
+      
      
   </View>
 );

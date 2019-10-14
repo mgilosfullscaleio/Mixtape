@@ -74,6 +74,6 @@ export default function * root () {
 
     //FB
     takeLatest(AuthTypes.INITIALIZE_FB, initializeFb,firestore),
-    takeLatest(AuthTypes.LOGIN_FB, loginFb),
+    takeLatest(AuthTypes.LOGIN_FB, loginFb,firestore),
   ])
 }
