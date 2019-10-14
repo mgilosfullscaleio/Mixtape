@@ -98,7 +98,13 @@ export const GameplaySelectors = {
   selectAllPlayerIdForTiebreak: state => collectPlayerIdsWhoSubmittedASong(state.gameplay),
   selectWinnerSongTitleFromTiebreak: state => collectWinnerSongTitle(state.gameplay),
   selectGameWinnerPlayer: state => findGameWinnerPlayer(state.gameplay),
+  selectHasAnyPlayerSubmittedSong: state => hasAnyPlayerSubmittedSong(state.gameplay)
 }
+
+const hasAnyPlayerSubmittedSong = gameplay =>
+  gameplay.players
+    .filter(player => player.song)
+    .length > 0
 
 const collectPlayerIdsWhoSubmittedASong = gameplay =>
   gameplay.players
