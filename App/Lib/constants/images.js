@@ -38,7 +38,7 @@ const images = {
   lobbyOthers: require('../assets/images/lobbyOthers.png'),
   x: require('../assets/images/x.png'),
   equalizer: require('../assets/images/equalizer.gif'),
-  slotachine: require('../assets/images/slotmachine.png')
+  slotmachine: require('../assets/images/slotmachine.png')
 };
 
 export default images;

@@ -6,6 +6,7 @@ import SongSelection from './SongSelection';
 
 import { mockData, screens } from '../../../../constants';
 import GameplayActions, { GameplaySelectors } from '../../../../../Redux/GameplayRedux';
+import { LobbySelectors } from '../../../../../Redux/LobbyRedux';
 
 const SongSelectionContainer = (props) => {
   const [submittedSong, setSubmittedSong] = useState();
@@ -57,6 +58,7 @@ const SongSelectionContainer = (props) => {
 
   return (
     <SongSelection
+      maxPlayers={props.selectPlayers.length}
       players={props.selectPlayers}
       round={props.selectRound}
       timeLeft={props.selectTimerTick}
@@ -85,6 +87,7 @@ SongSelectionContainer.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
+  selectMaxPlayer: LobbySelectors.selectMaxPlayers(state),
   selectRound: GameplaySelectors.selectRound(state),
   selectCardContent: GameplaySelectors.selectCardContent(state),
   selectTimerTick: GameplaySelectors.selectTimerTick(state),
