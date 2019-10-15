@@ -45,7 +45,7 @@ const RoundWinnerSelection = ({
   };
 
   const renderHeader = () => (
-    <RoundHeader title={localization.chooseWinner} type={isLoading ? 'loading' : 'timer' } timeLeft={timeLeft} />
+    <RoundHeader title={localization.chooseWinner} rightElementType={isLoading ? 'loading' : 'timer' } timeLeft={timeLeft} />
   );
   const showBadgeSubmittedVoteByPlayer = player => {
     const playerVote = player.vote
