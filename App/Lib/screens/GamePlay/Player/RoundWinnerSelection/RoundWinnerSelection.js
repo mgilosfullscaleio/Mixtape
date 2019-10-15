@@ -99,7 +99,7 @@ const RoundWinnerSelection = ({
             <TouchableImage
               source={images.submitButton}
               style={styles.submitButton}
-              onPress={() => onSubmitWinner(selectedWinner)}
+              onPress={handleSubmitWinner}
             />
           </View>
         }
