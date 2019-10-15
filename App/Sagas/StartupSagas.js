@@ -34,6 +34,8 @@ export function * startup (action) {
         someNormalFunction: selectAvatar
       }
     })*/
+  } else {
+    console.tron = console
   }
   
   yield put(AuthActions.initializeSpotify())
