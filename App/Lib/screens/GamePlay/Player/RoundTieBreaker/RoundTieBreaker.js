@@ -70,7 +70,7 @@ const RoundTieBreaker = ({
       <View style={styles.playerQueueContainer}>
         <PlayerQueue
           joinedPlayers={players}
-          maxPlayers={5}
+          maxPlayers={players.length}
           renderItem={player => (
             <PlayerAvatar player={player} type="checkmark" showBadge />
           )}

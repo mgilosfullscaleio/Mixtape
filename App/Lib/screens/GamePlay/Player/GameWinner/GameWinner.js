@@ -43,7 +43,7 @@ const GameWinner = ({ players, winner, onQuitGame }) => {
       <View style={styles.playerQueueContainer}>
         <PlayerQueue
           joinedPlayers={players}
-          maxPlayers={5}
+          maxPlayers={players.length}
           renderItem={player => <PlayerAvatar player={player} showBadge />}
         />
       </View>
