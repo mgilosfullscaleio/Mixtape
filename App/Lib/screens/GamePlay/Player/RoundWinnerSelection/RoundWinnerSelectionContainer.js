@@ -5,6 +5,7 @@ import RoundWinnerSelection from './RoundWinnerSelection';
 import GameplayActions, { GameplaySelectors } from '../../../../../Redux/GameplayRedux';
 
 const RoundWinnerSelectionContainer = (props) => {
+  const [submittedWinner, setSubmittedWinner] = useState();
   const [selectedWinner, setSelectedWinner] = useState();
   const [songIsPlaying, setSongIsPlaying] = useState(false);
   const [startPosition, setStartPosition] = useState(0);
@@ -15,7 +16,7 @@ const RoundWinnerSelectionContainer = (props) => {
 
     if(props.selectPlayerVotedSong) {
       setSelectedWinner(props.selectPlayerVotedSong)
-      
+      setSubmittedWinner(props.selectPlayerVotedSong)
     }
     
     return props.unsubscribeGameplayUpdates
@@ -23,7 +24,6 @@ const RoundWinnerSelectionContainer = (props) => {
 
   const handlePlaySong = song => {
     console.log('play song:', song);
-    //console.log('Previous Song: ' + currentSongURI + '\nSelected Song: ' + song.uri);
     if (!songIsPlaying) {
       setSongIsPlaying(true);
       setcurrentSongURI(song.uri);
@@ -34,13 +34,16 @@ const RoundWinnerSelectionContainer = (props) => {
       }
     } else {
       setSongIsPlaying(false);
-      setcurrentSongURI('');
       props.pauseSong();
     }
     
   };
 
-  const handleSubmitWinner = ({ playerId }) => props.voteRoundWinner(playerId);
+  const handleSubmitWinner = song => {
+    props.voteRoundWinner(song.playerId);
+    setSubmittedWinner(song);
+  };
+
   const handleSelectWinner = song => setSelectedWinner(song);
 
   return (
@@ -50,6 +53,7 @@ const RoundWinnerSelectionContainer = (props) => {
       timeLeft={props.selectTimerTick}
       scenario={props.selectCardContent}
       userSongEntry={props.selectPlayerSubmittedSong}
+      submittedWinner={submittedWinner}
       selectedWinner={selectedWinner}
       onPlaySong={handlePlaySong}
       onSelectWinner={handleSelectWinner}

@@ -12,6 +12,16 @@ const signIn = async () => await auth.signInAnonymously()
 // Move this to an action, in startup
 signIn()
 
+const getLobbyMaximumPlayers = () =>
+  firestore
+    .collection('openmatch')
+    .doc('settings')
+    .get()
+    .then(docs => 
+      Result.Ok(docs.data().maxPlayers)
+    )
+    .catch(error => Result.Error(`Error: `, error))
+
 const addPlayerToOpenMatch = playerId =>
   firestore
     .collection('openmatch')
@@ -19,13 +29,14 @@ const addPlayerToOpenMatch = playerId =>
     .set({ players: FieldValue.arrayUnion(playerId) }, { merge: true })
     .then(() => Promise.resolve(Result.Ok()))
 
-const playerJoinObserver = emitter =>
-  firestore
+const playerJoinObserver = emitter => {
+  return firestore
     .collection(`openmatch`)
     .doc('lobby')
     .onSnapshot(docSnapshot  => {
       emitter(docSnapshot.data().players)
     })
+}
 
 // TODO not currently working
 const removePlayerFromOpenMatch = user => {//Promise.resolve(Result.Ok(true))
@@ -177,6 +188,7 @@ export default {
   createUserFromSpotifyAccount,
   findUserWithSpotifyId,
 
+  getLobbyMaximumPlayers,
   addPlayerToOpenMatch,
   playerJoinObserver,
   removePlayerFromOpenMatch,

@@ -16,7 +16,7 @@ const RoundWinnerRandomizerContainer = props => {
     <RoundWinnerRandomizer
       winnerSongTitle={props.winnerSongTitle}
       songs={props.songsForTiebreak}
-      players={mockData.playersInGame}
+      players={props.selectPlayers}
       scenario={props.selectCardContent}
     />
   )
@@ -26,6 +26,7 @@ const mapStateToProps = (state) => ({
   selectCardContent: GameplaySelectors.selectCardContent(state),
   songsForTiebreak: GameplaySelectors.selectSongsForTiebreak(state),
   winnerSongTitle: GameplaySelectors.selectWinnerSongTitleFromTiebreak(state),
+  selectPlayers: GameplaySelectors.selectPlayers(state),
 })
 
 const mapDispatchToProps = (dispatch) => ({

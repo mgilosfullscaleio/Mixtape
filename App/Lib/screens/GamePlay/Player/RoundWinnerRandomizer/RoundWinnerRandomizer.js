@@ -30,7 +30,7 @@ const RoundWinnerRandomizer = ({ winnerSongTitle, songs, players, scenario, onQu
           justifyContent: 'center'
         }}
       >
-        <Image source={images.slotachine} style={styles.slotmachine} />
+        <Image source={images.slotmachine} style={styles.slotmachine} />
         <SlotMachine
           text={[winnerSongTitle]}
           range={songs.map(song => song.title)}
@@ -40,7 +40,7 @@ const RoundWinnerRandomizer = ({ winnerSongTitle, songs, players, scenario, onQu
       <View style={styles.playerQueueContainer}>
         <PlayerQueue
           joinedPlayers={players}
-          maxPlayers={5}
+          maxPlayers={players.length}
           renderItem={player => <PlayerAvatar player={player} showBadge />}
         />
       </View>

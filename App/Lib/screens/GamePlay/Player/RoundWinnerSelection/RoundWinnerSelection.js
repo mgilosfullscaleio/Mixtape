@@ -22,6 +22,7 @@ const RoundWinnerSelection = ({
   players,
   timeLeft,
   scenario,
+  submittedWinner,
   selectedWinner,
   userSongEntry,
   onQuitGame,
@@ -47,7 +48,7 @@ const RoundWinnerSelection = ({
   );
   const showBadgeSubmittedVoteByPlayer = player => {
     const playerVote = player.vote
-    return playerVote 
+    return !!playerVote;
   }
 
   const renderSongBarItem = ({ item }) => {
@@ -59,8 +60,9 @@ const RoundWinnerSelection = ({
         song={item}
         highlighted={selectedWinner && item.id === selectedWinner.id}
         onPlay={onPlaySong}
-        isPlaying={songPlayingURI === item.uri}
-        onPress={isUserEntry ? undefined : onSelectWinner}
+        //isPlaying={songPlayingURI === item.uri}
+        isPlaying={songPlayingURI === item.uri && songIsPlaying}
+        onPress={submittedWinner || isUserEntry ? undefined : onSelectWinner}
       />
     );
   };
@@ -99,7 +101,7 @@ const RoundWinnerSelection = ({
             <TouchableImage
               source={images.submitButton}
               style={styles.submitButton}
-              onPress={() => onSubmitWinner(selectedWinner)}
+              onPress={handleSubmitWinner}
             />
           </View>
         }
@@ -107,7 +109,7 @@ const RoundWinnerSelection = ({
         <View style={styles.playerQueueContainer}>
           <PlayerQueue
             joinedPlayers={players}
-            maxPlayers={5}
+            maxPlayers={players.length}
             renderItem={player => (
               <PlayerAvatar player={player} type="checkmark" showBadge={showBadgeSubmittedVoteByPlayer(player)} />
             )}
@@ -136,6 +138,12 @@ RoundWinnerSelection.propTypes = {
   ).isRequired,
   timeLeft: PropTypes.number.isRequired,
   scenario: PropTypes.string.isRequired,
+  submittedWinner: PropTypes.shape({
+    id: PropTypes.string,
+    title: PropTypes.string,
+    singer: PropTypes.string,
+    albumCover: PropTypes.string
+  }),
   selectedWinner: PropTypes.shape({
     id: PropTypes.string,
     title: PropTypes.string,
@@ -159,6 +167,7 @@ RoundWinnerSelection.propTypes = {
 
 RoundWinnerSelection.defaultProps = {
   songs: [],
+  submittedWinner: undefined,
   selectedWinner: undefined,
   userSongEntry: undefined,
   songIsPlaying: false,

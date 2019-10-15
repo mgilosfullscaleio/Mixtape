@@ -61,18 +61,12 @@ roundWinner {
 */
 export const INITIAL_STATE = Immutable({
   round: 1,
-  roundWinner: {
-    round1: ['F3JcKHX9HRvtzPuoti5b'],
-    round2: ['vMpgxp3UPGzEI5ctqTjx'],
-    round3: ['vMpgxp3UPGzEI5ctqTjx'],
-    round4: ['F3JcKHX9HRvtzPuoti5b'],
-    round5: ['xxx']
-  },
+  roundWinner: { },
   players: [],
   card: { title: '', content: '' },
   loading: false,
   error: null,
-  gameId: 'JsQVmdBTGvwIid2CUi4K',
+  gameId: null,
   gameStart: null,  //date ISOString
   gameTimer: 0, //millis
   searchedSongs: [],

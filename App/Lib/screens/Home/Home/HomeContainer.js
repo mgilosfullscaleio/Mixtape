@@ -1,15 +1,18 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 import Home from './Home';
 
 import { mockData } from '../../../constants';
+import { UserSelectors } from '../../../../Redux/UserRedux';
+import LobbyActions from '../../../../Redux/LobbyRedux';
 
-const HomeContainer = props => <Home user={mockData.user} {...props} />;
+const mapStateToProps = state => ({
+  user: UserSelectors.selectUserMatchData(state),
+})
 
-HomeContainer.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired
-  }).isRequired
-};
+const mapDispatchToProps = (dispatch) => ({
+  getMaximumPlayersByPlayWithOthers: () => dispatch(LobbyActions.getMaximumPlayersByPlayWithOthers()),
+})
 
-export default HomeContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

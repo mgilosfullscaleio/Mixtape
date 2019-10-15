@@ -6,9 +6,7 @@ import { mockData, screens } from '../../../../constants';
 import { GameplaySelectors } from '../../../../../Redux/GameplayRedux';
 
 const GameWinnerContainer = props => {
-  const handleQuitGame = () => {
-    console.log('quit game');
-  };
+  const handleQuitGame = () => props.navigation.navigate(screens.main.home)
 
   return (
     <GameWinner

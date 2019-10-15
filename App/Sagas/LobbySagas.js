@@ -1,11 +1,26 @@
 import { call, put, take, takeEvery, select } from 'redux-saga/effects'
-import LobbyActions, { LobbyTypes } from '../Redux/LobbyRedux'
+import LobbyActions, { LobbyTypes, LobbySelectors } from '../Redux/LobbyRedux'
 import { NavigationActions } from 'react-navigation'
 import { eventChannel } from 'redux-saga'
 import UserActions, { UserSelectors } from '../Redux/UserRedux'
 import MessagingActions from '../Redux/MessagingRedux'
 import { MessagingSelectors } from '../Redux/MessagingRedux'
 import { screens } from '../Lib/constants'
+
+export function * getMaximumPlayersByPlayWithOthers(api, action) {
+
+  const response = yield call(api.getLobbyMaximumPlayers)
+
+  yield put(
+    response.matchWith({
+      Ok: ({ value }) => LobbyActions.getMaximumPlayersSuccess(value), 
+      Error: ({ value }) => LobbyActions.lobbyFailure(value)
+    })
+  )
+
+  yield put(NavigationActions.navigate({ routeName: screens.home.lobby }))
+    
+}
 
 export function * quitOpenMatch (api, action) {
   yield put(LobbyActions.unsubscribeOpenMatchUpdates())

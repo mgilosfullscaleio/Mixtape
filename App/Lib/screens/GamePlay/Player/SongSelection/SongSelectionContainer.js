@@ -6,6 +6,7 @@ import SongSelection from './SongSelection';
 
 import { mockData, screens } from '../../../../constants';
 import GameplayActions, { GameplaySelectors } from '../../../../../Redux/GameplayRedux';
+import { LobbySelectors } from '../../../../../Redux/LobbyRedux';
 
 const SongSelectionContainer = (props) => {
   const [submittedSong, setSubmittedSong] = useState();
@@ -23,18 +24,16 @@ const SongSelectionContainer = (props) => {
 
   const handlePlaySong = song => {
     console.log('play song:', song);
-    //console.log('Previous Song: ' + currentSongURI + '\nSelected Song: ' + song.uri);
     if (!songIsPlaying) {
       setSongIsPlaying(true);
-      setcurrentSongURI(song.uri);
       if (currentSongURI != song.uri) {
+        setcurrentSongURI(song.uri);
         props.playSong(song, startPosition);
       } else {
         props.resumeSong();
       }
     } else {
       setSongIsPlaying(false);
-      setcurrentSongURI('');
       props.pauseSong();
     }
     
@@ -51,12 +50,14 @@ const SongSelectionContainer = (props) => {
     props.pauseSong();
     console.tron.log("song :", song);
     setSelectedSong(song);
+    handlePlaySong(song);
   }
 
   const handleSeachTextChange = keyword => props.searchSong(keyword, 20)
 
   return (
     <SongSelection
+      maxPlayers={props.selectPlayers.length}
       players={props.selectPlayers}
       round={props.selectRound}
       timeLeft={props.selectTimerTick}
@@ -85,6 +86,7 @@ SongSelectionContainer.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
+  selectMaxPlayer: LobbySelectors.selectMaxPlayers(state),
   selectRound: GameplaySelectors.selectRound(state),
   selectCardContent: GameplaySelectors.selectCardContent(state),
   selectTimerTick: GameplaySelectors.selectTimerTick(state),
