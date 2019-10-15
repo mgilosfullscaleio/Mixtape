@@ -1,7 +1,7 @@
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
 import { UserSelectors } from './UserRedux'
-import { pipe, reduce, defaultTo, toPairs, head, inc, max } from 'ramda'
+import { pipe, reduce, defaultTo, toPairs, head, inc, max, equals, filter, length, values, flatten } from 'ramda'
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -123,13 +123,9 @@ const collectWinnerSongTitle = gameplay => {
 
 const getPlayers = gameplay => 
   gameplay.players.map(player => {
-    var score = 0
-    Object.entries(gameplay.roundWinner).map(([roundTitle, playerData]) => {
-      if (playerData.find(playerId => playerId === player.id))
-            score = score + 1
-    })
+    const score = pipe(values, flatten, filter(equals(player.id)), length)(gameplay.roundWinner)
     return { ...player, score }
-})
+  })
 
 
 const collectTiebreakSongs = gameplay =>
@@ -144,9 +140,6 @@ const findWinnerPlayer = gameplay =>
   gameplay.players.find(player => getRoundWinner(gameplay).includes(player.id))
 
 const findGameWinnerPlayer = gameplay => {
-  const roundWinners = Object.values(gameplay.roundWinner).flat(1)
-  console.tron.log('findGameWinnerPlayer', roundWinners)
-
   const occurences = reduce((acc, x) => ({
     ...acc,
     [x]: pipe(defaultTo(0), inc)(acc[x])
@@ -158,8 +151,8 @@ const findGameWinnerPlayer = gameplay => {
     return [keyOfLargest, maxVal];
   }, [null, -Infinity]);
   
-  const mode = pipe(occurences, toPairs, largestPair, head);
-  const winner = mode(roundWinners)
+  const mode = pipe(values, flatten, occurences, toPairs, largestPair, head);
+  const winner = mode(gameplay.roundWinner)
   console.tron.log('mode', winner)
 
   return gameplay.players.find(player => player.id === winner)
