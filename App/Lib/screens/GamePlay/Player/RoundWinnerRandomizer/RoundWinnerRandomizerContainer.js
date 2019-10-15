@@ -29,9 +29,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  // updateRoundWinner: (roundWinner) => dispatch(GameplayActions.updateRoundWinner(roundWinner)),
-  // navigateToRoundWinner: () => dispatch(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinner })),
   subscribeTiebreakerRound: () => dispatch(GameplayActions.subscribeTiebreakerRound()),
+  subscribeGameWinnerTiebreaker: () => dispatch(GameplayActions.subscribeGameWinnerTiebreaker()),
   unsubscribeTiebreakerRound: () => dispatch(GameplayActions.unsubscribeTiebreakerRound()),
 })
 

@@ -34,6 +34,7 @@ const { Types, Creators } = createActions({
   updateGameNextRound: ['delay'], //millis
   playRoundWinnerSong: null,
   subscribeTiebreakerRound: null,
+  subscribeGameWinnerTiebreaker: null,
   unsubscribeTiebreakerRound: null,
   updateRoundTiebreakWinner: ['playerId']
 })

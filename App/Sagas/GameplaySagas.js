@@ -64,9 +64,7 @@ export function * subscribeGameplay(firestore, action) {
           const currentRound = yield select(GameplaySelectors.selectRound)
           if (currentRound === 5) {
             const isPlayerWinnerTiebreakNeeded = yield select(GameplaySelectors.selectIsTiebreakNeededForGameWinner)
-            console.tron.log('subscribeGameplay', isPlayerWinnerTiebreakNeeded)
             if (isPlayerWinnerTiebreakNeeded) {
-              yield put(GameplayActions.addSecondsToGameTimer(10))
               yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinnerRandomizer }))
             } else {
               yield put(NavigationActions.navigate({ routeName: screens.gamePlay.gameWinner }))
@@ -192,9 +190,7 @@ export function * playRoundWinnerSong(action) {
       const currentRound = yield select(GameplaySelectors.selectRound)
       if (currentRound === 5) {
         const isPlayerWinnerTiebreakNeeded = yield select(GameplaySelectors.selectIsTiebreakNeededForGameWinner)
-        console.tron.log('playRoundWinnerSong', isPlayerWinnerTiebreakNeeded)
         if (isPlayerWinnerTiebreakNeeded) {
-          yield put(GameplayActions.addSecondsToGameTimer(10))
           yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinnerRandomizer }))
         } else {
           yield put(NavigationActions.navigate({ routeName: screens.gamePlay.gameWinner }))
@@ -204,6 +200,44 @@ export function * playRoundWinnerSong(action) {
       }
     }
   })
+}
+
+export function * subscribeGameWinnerTiebreaker(firestore, action) {
+  const gameId = yield select(GameplaySelectors.selectGameId)
+  const currentRound = yield select(GameplaySelectors.selectRound)
+  const userId = yield select(UserSelectors.selectUserId)
+  const players = yield select(GameplaySelectors.selectPlayersForTiebreak)
+  const rand = Math.floor(Math.random() * players.length)
+  const playerWinner = players[rand].playerId
+  
+  //the player winner should update the firestore
+  if (playerWinner === userId) {
+    firestore.updateRoundTiebreakWinner(gameId, currentRound, playerWinner)
+  }
+
+  yield put(GameplayActions.addSecondsToGameTimer(10))
+
+  const gameTimer = yield select(GameplaySelectors.selectGameTimer)
+  const timerChannel = onTimerTickChannel(gameTimer)
+  yield takeEvery(timerChannel, function* (tick) {
+    const defaultTick = tick < 0 ? 0 : tick
+    yield put(GameplayActions.setTimerTick(defaultTick))
+
+    if (tick < 0) {
+      yield put(NavigationActions.navigate({ routeName: screens.gamePlay.gameWinner }))
+    }
+  })
+
+  const gameplayChannel = onGameplayChannel(firestore, gameId, userId, currentRound)
+  yield takeEvery(gameplayChannel, function* (docUpdate) {
+    if (docUpdate.tiebreakGameWinner) {
+      yield put(GameplayActions.updateRoundTiebreakWinner(docUpdate.tiebreakGameWinner))
+    }
+  })
+
+  yield take(GameplayTypes.UNSUBSCRIBE_TIEBREAKER_ROUND)
+  gameplayChannel.close()
+  timerChannel.close()
 }
 
 export function * subscribeTiebreakerRound(firestore, action) {
