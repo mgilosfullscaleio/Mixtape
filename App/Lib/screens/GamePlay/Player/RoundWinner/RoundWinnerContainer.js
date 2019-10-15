@@ -18,6 +18,7 @@ const RoundWinnerContainer = props => {
 
   return (
     <RoundWinner
+      isLoading={props.selectIsLoading}
       players={props.selectPlayers}
       round={props.selectRound}
       timeLeft={props.selectTimerTick}
@@ -35,6 +36,7 @@ const mapStateToProps = (state) => ({
   selectPlayers: GameplaySelectors.selectPlayers(state),
   selectRoundWinnerPlayer: GameplaySelectors.selectRoundWinnerPlayer(state),
   selectWinningSong: GameplaySelectors.selectWinningSong(state),
+  selectIsLoading: GameplaySelectors.isLoading(state),
 })
  
 const mapDispatchToProps = (dispatch) => ({

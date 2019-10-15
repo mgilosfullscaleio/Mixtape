@@ -18,6 +18,7 @@ import { images, localization } from '../../../../constants';
 import { useAlertVisible } from '../../../../utils/hooks';
 
 const RoundWinnerSelection = ({
+  isLoading,
   songs,
   players,
   timeLeft,
@@ -44,7 +45,7 @@ const RoundWinnerSelection = ({
   };
 
   const renderHeader = () => (
-    <RoundHeader title={localization.chooseWinner} timeLeft={timeLeft} />
+    <RoundHeader title={localization.chooseWinner} type={isLoading ? 'loading' : 'timer' } timeLeft={timeLeft} />
   );
   const showBadgeSubmittedVoteByPlayer = player => {
     const playerVote = player.vote

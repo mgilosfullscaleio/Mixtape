@@ -14,6 +14,7 @@ import { images, localization } from '../../../../constants';
 import { useAlertVisible } from '../../../../utils/hooks';
 
 const SongSelection = ({
+  isLoading,
   players,
   round,
   timeLeft,
@@ -31,7 +32,7 @@ const SongSelection = ({
 }) => {
   const { isVisible: isAlertVisible, showAlert, hideAlert } = useAlertVisible();
 
-  const renderHeader = () => <RoundHeader round={round} timeLeft={timeLeft} />;
+  const renderHeader = () => <RoundHeader round={round} type={isLoading ? 'loading' : 'timer' } timeLeft={timeLeft} />;
   const showBadgeSubmittedSongByPlayer = player => {
     const playerSong = player.song || {};
     return !!playerSong.id;

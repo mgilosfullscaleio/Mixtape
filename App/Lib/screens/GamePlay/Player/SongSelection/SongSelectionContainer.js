@@ -93,6 +93,7 @@ const mapStateToProps = (state) => ({
   selectPlayers: GameplaySelectors.selectPlayers(state),
   searchedSongs: GameplaySelectors.searchedSongs(state),
   selectPlayerSubmittedSong: GameplaySelectors.selectPlayerSubmittedSong(state),
+  selectIsLoading: GameplaySelectors.isLoading(state),
 })
  
 const mapDispatchToProps = (dispatch) => ({

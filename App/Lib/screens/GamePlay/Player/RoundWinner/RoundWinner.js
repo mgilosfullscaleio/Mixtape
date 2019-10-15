@@ -10,6 +10,7 @@ import { localization } from '../../../../constants';
 import PlayableSongBar from '../common/PlayableSongBar';
 
 const RoundWinner = ({
+  isLoading,
   players,
   round,
   timeLeft,
@@ -19,7 +20,7 @@ const RoundWinner = ({
   onPlaySong
 }) => {
   const renderHeader = () => (
-    <RoundHeader title={localization.winner} timeLeft={timeLeft} />
+    <RoundHeader title={localization.winner} type={isLoading ? 'loading' : 'timer' } timeLeft={timeLeft} />
   );
 
   return (
