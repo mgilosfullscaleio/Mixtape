@@ -27,7 +27,7 @@ export function * quitOpenMatch (api, action) {
 
   const userMatchData = yield select(UserSelectors.selectUserMatchData)
   const fcmToken = yield select(MessagingSelectors.selectToken)
-  const userData = {...userMatchData, fcmToken, id: '1569898707610'}
+  const userData = {...userMatchData, fcmToken}
 
   yield call(api.removePlayerFromOpenMatch, userData)
 
