@@ -88,7 +88,7 @@ const SongSelection = ({
       >
         <PlayerQueue
           joinedPlayers={players}
-          maxPlayers={5}
+          maxPlayers={players.length}
           renderItem={player => 
             <PlayerAvatar type="checkmark" showBadge={showBadgeSubmittedSongByPlayer(player)} player={player} />
           }

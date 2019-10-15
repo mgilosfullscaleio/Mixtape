@@ -6,8 +6,8 @@ import PlayCard from './components/PlayCard';
 import styles from './styles';
 import { localization, screens } from '../../../constants';
 
-const Home = ({ navigation, user }) => {
-  const renderHeader = () => <Header navigation={navigation} user={user} />;
+const Home = props => {
+  const renderHeader = () => <Header navigation={props.navigation} user={props.user} />;
 
   return (
     <Container
@@ -22,7 +22,8 @@ const Home = ({ navigation, user }) => {
       <PlayCard
         title={localization.playWithOthers}
         ribbonTitle={localization.oneDollar}
-        onPress={() => navigation.navigate(screens.home.lobby)}
+        //onPress={() => navigation.navigate(screens.home.lobby)}
+        onPress={() => props.getMaximumPlayersByPlayWithOthers()}
       />
     </Container>
   );
