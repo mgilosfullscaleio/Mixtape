@@ -10,8 +10,6 @@ export const selectAvatar = GithubSelectors.selectAvatar
 // process STARTUP actions
 export function * startup (action) {
   if (__DEV__) {
-    // straight-up string logging
-    console.tron = console
     console.tron.log('Hello, I\'m an example of how to log via Reactotron.')
 
     // logging an object for better clarity
