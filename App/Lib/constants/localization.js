@@ -38,7 +38,10 @@ const localization = {
   enableFacebook: 'Enable Facebook',
   enableContacts: 'Enable Contacts',
   pleaseSelectSong: 'Please select a song',
-  okay: 'Okay'
+  okay: 'Okay',
+  areYouSureToAddSong: 'Are you sure you want to add this song on this card?',
+  yes: 'Yes',
+  no: 'No'
 };
 
 export default localization;

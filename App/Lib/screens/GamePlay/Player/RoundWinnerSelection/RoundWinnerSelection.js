@@ -47,7 +47,7 @@ const RoundWinnerSelection = ({
   );
   const showBadgeSubmittedVoteByPlayer = player => {
     const playerVote = player.vote
-    return playerVote 
+    return !!playerVote;
   }
 
   const renderSongBarItem = ({ item }) => {
@@ -99,7 +99,7 @@ const RoundWinnerSelection = ({
             <TouchableImage
               source={images.submitButton}
               style={styles.submitButton}
-              onPress={() => onSubmitWinner(selectedWinner)}
+              onPress={handleSubmitWinner}
             />
           </View>
         }

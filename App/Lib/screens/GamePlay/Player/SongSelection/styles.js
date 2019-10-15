@@ -6,6 +6,12 @@ const styles = ScaledSheet.create({
     backgroundColor: colors.white
   },
 
+  alertMessage: {
+    color: colors.white,
+    textAlign: 'center',
+    fontSize: '30@s'
+  },
+
   topContainer: {
     flex: 1
   },
