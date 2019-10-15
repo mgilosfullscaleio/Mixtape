@@ -22,6 +22,7 @@ const RoundWinnerSelection = ({
   players,
   timeLeft,
   scenario,
+  submittedWinner,
   selectedWinner,
   userSongEntry,
   onQuitGame,
@@ -61,7 +62,7 @@ const RoundWinnerSelection = ({
         onPlay={onPlaySong}
         //isPlaying={songPlayingURI === item.uri}
         isPlaying={songPlayingURI === item.uri && songIsPlaying}
-        onPress={isUserEntry ? undefined : onSelectWinner}
+        onPress={submittedWinner || isUserEntry ? undefined : onSelectWinner}
       />
     );
   };
@@ -137,6 +138,12 @@ RoundWinnerSelection.propTypes = {
   ).isRequired,
   timeLeft: PropTypes.number.isRequired,
   scenario: PropTypes.string.isRequired,
+  submittedWinner: PropTypes.shape({
+    id: PropTypes.string,
+    title: PropTypes.string,
+    singer: PropTypes.string,
+    albumCover: PropTypes.string
+  }),
   selectedWinner: PropTypes.shape({
     id: PropTypes.string,
     title: PropTypes.string,
@@ -160,6 +167,7 @@ RoundWinnerSelection.propTypes = {
 
 RoundWinnerSelection.defaultProps = {
   songs: [],
+  submittedWinner: undefined,
   selectedWinner: undefined,
   userSongEntry: undefined,
   songIsPlaying: false,

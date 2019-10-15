@@ -13,12 +13,12 @@ const styles = ScaledSheet.create({
   },
   text: {
     fontSize: 30,
-    top: 20,
+    top: '20@s',
     fontWeight: 'bold',
     color: '#3c3f44',
     textAlign: 'center',
     justifyContent: 'center',
-    alignContent: 'center',
+    alignItems: 'center',
     alignSelf: 'stretch',
     paddingHorizontal: 10
   },
