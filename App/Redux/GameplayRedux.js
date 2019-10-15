@@ -1,7 +1,7 @@
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
 import { UserSelectors } from './UserRedux'
-import { pipe, reduce, defaultTo, toPairs, head, inc, max, equals, filter, length, values, flatten, complement } from 'ramda'
+import { pipe, reduce, defaultTo, toPairs, head, inc, max, equals, filter, length, values, flatten, map } from 'ramda'
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -101,12 +101,20 @@ export const GameplaySelectors = {
   selectRoundWinnerPlayer: state => findWinnerPlayer(state.gameplay),
   selectWinningSong: state => collectRoundWinningSong(state.gameplay),
   selectSongsForTiebreak: state => collectTiebreakSongs(state.gameplay),
+  selectPlayersForTiebreak: state => collectTiebreakPlayers(state.gameplay),
   selectIsTiebreakNeeded: state => getRoundWinner(state.gameplay).length > 1,
   selectAllPlayerIdForTiebreak: state => collectPlayerIdsWhoSubmittedASong(state.gameplay),
   selectWinnerSongTitleFromTiebreak: state => collectWinnerSongTitle(state.gameplay),
   selectGameWinnerPlayer: state => findGameWinnerPlayer(state.gameplay),
   selectHasAnyPlayerSubmittedSong: state => hasAnyPlayerSubmittedSong(state.gameplay),
   selectIsTiebreakNeededForGameWinner: state => !hasAGameWinner(state.gameplay),
+}
+
+const collectTiebreakPlayers = gameplay => {
+  const value = largestValue(gameplay.roundWinner)
+  const equalScores = ([k,v]) => value === v
+  const mapKeysOnly = map(([k,v]) => k)
+  return pipe(toPairs, filter(equalScores), mapKeysOnly)(playerScores(gameplay.roundWinner))
 }
 
 const hasAnyPlayerSubmittedSong = gameplay =>
