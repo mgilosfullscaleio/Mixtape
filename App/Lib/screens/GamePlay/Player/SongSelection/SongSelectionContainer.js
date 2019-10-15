@@ -57,6 +57,7 @@ const SongSelectionContainer = (props) => {
 
   return (
     <SongSelection
+      isLoading={props.selectIsLoading}
       maxPlayers={props.selectPlayers.length}
       players={props.selectPlayers}
       round={props.selectRound}
