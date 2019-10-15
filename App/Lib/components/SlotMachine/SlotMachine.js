@@ -163,6 +163,7 @@ export default class SlotMachine extends Component {
           <ImageBackground
             style={styles.bg}
             defaultSource={images.highlightedSongBar}
+            source={images.highlightedSongBar}
             resizeMode="cover"
           >
             {content}
