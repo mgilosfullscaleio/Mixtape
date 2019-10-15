@@ -22,33 +22,35 @@ const getLobbyMaximumPlayers = () =>
     )
     .catch(error => Result.Error(`Error: `, error))
 
-const addPlayerToOpenMatch = playerId =>
+const addPlayerToOpenMatch = playerData =>
   firestore
-    .collection('openmatch')
-    .doc('lobby')
-    .set({ players: FieldValue.arrayUnion(playerId) }, { merge: true })
+    .collection('openmatch/lobby/players')
+    .doc(playerData.id)
+    .set(playerData)
     .then(() => Promise.resolve(Result.Ok()))
+    .catch(error => Result.Error(`Error: ${error}`))
+
+const removePlayerFromOpenMatch = user => {
+  console.tron.log('removePlayerFromOpenMatch', user.id)
+  return firestore
+    .collection(`openmatch/lobby/players`)
+    .doc(user.id)
+    .delete()
+    .then(() => Promise.resolve(Result.Ok()))
+    .catch(e => Promise.resolve(Result.Error(e)))
+}
 
 const playerJoinObserver = emitter => {
   return firestore
-    .collection(`openmatch`)
-    .doc('lobby')
-    .onSnapshot(docSnapshot  => {
-      emitter(docSnapshot.data().players)
+    .collection(`openmatch/lobby/players`)
+    .onSnapshot(snapshot => {
+      snapshot.docChanges.forEach(change => 
+        emitter({
+          type: change.type,
+          ...change.doc.data()
+        })
+      )
     })
-}
-
-// TODO not currently working
-const removePlayerFromOpenMatch = user => {//Promise.resolve(Result.Ok(true))
-  console.tron.log('removePlayerFromOpenMatch', user)
-  return firestore
-    .collection(`openmatch`)
-    .doc('lobby')
-    .set({ 
-      players: FieldValue.arrayRemove(user)
-    }, { merge: true })
-    .then(() => Promise.resolve(Result.Ok(true)))
-    .catch(e => Promise.resolve(Result.Error(e)))
 }
 
 // TODO this is not returning a Result

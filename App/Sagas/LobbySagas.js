@@ -44,12 +44,13 @@ const onPlayerJoinChannel = firestore =>
 export function * subscribePlayerJoin (firestore, action) {
   const channel = yield call(onPlayerJoinChannel, firestore)
 
-  yield takeEvery(channel, function * (players) {
-    yield put(LobbyActions.playerJoinMatch(players))
+  yield takeEvery(channel, function * (player) {
+    yield put(LobbyActions.playerJoinMatch(player))
   })
 
   yield take(LobbyTypes.UNSUBSCRIBE_OPEN_MATCH_UPDATES)
   channel.close()
+  yield put(LobbyActions.resetPlayers())
 }
 
 export function * addPlayerInMatch (api, action) {
