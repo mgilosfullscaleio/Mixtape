@@ -63,7 +63,14 @@ export function * subscribeGameplay(firestore, action) {
           // we didn't submit a song an were now in round 5
           const currentRound = yield select(GameplaySelectors.selectRound)
           if (currentRound === 5) {
-            yield put(NavigationActions.navigate({ routeName: screens.gamePlay.gameWinner }))
+            const isPlayerWinnerTiebreakNeeded = yield select(GameplaySelectors.selectIsTiebreakNeededForGameWinner)
+            console.tron.log('subscribeGameplay', isPlayerWinnerTiebreakNeeded)
+            if (isPlayerWinnerTiebreakNeeded) {
+              yield put(GameplayActions.addSecondsToGameTimer(10))
+              yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinnerRandomizer }))
+            } else {
+              yield put(NavigationActions.navigate({ routeName: screens.gamePlay.gameWinner }))
+            }
           } else {
             yield put(GameplayActions.resetGameplayRound())
             yield put(GameplayActions.unsubscribeGameplayUpdates())
@@ -183,10 +190,18 @@ export function * playRoundWinnerSong(action) {
       yield delay(secDelay)
 
       const currentRound = yield select(GameplaySelectors.selectRound)
-      if (currentRound === 5)
-        yield put(NavigationActions.navigate({ routeName: screens.gamePlay.gameWinner }))
-      else
+      if (currentRound === 5) {
+        const isPlayerWinnerTiebreakNeeded = yield select(GameplaySelectors.selectIsTiebreakNeededForGameWinner)
+        console.tron.log('playRoundWinnerSong', isPlayerWinnerTiebreakNeeded)
+        if (isPlayerWinnerTiebreakNeeded) {
+          yield put(GameplayActions.addSecondsToGameTimer(10))
+          yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinnerRandomizer }))
+        } else {
+          yield put(NavigationActions.navigate({ routeName: screens.gamePlay.gameWinner }))
+        }
+      } else {
         yield put(NavigationActions.navigate({ routeName: screens.gamePlay.playerSongSelection }))
+      }
     }
   })
 }
