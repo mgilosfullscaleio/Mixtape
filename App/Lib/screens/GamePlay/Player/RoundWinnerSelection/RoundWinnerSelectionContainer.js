@@ -23,7 +23,6 @@ const RoundWinnerSelectionContainer = (props) => {
 
   const handlePlaySong = song => {
     console.log('play song:', song);
-    //console.log('Previous Song: ' + currentSongURI + '\nSelected Song: ' + song.uri);
     if (!songIsPlaying) {
       setSongIsPlaying(true);
       setcurrentSongURI(song.uri);
@@ -34,7 +33,6 @@ const RoundWinnerSelectionContainer = (props) => {
       }
     } else {
       setSongIsPlaying(false);
-      setcurrentSongURI('');
       props.pauseSong();
     }
     

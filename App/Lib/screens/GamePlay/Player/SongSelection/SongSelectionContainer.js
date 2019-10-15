@@ -24,18 +24,16 @@ const SongSelectionContainer = (props) => {
 
   const handlePlaySong = song => {
     console.log('play song:', song);
-    //console.log('Previous Song: ' + currentSongURI + '\nSelected Song: ' + song.uri);
     if (!songIsPlaying) {
       setSongIsPlaying(true);
-      setcurrentSongURI(song.uri);
       if (currentSongURI != song.uri) {
+        setcurrentSongURI(song.uri);
         props.playSong(song, startPosition);
       } else {
         props.resumeSong();
       }
     } else {
       setSongIsPlaying(false);
-      setcurrentSongURI('');
       props.pauseSong();
     }
     
@@ -52,6 +50,7 @@ const SongSelectionContainer = (props) => {
     props.pauseSong();
     console.tron.log("song :", song);
     setSelectedSong(song);
+    handlePlaySong(song);
   }
 
   const handleSeachTextChange = keyword => props.searchSong(keyword, 20)

@@ -59,7 +59,8 @@ const RoundWinnerSelection = ({
         song={item}
         highlighted={selectedWinner && item.id === selectedWinner.id}
         onPlay={onPlaySong}
-        isPlaying={songPlayingURI === item.uri}
+        //isPlaying={songPlayingURI === item.uri}
+        isPlaying={songPlayingURI === item.uri && songIsPlaying}
         onPress={isUserEntry ? undefined : onSelectWinner}
       />
     );

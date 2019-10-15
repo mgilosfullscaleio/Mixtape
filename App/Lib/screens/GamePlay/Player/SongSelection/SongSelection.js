@@ -75,7 +75,8 @@ const SongSelection = ({
               containerStyle={styles.songBar}
               song={submittedSong}
               onPlay={onPlaySong}
-              isPlaying={songPlayingURI === submittedSong.uri}
+              //isPlaying={songPlayingURI === submittedSong.uri}
+              isPlaying={songIsPlaying}
             />
           </View>
         )}
