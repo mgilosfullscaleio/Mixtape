@@ -9,6 +9,7 @@ export const selectAvatar = GithubSelectors.selectAvatar
 
 // process STARTUP actions
 export function * startup (action) {
+  console.tron = console
   if (__DEV__ && console.tron) {
     // straight-up string logging
     console.tron.log('Hello, I\'m an example of how to log via Reactotron.')
@@ -22,7 +23,7 @@ export function * startup (action) {
     // fully customized!
     const subObject = { a: 1, b: [1, 2, 3], c: true }
     subObject.circularDependency = subObject // osnap!
-    console.tron.display({
+    /*console.tron.display({
       name: '🔥 IGNITE 🔥',
       preview: 'You should totally expand this',
       value: {
@@ -32,9 +33,7 @@ export function * startup (action) {
         someGeneratorFunction: startup,
         someNormalFunction: selectAvatar
       }
-    })
-  } else {
-    console.tron = console
+    })*/
   }
   
   yield put(AuthActions.initializeSpotify())
