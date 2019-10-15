@@ -1,7 +1,7 @@
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
 import { UserSelectors } from './UserRedux'
-import { pipe, reduce, defaultTo, toPairs, head, inc, max, equals, filter, length, values, flatten } from 'ramda'
+import { pipe, reduce, defaultTo, toPairs, head, inc, max, equals, filter, length, values, flatten, complement } from 'ramda'
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -59,12 +59,18 @@ roundWinner {
 */
 export const INITIAL_STATE = Immutable({
   round: 1,
-  roundWinner: {},
+  roundWinner: {
+    round1: ['F3JcKHX9HRvtzPuoti5b'],
+    round2: ['vMpgxp3UPGzEI5ctqTjx'],
+    round3: ['vMpgxp3UPGzEI5ctqTjx'],
+    round4: ['F3JcKHX9HRvtzPuoti5b'],
+    round5: ['xxx']
+  },
   players: [],
   card: { title: '', content: '' },
   loading: false,
   error: null,
-  gameId: null,
+  gameId: 'JsQVmdBTGvwIid2CUi4K',
   gameStart: null,  //date ISOString
   gameTimer: 0, //millis
   searchedSongs: [],
@@ -99,7 +105,8 @@ export const GameplaySelectors = {
   selectAllPlayerIdForTiebreak: state => collectPlayerIdsWhoSubmittedASong(state.gameplay),
   selectWinnerSongTitleFromTiebreak: state => collectWinnerSongTitle(state.gameplay),
   selectGameWinnerPlayer: state => findGameWinnerPlayer(state.gameplay),
-  selectHasAnyPlayerSubmittedSong: state => hasAnyPlayerSubmittedSong(state.gameplay)
+  selectHasAnyPlayerSubmittedSong: state => hasAnyPlayerSubmittedSong(state.gameplay),
+  selectIsTiebreakNeededForGameWinner: state => !hasAGameWinner(state.gameplay),
 }
 
 const hasAnyPlayerSubmittedSong = gameplay =>
@@ -121,6 +128,12 @@ const collectWinnerSongTitle = gameplay => {
     .map(p => p.song.title)[0]
   }
 
+const hasAGameWinner = gameplay => {
+  const value = largestValue(gameplay.roundWinner)
+  const equalScores = ([k,v]) => value === v
+  return pipe(toPairs, filter(equalScores), length, equals(1))(playerScores(gameplay.roundWinner))
+}
+
 const getPlayers = gameplay => 
   gameplay.players.map(player => {
     const score = pipe(values, flatten, filter(equals(player.id)), length)(gameplay.roundWinner)
@@ -139,22 +152,26 @@ const getRoundWinner = gameplay => gameplay.roundWinner[`round${gameplay.round}`
 const findWinnerPlayer = gameplay =>
   gameplay.players.find(player => getRoundWinner(gameplay).includes(player.id))
 
-const findGameWinnerPlayer = gameplay => {
-  const occurences = reduce((acc, x) => ({
-    ...acc,
-    [x]: pipe(defaultTo(0), inc)(acc[x])
-  }), Object.create(null));
-  
-  const largestPair = reduce(([k0, v0], [k1, v1]) => {
-    const maxVal = max(v0, v1);
-    const keyOfLargest = maxVal > v0 ? k1 : k0;
-    return [keyOfLargest, maxVal];
-  }, [null, -Infinity]);
-  
-  const mode = pipe(values, flatten, occurences, toPairs, largestPair, head);
-  const winner = mode(gameplay.roundWinner)
-  console.tron.log('mode', winner)
+const occurences = reduce((acc, x) => ({
+  ...acc,
+  [x]: pipe(defaultTo(0), inc)(acc[x])
+}), Object.create(null))
 
+const largestPair = reduce(([k0, v0], [k1, v1]) => {
+  const maxVal = max(v0, v1)
+  const keyOfLargest = maxVal > v0 ? k1 : k0
+  return [keyOfLargest, maxVal]
+}, [null, -Infinity])
+
+const largestValue = roundWinner =>
+  pipe(values, flatten, occurences, values, reduce(max, -Infinity))(roundWinner)
+
+const playerScores = roundWinner =>
+  pipe(values, flatten, occurences)(roundWinner)
+
+const findGameWinnerPlayer = gameplay => {
+  const mode = pipe(values, flatten, occurences, toPairs, largestPair, head)
+  const winner = mode(gameplay.roundWinner)
   return gameplay.players.find(player => player.id === winner)
 }
 
@@ -189,7 +206,7 @@ export const searchedSongsSuccess = (state, { searchedSongs }) =>
   state.merge({ loading: false, error: null, searchedSongs })
 
 export const saveGameId = (state, { gameId }) =>
-  state.merge({ gameId })
+  state.merge({ gameId, roundWinner: {}, players: [] })
 
 export const saveGameInfo = (state, { gameInfo }) =>
   state.merge({ 
