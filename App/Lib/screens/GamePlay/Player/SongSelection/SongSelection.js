@@ -91,8 +91,8 @@ const SongSelection = ({
                 y: styles.playerQueueContainer.marginTop + scale(3),
               }
             }
-        />
-      )}
+          />
+        )}
 
         {selectedSong && (
           <SongPlayer
@@ -106,18 +106,15 @@ const SongSelection = ({
         <View
           style={[
             styles.playerQueueContainer,
-            (selectedSong || submittedSong) && styles.noTopMargin, ,
-          ]}>
+            (selectedSong || submittedSong) && styles.noTopMargin
+          ]}
+        >
           <PlayerQueue
             joinedPlayers={players}
-            maxPlayers={5}
-            renderItem={player => (
-              <PlayerAvatar
-                type="checkmark"
-                showBadge={showBadgeSubmittedSongByPlayer(player)}
-                player={player}
-              />
-            )}
+            maxPlayers={players.length}
+            renderItem={player => 
+              <PlayerAvatar type="checkmark" showBadge={showBadgeSubmittedSongByPlayer(player)} player={player} />
+            }
           />
         </View>
       </Container>
