@@ -47,7 +47,7 @@ const RoundWinnerSelection = ({
   );
   const showBadgeSubmittedVoteByPlayer = player => {
     const playerVote = player.vote
-    return playerVote 
+    return !!playerVote;
   }
 
   const renderSongBarItem = ({ item }) => {
