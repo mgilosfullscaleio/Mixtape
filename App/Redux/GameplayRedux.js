@@ -19,6 +19,7 @@ const { Types, Creators } = createActions({
   setTimerTick: ['timerTick'],
   resetGameplayRound: null,
   addSecondsToGameTimer: ['seconds'],
+  loadingRequest: null,
 
   //saga trigger
   subscribeGameplay: null,
@@ -245,9 +246,13 @@ export const addSecondsToGameTimer = (state, { seconds }) => {
   return state.merge({ gameTimer })
 }
 
+export const loadingRequest = state =>
+  state.merge({ loading: true })
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
+  [Types.LOADING_REQUEST]: loadingRequest,
   [Types.GAMEPLAY_FAILURE]: failure,
   [Types.SAVE_SONG_SELECTION_SUCCESS]: saveSongSelectionSuccess,
   [Types.SAVE_SONG_VOTE_SUCCESS]: saveSongVoteSuccess,

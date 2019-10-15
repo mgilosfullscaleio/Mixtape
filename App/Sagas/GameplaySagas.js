@@ -58,17 +58,18 @@ export function * subscribeGameplay(firestore, action) {
           const players = yield select(GameplaySelectors.selectPlayers)
           if (players[1].id === userId) yield put(GameplayActions.updateGameNextRound(5000))
 
+          yield put(GameplayActions.loadingRequest())
           yield delay(5000)
 
           // we didn't submit a song an were now in round 5
           const currentRound = yield select(GameplaySelectors.selectRound)
           if (currentRound === 5) {
-            const isPlayerWinnerTiebreakNeeded = yield select(GameplaySelectors.selectIsTiebreakNeededForGameWinner)
-            if (isPlayerWinnerTiebreakNeeded) {
-              yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinnerRandomizer }))
-            } else {
+            // const isPlayerWinnerTiebreakNeeded = yield select(GameplaySelectors.selectIsTiebreakNeededForGameWinner)
+            // if (isPlayerWinnerTiebreakNeeded) {
+            //   yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinnerRandomizer }))
+            // } else {
               yield put(NavigationActions.navigate({ routeName: screens.gamePlay.gameWinner }))
-            }
+            // }
           } else {
             yield put(GameplayActions.resetGameplayRound())
             yield put(GameplayActions.unsubscribeGameplayUpdates())
@@ -140,6 +141,7 @@ export function * subscribeVotingRound(firestore, action) {
     yield put(GameplayActions.setTimerTick(defaultTick))
     
     if (tick < 0) {
+      yield put(GameplayActions.loadingRequest())
       yield delay(1000)
 
       const isTiebreakNeeded = yield select(GameplaySelectors.selectIsTiebreakNeeded)
@@ -185,16 +187,17 @@ export function * playRoundWinnerSong(action) {
       const isUserWinner = yield select(GameplaySelectors.selectIsUserTheRoundWinner)
       if (isUserWinner) yield put(GameplayActions.updateGameNextRound(secDelay))
 
+      yield put(GameplayActions.loadingRequest())
       yield delay(secDelay)
 
       const currentRound = yield select(GameplaySelectors.selectRound)
       if (currentRound === 5) {
-        const isPlayerWinnerTiebreakNeeded = yield select(GameplaySelectors.selectIsTiebreakNeededForGameWinner)
-        if (isPlayerWinnerTiebreakNeeded) {
-          yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinnerRandomizer }))
-        } else {
+        // const isPlayerWinnerTiebreakNeeded = yield select(GameplaySelectors.selectIsTiebreakNeededForGameWinner)
+        // if (isPlayerWinnerTiebreakNeeded) {
+        //   yield put(NavigationActions.navigate({ routeName: screens.gamePlay.roundWinnerRandomizer }))
+        // } else {
           yield put(NavigationActions.navigate({ routeName: screens.gamePlay.gameWinner }))
-        }
+        // }
       } else {
         yield put(NavigationActions.navigate({ routeName: screens.gamePlay.playerSongSelection }))
       }
