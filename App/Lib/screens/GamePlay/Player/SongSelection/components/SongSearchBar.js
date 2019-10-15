@@ -85,6 +85,7 @@ const basePosition = {
 };
 
 class SongSearchBar extends React.Component {
+  beginResponder = false
   constructor(props) {
     super(props);
 
@@ -99,7 +100,7 @@ class SongSearchBar extends React.Component {
     const parentResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onStartShouldSetPanResponderCapture: (evt, gestureState) => {
-        this.snapToTop();
+        this.beginResponder = true
         return true
       },
       onMoveShouldSetPanResponder: (e, gestureState) => {
@@ -121,6 +122,7 @@ class SongSearchBar extends React.Component {
         }
 
         if (toTop) {
+          this.beginResponder = false
           position.setValue({ x: 0, y: newy });
         } else {
           position.setValue({
@@ -131,6 +133,11 @@ class SongSearchBar extends React.Component {
       },
       onPanResponderRelease: (evt, gestureState) => {
         const { toTop } = this.state;
+        if (this.beginResponder) {
+          this.beginResponder = false
+          this.snapToTop();
+          return
+        }
 
         if (toTop) {
           if (gestureState.dy > 50) {

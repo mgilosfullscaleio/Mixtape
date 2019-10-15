@@ -32,7 +32,7 @@ const SongSelection = ({
 }) => {
   const { isVisible: isAlertVisible, showAlert, hideAlert } = useAlertVisible();
 
-  const renderHeader = () => <RoundHeader round={round} type={isLoading ? 'loading' : 'timer' } timeLeft={timeLeft} />;
+  const renderHeader = () => <RoundHeader round={round} rightElementType={isLoading ? 'loading' : 'timer' } timeLeft={timeLeft} />;
   const showBadgeSubmittedSongByPlayer = player => {
     const playerSong = player.song || {};
     return !!playerSong.id;

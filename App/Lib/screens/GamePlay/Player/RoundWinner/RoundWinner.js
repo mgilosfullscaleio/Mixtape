@@ -20,7 +20,7 @@ const RoundWinner = ({
   onPlaySong
 }) => {
   const renderHeader = () => (
-    <RoundHeader title={localization.winner} type={isLoading ? 'loading' : 'timer' } timeLeft={timeLeft} />
+    <RoundHeader title={localization.winner} rightElementType={isLoading ? 'loading' : 'timer' } timeLeft={timeLeft} />
   );
 
   return (
