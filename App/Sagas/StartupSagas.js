@@ -11,10 +11,7 @@ export const selectAvatar = GithubSelectors.selectAvatar
 export function * startup (action) {
   console.tron = console
   if (__DEV__) {
-<<<<<<< Updated upstream
-=======
     // straight-up string logging
->>>>>>> Stashed changes
     console.tron.log('Hello, I\'m an example of how to log via Reactotron.')
 
     // logging an object for better clarity
