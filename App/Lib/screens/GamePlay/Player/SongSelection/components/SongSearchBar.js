@@ -196,7 +196,7 @@ class SongSearchBar extends React.Component {
     const { onSongPress } = this.props;
     return <SongItem song={item} onPress={() => { 
       onSongPress(item)
-      setTimeout(() => this.snapToBottom(), 100)
+      this.setState({ editable: false })
     }} />;
   };
   
