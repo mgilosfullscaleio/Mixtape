@@ -56,7 +56,7 @@ export function * subscribeGameplay(firestore, action) {
         } else {
           // not player submitted a song
           const players = yield select(GameplaySelectors.selectPlayers)
-          if (players[1].id === userId) yield put(GameplayActions.updateGameNextRound(5000))
+          if (players[0].id === userId) yield put(GameplayActions.updateGameNextRound(5000))
 
           yield put(GameplayActions.loadingRequest())
           yield delay(5000)

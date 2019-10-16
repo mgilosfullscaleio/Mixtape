@@ -27,7 +27,7 @@ export function * quitOpenMatch (api, action) {
 
   const userMatchData = yield select(UserSelectors.selectUserMatchData)
   const fcmToken = yield select(MessagingSelectors.selectToken)
-  const userData = {...userMatchData, fcmToken, id: '1569898707610'}
+  const userData = {...userMatchData, fcmToken}
 
   yield call(api.removePlayerFromOpenMatch, userData)
 
@@ -44,12 +44,13 @@ const onPlayerJoinChannel = firestore =>
 export function * subscribePlayerJoin (firestore, action) {
   const channel = yield call(onPlayerJoinChannel, firestore)
 
-  yield takeEvery(channel, function * (players) {
-    yield put(LobbyActions.playerJoinMatch(players))
+  yield takeEvery(channel, function * (player) {
+    yield put(LobbyActions.playerJoinMatch(player))
   })
 
   yield take(LobbyTypes.UNSUBSCRIBE_OPEN_MATCH_UPDATES)
   channel.close()
+  yield put(LobbyActions.resetPlayers())
 }
 
 export function * addPlayerInMatch (api, action) {
