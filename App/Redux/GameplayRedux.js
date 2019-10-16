@@ -227,7 +227,7 @@ export const updateRoundWinner = (state, { roundWinner }) =>
   state.merge({ roundWinner })
 
 export const setTimerTick = (state, { timerTick }) =>
-  state.merge({ timerTick })
+  state.merge({ loading: false, timerTick })
 
 export const resetGameplayRound = state =>
   state.merge({ songVote: null, song: null, timerTick: 0, gameTimer: 0 })
