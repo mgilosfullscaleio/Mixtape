@@ -374,6 +374,8 @@ export function * updateNextRound(firestore, { delay }) {
 
   yield call(firestore.updateGameNextRound, gameId, delay)
 
+  yield put(GameplayActions.clearSearchedSongs())
+
   // yield put(
   //   response.matchWith({
   //     Ok: ({ value }) => console.tron.log(value), //subscribe for next round

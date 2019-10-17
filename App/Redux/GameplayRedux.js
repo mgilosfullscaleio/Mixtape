@@ -13,6 +13,7 @@ const { Types, Creators } = createActions({
   saveSongSelectionSuccess: ['song'],
   saveSongVoteSuccess: ['song'],
   searchedSongsSuccess: ['searchedSongs'],
+  clearSearchedSongs: null,
   saveGameInfo: ['gameInfo'],
   saveGameUpdate: ['gameUpdate'],
   updateRoundWinner: ['roundWinner'],
@@ -206,8 +207,15 @@ export const saveSongSelectionSuccess = (state, { song }) =>
 export const saveSongVoteSuccess = (state, { song }) =>
   state.merge({ loading: false, songVote: song })
 
-export const searchedSongsSuccess = (state, { searchedSongs }) =>
-  state.merge({ loading: false, error: null, searchedSongs })
+export const searchedSongsSuccess = (state, { searchedSongs }) => {
+  console.log("RESULT SONGS: ", searchedSongs)
+  return state.merge({ loading: false, error: null, searchedSongs })
+}
+
+export const clearSearchedSongs = state => {
+  console.log("CLEAR SEARCH RESULTS SONGS")
+  return state.merge({ searchedSongs: [] })
+}
 
 export const saveGameId = (state, { gameId }) =>
   state.merge({ gameId, roundWinner: {}, players: [] })
@@ -251,6 +259,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SAVE_SONG_SELECTION_SUCCESS]: saveSongSelectionSuccess,
   [Types.SAVE_SONG_VOTE_SUCCESS]: saveSongVoteSuccess,
   [Types.SEARCHED_SONGS_SUCCESS]: searchedSongsSuccess,
+  [Types.CLEAR_SEARCHED_SONGS]: clearSearchedSongs,
   [Types.SAVE_GAME_ID]: saveGameId,
   [Types.SAVE_GAME_INFO]: saveGameInfo,
   [Types.SAVE_GAME_UPDATE]: saveGameUpdate,
